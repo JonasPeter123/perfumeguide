@@ -484,6 +484,57 @@ body::after{
 @keyframes wogen{0%{transform:translateX(0)}50%{transform:translateX(-6px)}100%{transform:translateX(0)}}
 .flask .welle{fill:var(--acc);transition:fill .85s ease;animation:wogen 4.5s ease-in-out infinite}
 
+/* Der Unisex-Vorschlag wird sichtbar hervorgehoben, ohne zu bevormunden. */
+.opt[data-key="gender"][data-v="u"]{border-color:var(--teal);background:linear-gradient(180deg,rgba(23,162,162,.09),rgba(255,255,255,.5))}
+.opt[data-key="gender"][data-v="u"] .otext::after{
+  content:"Für die meisten die beste Wahl";display:inline-block;margin-top:.5rem;
+  font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:#fff;background:var(--teal);border-radius:99px;padding:.18rem .6rem;
+}
+.opt[data-key="gender"][data-v="u"] .dot::before{background:var(--teal)}
+
+/* Zwischenschritt Pflicht -> Kuer */
+.schnitt{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow-lift);padding:2rem 1.9rem;margin:0 0 1.6rem;border-top:5px solid var(--acc)}
+.schnitt h2{font-family:"Fraunces",Georgia,serif;font-size:1.7rem;font-weight:600;margin:0 0 .7rem;letter-spacing:-.018em}
+.schnitt p{margin:0 0 .9rem;color:var(--ink-mid);font-size:1rem;max-width:58ch;line-height:1.6}
+.schnitt .fertig{display:flex;gap:.6rem;align-items:center;background:var(--paper-2);border-radius:99px;padding:.5rem 1rem;margin:0 0 1.2rem;font-size:.9rem;color:var(--ink);width:fit-content;max-width:100%}
+.schnitt .fertig b{color:var(--teal)}
+
+/* Zeremonie beim Ergebnis */
+.zeremonie{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:52vh;text-align:center;gap:1.4rem}
+.zeremonie p{font-family:"Fraunces",Georgia,serif;font-size:1.5rem;color:var(--ink-mid);margin:0;animation:revealUp .6s ease both}
+.zstreifen{display:flex;gap:4px;height:22px;width:min(440px,86vw)}
+.zstreifen i{flex:1;border-radius:99px;transform:scaleY(0);transform-origin:center;animation:zauf .5s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes zauf{to{transform:scaleY(1)}}
+.zflakon{width:56px;height:78px;animation:zpuls 1.4s ease-in-out infinite}
+@keyframes zpuls{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+
+/* Signatur-Streifen */
+.stripwrap{margin:0 0 1.6rem}
+.stripnote{font-size:.83rem;color:var(--ink-dim);margin:.5rem 0 0}
+
+/* Duftorgel statt Balken */
+.orgel{display:flex;gap:.9rem;align-items:flex-end;flex-wrap:wrap;margin:0 0 1rem}
+.orgelflakon{display:flex;flex-direction:column;align-items:center;gap:.4rem;width:64px}
+.orgelflakon svg{width:44px;height:62px;overflow:visible}
+.orgelflakon .g{fill:#fff;stroke:var(--line-2);stroke-width:1.3}
+.orgelflakon .k{fill:var(--ink)}
+.orgelflakon b{font-size:.72rem;font-weight:700;color:var(--ink);text-align:center;line-height:1.2}
+.orgelflakon span{font-family:"DM Mono",monospace;font-size:.7rem;color:var(--ink-dim)}
+
+/* Duell-Bilanz */
+.duellbilanz{background:linear-gradient(180deg,rgba(23,162,162,.12),transparent);border-radius:var(--r);padding:1.1rem 1.3rem;margin:0 0 1.4rem;border-left:4px solid var(--teal)}
+.duellbilanz b{font-family:"Fraunces",Georgia,serif;font-size:1.1rem;display:block;margin-bottom:.35rem}
+.duellbilanz p{margin:0;font-size:.93rem;color:var(--ink-mid);line-height:1.55}
+.duellbilanz em{font-style:normal;color:var(--teal);font-weight:700}
+
+/* Klappkarte */
+.passpaar{display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start}
+@media(max-width:640px){.passpaar{grid-template-columns:1fr}}
+.passpaar figure{margin:0}
+.passpaar img{width:100%;height:auto;border-radius:10px;box-shadow:var(--shadow);display:block}
+.passpaar figcaption{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);font-weight:700;margin:.5rem 0 0;text-align:center}
+
 @media (max-width:560px){
   .pick{grid-template-columns:auto 1fr}
   .score{grid-column:2;text-align:left;display:flex;gap:.5rem;align-items:baseline;margin-top:.8rem}
@@ -755,19 +806,13 @@ const Q = [
   ]},
 { id:'frame', kind:'group', acc:'#F4643C', kap:3,
   eyebrow:'Rahmen', title:'Zum Schluss der <em>Rahmen</em>.',
-  sub:'Zwei praktische Einschränkungen, damit die Empfehlungen realistisch bleiben.',
+  sub:'Zwei letzte Angaben, damit die Empfehlungen realistisch bleiben.',
   groups:[
-    {key:'gender', label:'Duftcode', o:[
-      ['egal','Egal','Codierung interessiert mich nicht.'],
-      ['u','Unisex','Möglichst geschlechtsneutral.'],
-      ['m','Eher maskulin','Klassisch maskulin codiert.'],
-      ['f','Eher feminin','Klassisch feminin codiert.']
-    ]},
-    {key:'focus', label:'Worauf kommt es dir besonders an?', o:[
-      ['fam','Auf die Duftrichtung','Die Familien müssen stimmen, alles andere ist zweitrangig.'],
-      ['sil','Auf die Präsenz','Wie viel Raum er nimmt, ist mir am wichtigsten.'],
-      ['occ','Auf den Anlass','Er muss zur Situation passen, in der ich ihn trage.'],
-      ['sweet','Auf die Süße','Zu süß oder zu trocken wäre für mich das Ausschlusskriterium.']
+    {key:'gender', label:'Duftcode', multi:true, hinweis:'<b>Empfehlung: Unisex mit ankreuzen.</b> Der größte Teil der Nischenparfümerie ist bewusst geschlechtsneutral komponiert — wer hier nur nach dem eigenen Geschlecht wählt, filtert sich die interessantesten Düfte weg. Mehrfachauswahl möglich: Unisex plus Maskulin ist die häufigste Kombination. Alle drei anzukreuzen heißt schlicht: ist mir egal.', o:[
+      ['u','Unisex','Geschlechtsneutral komponiert.'],
+      ['m','Maskulin','Klassisch maskulin codiert.'],
+      ['f','Feminin','Klassisch feminin codiert.']
+
     ]},
     {key:'budget', label:'Budget pro Flakon', o:[
       ['1','bis 100 €','Einstieg, viel Designer, etwas Nische.'],
@@ -832,12 +877,18 @@ Q.push(
   ]}
 );
 
+Q.push(
+{ id:'schnitt', kind:'info', kap:3, acc:'#17A2A2',
+  eyebrow:'Zwischenstand', title:'Das war der <em>Pflichtteil</em>.',
+  sub:'Dein Profil steht bereits. Die nächsten Fragen sind freiwillig und machen die Empfehlung deutlich schärfer — du kannst aber auch direkt zum Ergebnis springen.' }
+);
+
 /* Die Abneigungsfrage nutzt dieselben Referenzdüfte wie die Ankerfrage. */
 Q.find(q=>q.id==='anchorneg').o = Q.find(q=>q.id==='anchor').o.slice();
 
 /* Reihenfolge: erst die Bilder — die versteht jeder — dann die Duftfamilien
    mit ihrem Fachvokabular, vorbelegt aus genau diesen Bildern. */
-const ORDER = ['exp','occ','season','mood','fam','sweet','nogo','sil','longevity','vibe','eff','bold','notes','anchor','anchorneg','frame'];
+const ORDER = ['exp','occ','season','mood','fam','sweet','nogo','sil','longevity','vibe','eff','bold','schnitt','notes','anchor','anchorneg','frame'];
 const KAPITEL = {1:'Einstieg', 2:'Dein Geschmack', 3:'Feinschliff & Rahmen'};
 Q.sort((x,y)=>ORDER.indexOf(x.id)-ORDER.indexOf(y.id));
 const NUMWORD = {13:'Dreizehn',14:'Vierzehn',15:'Fünfzehn',16:'Sechzehn',17:'Siebzehn'};
@@ -1258,8 +1309,6 @@ D.push(
 D.push(
 ["Khamrah","Lattafa",["gourmand","amber","holzig"],["honig","basar"],5,5,3,["winter","herbst"],["abend","event"],["extrovertiert","sinnlich"],["waerme","verfuehrung"],"u",1,["suess","vanille"],"Zimt, Dattel, Praline, Tonka, Vanille, Muskatnuss"],
 ["Khamrah Qahwa","Lattafa",["gourmand","amber"],["honig","basar"],5,5,3,["winter"],["abend"],["extrovertiert","sinnlich"],["waerme","verfuehrung"],"u",1,["suess","vanille"],"Kaffee, Dattel, Zimt, Karamell, Tonka"],
-["Asad","Lattafa",["zitrus","leder","gourmand"],["honig","kamin"],5,4,2,["herbst","ganzjahr"],["alltag","abend"],["extrovertiert","sportlich"],["statement","waerme"],"m",1,["suess"],"Ananas, Bergamotte, schwarzer Pfeffer, Tabak, Vanille"],
-["Fakhar","Lattafa",["amber","gourmand","aromatisch"],["honig"],5,4,2,["herbst","winter"],["abend","alltag"],["extrovertiert","klassisch"],["waerme","verfuehrung"],"m",1,["suess","vanille"],"Apfel, Lavendel, Geranie, Vanille, Sandelholz"],
 ["Yara","Lattafa",["gourmand","floral"],["honig"],5,5,2,["herbst","winter"],["abend","alltag"],["extrovertiert","sinnlich"],["verfuehrung","waerme"],"f",1,["suess","vanille"],"Tuberose, Orchidee, Heliotrop, Vanille, Sandelholz"],
 ["Raghba","Lattafa",["gourmand","amber","weihrauch"],["honig","basar"],5,5,3,["winter"],["abend","event"],["extrovertiert","sinnlich"],["waerme","statement"],"u",1,["suess","vanille","oud"],"Vanille, Oud, Weihrauch, Zucker, Sandelholz"],
 ["Ana Abiyedh Rouge","Lattafa",["leder","holzig","weihrauch"],["bibliothek","weihrauch"],4,2,4,["herbst","winter"],["abend","alltag"],["intellektuell","rebellisch"],["statement","autoritaet"],"u",1,[],"Safran, Zypriol, Leder, Weihrauch, Zeder"],
@@ -1269,9 +1318,6 @@ D.push(
 ["Amber Oud Gold Edition","Al Haramain",["zitrus","amber","holzig"],["asphalt"],5,3,2,["ganzjahr","herbst"],["alltag","abend"],["extrovertiert","sportlich"],["statement","gepflegt"],"u",1,["oud"],"Zitrone, Bergamotte, Amber, Oud, Moschus"],
 ["L'Aventure","Al Haramain",["zitrus","amber","chypre"],["asphalt","kamin"],4,3,2,["ganzjahr","herbst"],["alltag","abend","signature"],["sportlich","klassisch"],["gepflegt","autoritaet"],"m",1,["patchouli"],"Apfel, Bergamotte, Zimt, Patschuli, Amber"],
 ["Shaghaf Oud","Swiss Arabian",["gourmand","floral","holzig"],["honig"],5,5,3,["winter"],["abend","event"],["extrovertiert","sinnlich"],["verfuehrung","waerme"],"u",1,["suess","oud","rose"],"Rose, Oud, Safran, Praline, Vanille"],
-["9pm","Afnan",["gourmand","amber","aromatisch"],["honig"],4,5,2,["herbst","winter"],["abend","alltag"],["extrovertiert","sinnlich"],["verfuehrung","waerme"],"m",1,["suess","vanille"],"Apfel, Lavendel, Zimt, Vanille, Tonka"],
-["Supremacy Silver","Afnan",["zitrus","aquatisch","holzig"],["ozean","asphalt"],4,2,1,["sommer","ganzjahr"],["alltag","freizeit","signature"],["sportlich"],["gepflegt"],"m",1,["aquatisch"],"Bergamotte, Meeresnoten, Ingwer, Zeder, Moschus"],
-["Club de Nuit Intense Man","Armaf",["zitrus","holzig","chypre"],["asphalt","kamin"],5,3,2,["ganzjahr","fruehling"],["alltag","abend","event"],["extrovertiert","sportlich"],["statement","autoritaet"],"m",1,["rauchig"],"Ananas, Zitrone, Birkenrauch, Jasmin, Ambergris"],
 ["Boss Bottled","Hugo Boss",["gourmand","holzig","aromatisch"],["honig"],3,3,1,["herbst","ganzjahr"],["alltag","abend","signature"],["klassisch","sportlich"],["gepflegt","waerme"],"m",1,[],"Apfel, Zimt, Sandelholz, Vetiver, Olivenholz"],
 ["Boss Bottled Night","Hugo Boss",["aromatisch","holzig","amber"],["kraeuter"],4,2,1,["herbst","winter"],["abend","alltag"],["sportlich","klassisch"],["gepflegt","verfuehrung"],"m",1,[],"Lavendel, Birke, Kardamom, Sandelholz, Moschus"],
 ["1 Million","Paco Rabanne",["gourmand","amber","zitrus"],["honig"],5,5,2,["herbst","winter"],["abend"],["extrovertiert"],["statement","verfuehrung"],"m",1,["suess"],"Blutorange, Zimt, Rose, Leder, Amber"],
@@ -1285,7 +1331,6 @@ D.push(
 ["L'Homme","Prada",["floral","aromatisch","moschus"],["iris","waesche"],3,2,2,["ganzjahr","fruehling"],["alltag","event","signature"],["klassisch","minimal"],["gepflegt"],"m",1,["pudrig"],"Iris, Neroli, schwarzer Pfeffer, Zeder, Amber"],
 ["Luna Rossa Carbon","Prada",["aromatisch","holzig","zitrus"],["asphalt"],4,2,1,["ganzjahr","sommer"],["alltag","freizeit"],["sportlich","minimal"],["gepflegt"],"m",1,[],"Bergamotte, Lavendel, Metall-Akkord, Patschuli, Kohle"],
 ["Armani Code","Giorgio Armani",["amber","gourmand","aromatisch"],["honig"],4,4,2,["herbst","winter"],["abend"],["klassisch","sinnlich"],["verfuehrung"],"m",1,["suess"],"Bergamotte, Anis, Olivenblüte, Tonka, Leder"],
-["Voyage","Nautica",["aquatisch","gruen","holzig"],["ozean"],3,2,1,["sommer"],["freizeit","alltag"],["sportlich"],["gepflegt"],"m",1,["aquatisch"],"Apfel, Lotus, Meeresnoten, Zeder, Moschus"],
 ["A*Men","Mugler",["gourmand","amber","holzig"],["honig","kamin"],5,5,4,["winter"],["abend"],["extrovertiert","rebellisch"],["statement","verfuehrung"],"m",1,["suess","vanille"],"Kaffee, Karamell, Patschuli, Teer-Akkord, Vanille"],
 ["Man in Black","Bvlgari",["amber","gourmand","leder"],["honig","bibliothek"],4,4,3,["herbst","winter"],["abend","event"],["klassisch","sinnlich"],["waerme","verfuehrung"],"m",1,["suess"],"Rum, Tuberose, Leder, Tonka, Benzoe"],
 ["Explorer","Montblanc",["holzig","zitrus","chypre"],["asphalt","kamin"],4,3,1,["ganzjahr","herbst"],["alltag","abend","signature"],["sportlich","klassisch"],["gepflegt"],"m",1,["patchouli"],"Bergamotte, Vetiver, Patschuli, Leder, Ambroxan"]
@@ -1432,48 +1477,104 @@ D.push(
 /* ── Nachtrag 6: Aquatisch und Skin Scents (gemessene Luecken) ── */
 D.push(
 ["Sel Marin","Heeley",["aquatisch","zitrus","gruen"],["ozean"],3,1,3,["sommer","fruehling"],["alltag","freizeit","signature"],["minimal","intellektuell"],["gepflegt","kopfkino"],"u",2,["aquatisch"],"Meersalz, Zitrone, Algen, Vetiver, Ingwer"],
-["Eau de Gaga","Lady Gaga",["moschus","zitrus","leder"],["waesche"],2,2,2,["ganzjahr"],["alltag","signature"],["minimal"],["gepflegt"],"u",1,[],"Limette, Veilchenblatt, weißes Leder, Moschus"],
-["Aqua Celestia","Maison Francis Kurkdjian",["zitrus","gruen","moschus"],["ozean","waesche"],3,2,1,["sommer","fruehling"],["alltag","freizeit","signature"],["minimal","sportlich"],["gepflegt"],"u",3,[],"Limette, Minze, Mimose, Moschus"],
-["Aqua Vitae","Maison Francis Kurkdjian",["zitrus","holzig","moschus"],["waesche","asphalt"],3,2,1,["sommer","ganzjahr"],["alltag","signature"],["minimal","klassisch"],["gepflegt"],"u",3,[],"Bergamotte, Zitrone, Zeder, Tonka, Moschus"],
-["Petit Matin","Maison Francis Kurkdjian",["zitrus","aromatisch","moschus"],["waesche","kraeuter"],3,1,1,["fruehling","sommer"],["alltag","event","signature"],["minimal","klassisch"],["gepflegt"],"u",3,[],"Zitrone, Weißdorn, Lavendel, Ambroxan, Moschus"],
 ["Bergamote Soleil","Atelier Cologne",["zitrus","aromatisch"],["kraeuter","salzhaut"],3,2,1,["sommer"],["freizeit","alltag"],["sportlich","minimal"],["gepflegt"],"u",1,[],"Bergamotte, Basilikum, Muskatellersalbei, Vetiver"],
-["Vanille Insensée","Atelier Cologne",["gourmand","zitrus","gruen"],["cremig","kraeuter"],3,3,2,["sommer","ganzjahr"],["alltag","signature"],["minimal","kreativ"],["gepflegt","waerme"],"u",1,["vanille"],"Limette, Koriander, Vanille, Eichenmoos, Vetiver"],
 ["Acqua di Sale","Profumum Roma",["aquatisch","gruen","moschus"],["ozean","salzhaut"],4,1,3,["sommer"],["freizeit","alltag"],["minimal","kreativ"],["kopfkino","gepflegt"],"u",3,["aquatisch"],"Meersalz, Myrte, Algen, Moschus"],
 ["Blu Mediterraneo Arancia","Acqua di Parma",["zitrus","gruen"],["kraeuter","salzhaut"],2,2,1,["sommer"],["freizeit","alltag"],["sportlich","minimal"],["gepflegt"],"u",2,[],"Orange, Kardamom, Zeder, Karamell"],
-["Bois Marin","Sana Jardin",["aquatisch","holzig","gruen"],["ozean"],3,1,3,["sommer","fruehling"],["alltag","freizeit"],["minimal","intellektuell"],["gepflegt"],"u",2,["aquatisch"],"Meersalz, Salbei, Treibholz, Ambrette"],
-["Virgin Island Water Cologne","Creed",["zitrus","aquatisch","gourmand"],["salzhaut","ozean"],3,3,1,["sommer"],["freizeit"],["sportlich","extrovertiert"],["kopfkino"],"u",4,["aquatisch"],"Limette, Kokos, Zuckerrohr, Meeresnoten"],
-["Sable Nu","Chabaud",["gourmand","moschus","amber"],["cremig","salzhaut"],3,4,2,["sommer","herbst"],["alltag","abend"],["sinnlich","minimal"],["waerme","verfuehrung"],"u",2,["suess","vanille"],"Kokosmilch, Vanille, Sandelholz, Moschus, Salz"],
-["Salted Caramel Musk","Zoologist",["gourmand","moschus"],["cremig","honig"],3,4,3,["herbst","winter"],["alltag","abend"],["sinnlich","kreativ"],["waerme"],"u",2,["suess"],"Karamell, Meersalz, Moschus, Mandel, Sandelholz"],
 ["Musc Nomade","Annick Goutal",["moschus","amber","holzig"],["waesche","cremig"],2,2,3,["ganzjahr"],["alltag","signature"],["minimal","sinnlich"],["gepflegt","verfuehrung"],"u",2,[],"Ambrette, weißer Moschus, Papyrus, Amber"],
-["Musc Maori","Parfum d'Empire",["moschus","gourmand","holzig"],["cremig","waesche"],2,3,3,["ganzjahr","herbst"],["alltag","abend","signature"],["minimal","sinnlich"],["verfuehrung","gepflegt"],"u",2,["vanille"],"Kakao, Vanille, Moschus, Sandelholz, Patschuli"],
 ["Musc Tonkin","Parfum d'Empire",["moschus","amber","leder"],["cremig","honig"],3,2,5,["herbst","winter"],["abend"],["rebellisch","sinnlich"],["verfuehrung","statement"],"u",3,["animalisch"],"Moschus, Zibet-Akkord, Honig, Leder, Amber"],
 ["Cashmere Mist","Donna Karan",["moschus","floral","gourmand"],["waesche","cremig"],2,3,1,["ganzjahr"],["alltag","signature"],["minimal","sinnlich"],["gepflegt","waerme"],"f",1,["pudrig","vanille"],"Moschus, Jasmin, Sandelholz, Vanille, Bergamotte"],
-["Skin Musk","Bonne Bell",["moschus"],["waesche","cremig"],2,2,2,["ganzjahr"],["alltag","signature"],["minimal"],["gepflegt"],"u",1,[],"Weißer Moschus, Puder, Vanille"],
 ["Glossier You","Glossier",["moschus","amber","floral"],["waesche","cremig"],2,3,2,["ganzjahr"],["alltag","signature"],["minimal","sinnlich"],["gepflegt","waerme"],"u",1,[],"Ambrette, Iris, rosa Pfeffer, Moschus"],
-["Baie 19 Eau de Parfum","Le Labo",["gruen","moschus","zitrus"],["asphalt","waesche"],2,1,3,["fruehling","sommer"],["alltag","freizeit"],["minimal","kreativ"],["kopfkino"],"u",3,[],"Wacholderbeere, Petrichor, Angelika, Moschus"],
-["Ambrette 9","Le Labo",["moschus","floral"],["waesche","cremig"],2,2,2,["ganzjahr","fruehling"],["alltag","signature"],["minimal"],["gepflegt"],"u",3,["pudrig"],"Ambrette, Moschus, Bergamotte, Iris"],
 ["Musc 25","Le Labo",["moschus","floral","amber"],["waesche","iris"],3,2,4,["ganzjahr"],["abend","alltag"],["kreativ","intellektuell"],["kopfkino","gepflegt"],"u",3,["animalisch"],"Weißer Moschus, Aldehyde, Zibet-Akkord, Amber"],
-["Vetiver 46","Le Labo",["gruen","weihrauch","holzig"],["waldboden","weihrauch"],3,1,4,["herbst","winter"],["alltag","abend"],["intellektuell","minimal"],["gepflegt","kopfkino"],"u",3,["rauchig"],"Vetiver, Weihrauch, Pfeffer, Zeder, Gewürznelke"],
-["Patchouli 24","Le Labo",["leder","weihrauch","holzig"],["kamin","bibliothek"],4,2,5,["winter","herbst"],["abend"],["rebellisch","intellektuell"],["statement","kopfkino"],"u",3,["rauchig","patchouli"],"Birkenteer, Styrax, Vanille, Patschuli, Leder"],
-["Silver Iris","Nishane",["floral","moschus","holzig"],["iris","waesche"],3,2,3,["ganzjahr","fruehling"],["alltag","event"],["minimal","intellektuell"],["gepflegt"],"u",2,["pudrig"],"Iris, Ambrette, Sandelholz, Moschus"],
-["Kashnoir","Nishane",["gourmand","amber","holzig"],["cremig","honig"],3,4,3,["herbst","winter"],["abend","alltag"],["sinnlich","kreativ"],["waerme","verfuehrung"],"u",2,["suess","vanille"],"Kaschmirholz, Vanille, Tonka, Kakao, Moschus"],
 ["Blackpepper","Comme des Garçons",["holzig","aromatisch"],["asphalt","kraeuter"],3,1,4,["ganzjahr","herbst"],["alltag","abend"],["minimal","rebellisch"],["kopfkino","gepflegt"],"u",2,[],"Schwarzer Pfeffer, Nelke, Zeder, Vetiver"],
-["Musc Invisible Extrait","Juliette Has a Gun",["moschus","gourmand","floral"],["waesche","cremig"],2,3,1,["ganzjahr"],["alltag","signature"],["minimal","sinnlich"],["gepflegt","waerme"],"u",2,[],"Birne, Orangenblüte, Moschus, Zeder, Vanille"],
-["Another 13 Extrait","Le Labo",["moschus","amber"],["waesche","cremig"],3,2,3,["ganzjahr"],["alltag","abend","signature"],["minimal","sinnlich"],["gepflegt","verfuehrung"],"u",4,[],"Ambroxan, Moschus, Jasmin, Moos"],
 ["Cristalle Eau Verte","Chanel",["gruen","zitrus","floral"],["kraeuter","waesche"],2,1,2,["sommer","fruehling"],["alltag","freizeit"],["minimal","klassisch"],["gepflegt"],"f",2,[],"Zitrone, Jasmin, Basilikum, Vetiver"],
 ["Eau de Cartier","Cartier",["zitrus","gruen","moschus"],["waesche","kraeuter"],2,1,1,["sommer","fruehling"],["alltag","freizeit","signature"],["minimal","sportlich"],["gepflegt"],"u",1,[],"Lavendel, Veilchenblatt, Zeder, Patschuli, Moschus"],
 ["Cologne Indélébile","Frédéric Malle",["zitrus","floral","moschus"],["waesche"],3,1,2,["sommer","fruehling","ganzjahr"],["alltag","event","signature"],["minimal","klassisch"],["gepflegt"],"u",3,[],"Orangenblüte, Neroli, weißer Moschus, Bergamotte"],
-["Eau de Magnolia","Frédéric Malle",["floral","zitrus","chypre"],["bluete","kraeuter"],3,2,2,["fruehling","sommer"],["alltag","event"],["minimal","klassisch"],["gepflegt"],"u",3,[],"Magnolie, Grapefruit, Zeder, Eichenmoos"],
-["Angéliques Sous La Pluie","Frédéric Malle",["gruen","aromatisch","moschus"],["asphalt","kraeuter"],2,1,3,["fruehling","sommer"],["alltag","signature"],["minimal","intellektuell"],["gepflegt","kopfkino"],"u",3,[],"Angelika, Wacholder, Koriander, Zeder, Moschus"],
-["Vetyverio","Diptyque",["gruen","holzig","floral"],["waldboden","kraeuter"],3,1,2,["fruehling","ganzjahr"],["alltag","signature"],["minimal","klassisch"],["gepflegt"],"u",2,[],"Vetiver, Geranie, Muskatnuss, Zeder"],
-["Fleur de Peau","Diptyque",["moschus","floral","leder"],["waesche","iris"],3,2,3,["ganzjahr"],["abend","alltag"],["sinnlich","minimal"],["verfuehrung","gepflegt"],"u",2,["pudrig"],"Iris, Ambrette, Moschus, Wildleder, rosa Pfeffer"],
-["Eau Duelle","Diptyque",["gourmand","weihrauch","moschus"],["cremig","weihrauch"],3,3,2,["ganzjahr","herbst"],["alltag","abend","signature"],["minimal","kreativ"],["waerme","gepflegt"],"u",2,["vanille"],"Vanille, Weihrauch, Bergamotte, schwarzer Tee"],
-["Sunny Escape","Byredo",["gourmand","floral","moschus"],["cremig","salzhaut"],3,4,2,["sommer"],["freizeit","alltag"],["sinnlich","kreativ"],["waerme","kopfkino"],"u",2,["suess"],"Kokos, Ylang-Ylang, Sonnencreme-Akkord, Moschus"],
-["Blanche Extrait","Byredo",["moschus","floral"],["waesche"],2,1,2,["ganzjahr","fruehling"],["alltag","signature"],["minimal"],["gepflegt"],"f",3,["aldehyde","pudrig"],"Aldehyde, Pfingstrose, Moschus, Sandelholz"],
-["Silver Mountain Water Cologne","Creed",["zitrus","aquatisch","moschus"],["ozean","waesche"],2,1,1,["sommer"],["alltag","freizeit"],["minimal","sportlich"],["gepflegt"],"u",4,["aquatisch"],"Bergamotte, grüner Tee, Meeresnoten, Moschus"]
+["Eau de Magnolia","Frédéric Malle",["floral","zitrus","chypre"],["bluete","kraeuter"],3,2,2,["fruehling","sommer"],["alltag","event"],["minimal","klassisch"],["gepflegt"],"u",3,[],"Magnolie, Grapefruit, Zeder, Eichenmoos"]
 );
 
-const F = D.map(a=>({n:a[0],h:a[1],fam:a[2],mood:a[3].slice(),sil:a[4],sweet:a[5],bold:a[6],seas:a[7],occ:a[8],vibe:a[9],eff:a[10],g:a[11],p:a[12],tags:a[13],notes:a[14]}));
+/* ── Nachtrag 7: Klassiker als Ersatz fuer die entfernten Eintraege ── */
+D.push(
+["Azzaro pour Homme","Azzaro",["aromatisch","holzig","chypre"],["kraeuter","bibliothek"],4,2,3,["herbst","ganzjahr"],["alltag","abend","event"],["klassisch","intellektuell"],["autoritaet","gepflegt"],"m",1,[],"Anis, Lavendel, Eichenmoos, Vetiver, Leder"],
+["Pour un Homme","Caron",["aromatisch","gourmand"],["kraeuter","cremig"],3,3,2,["ganzjahr","fruehling"],["alltag","signature"],["klassisch","minimal"],["gepflegt","waerme"],"m",1,["vanille"],"Lavendel, Vanille, Tonka, Zeder, Moschus"],
+["Eau d'Orange Verte","Hermès",["zitrus","gruen","aromatisch"],["kraeuter","waesche"],2,1,1,["sommer","fruehling"],["alltag","freizeit","signature"],["klassisch","minimal"],["gepflegt"],"u",1,[],"Orange, Minze, Blackcurrant, Eichenmoos, Patschuli"],
+["L'Air du Temps","Nina Ricci",["floral","aromatisch"],["bluete","iris"],4,2,3,["fruehling"],["alltag","event"],["klassisch"],["gepflegt"],"f",1,["pudrig","aldehyde"],"Nelke, Gardenie, Rose, Iris, Sandelholz"],
+["Habanita","Molinard",["amber","leder","floral"],["iris","honig"],4,3,4,["herbst","winter"],["abend","event"],["klassisch","rebellisch"],["statement","verfuehrung"],"f",2,["pudrig","vanille"],"Vetiver, Tabak, Vanille, Iris, Leder"],
+["Eau d'Hadrien","Annick Goutal",["zitrus","gruen"],["kraeuter"],3,1,2,["sommer","fruehling"],["alltag","freizeit","signature"],["klassisch","minimal"],["gepflegt"],"u",2,[],"Sizilianische Zitrone, Grapefruit, Zypresse, Aloe"],
+["Messe de Minuit","Etro",["weihrauch","holzig","amber"],["weihrauch","bibliothek"],3,2,5,["winter","herbst"],["abend","alltag"],["intellektuell","rebellisch"],["kopfkino","statement"],"u",2,["rauchig"],"Weihrauch, Myrrhe, Honig, Patschuli, Moos"],
+["Eau des Baux","L'Occitane",["amber","holzig","aromatisch"],["kamin","basar"],3,3,2,["herbst","winter"],["alltag","abend"],["klassisch","minimal"],["waerme","gepflegt"],"m",1,[],"Zypresse, Pfeffer, Weihrauch, Tonka, Kakao"]
+);
+
+/* ── Nachtrag 8: belegbare Ersatzduefte fuer die entfernten Zweifelsfaelle ── */
+D.push(
+["Erolfa","Creed",["aquatisch","zitrus","holzig"],["ozean","salzhaut"],4,1,2,["sommer","fruehling"],["freizeit","alltag","signature"],["sportlich","klassisch"],["gepflegt"],"m",4,["aquatisch"],"Bergamotte, Melone, Meeresnoten, Zeder, Ambergris"],
+["Un Jardin sur le Nil","Hermès",["gruen","zitrus","holzig"],["feige","kraeuter"],3,2,2,["sommer","fruehling"],["alltag","freizeit"],["minimal","kreativ"],["gepflegt","kopfkino"],"u",2,[],"Grüne Mango, Lotus, Tomatengrün, Weihrauch, Zimt"],
+["Eau Parfumée au Thé Vert","Bvlgari",["gruen","zitrus","moschus"],["kraeuter","waesche"],2,1,2,["sommer","fruehling","ganzjahr"],["alltag","freizeit","signature"],["minimal","klassisch"],["gepflegt"],"u",1,[],"Grüner Tee, Bergamotte, Koriander, Pfeffer, Moschus"],
+["Infusion d'Iris","Prada",["floral","moschus","holzig"],["iris","waesche"],3,1,2,["ganzjahr","fruehling"],["alltag","event","signature"],["minimal","klassisch"],["gepflegt"],"u",2,["pudrig"],"Iris, Neroli, Weihrauch, Zeder, Vetiver"],
+["Clair de Musc","Serge Lutens",["moschus","floral"],["waesche","cremig"],2,2,2,["ganzjahr"],["alltag","signature"],["minimal","sinnlich"],["gepflegt"],"u",2,[],"Weißer Moschus, Orangenblüte, Iris, Bergamotte"],
+["Dans tes Bras","Frédéric Malle",["moschus","floral","holzig"],["iris","waesche"],3,2,4,["ganzjahr","herbst"],["abend","alltag"],["intellektuell","sinnlich"],["kopfkino","verfuehrung"],"u",3,["pudrig"],"Veilchen, Salicylate, Kaschmirholz, Patschuli, Moschus"],
+["For Him","Narciso Rodriguez",["moschus","holzig","amber"],["waesche","bibliothek"],3,2,2,["ganzjahr","herbst"],["alltag","abend","signature"],["minimal","sinnlich"],["gepflegt","verfuehrung"],"m",1,[],"Moschus, Amber, Patschuli, Veilchenblatt, Vetiver"],
+["Beige","Chanel Les Exclusifs",["floral","gourmand"],["bluete","honig"],3,3,2,["fruehling","sommer"],["alltag","event"],["klassisch","minimal"],["gepflegt"],"f",3,[],"Weißdorn, Freesie, Frangipani, Honig, Moschus"],
+["Aqua Allegoria Pera Granita","Guerlain",["zitrus","gourmand","floral"],["obstgarten"],2,3,1,["sommer","fruehling"],["alltag","freizeit"],["sportlich","kreativ"],["gepflegt"],"u",1,[],"Birne, Zitrone, Granatapfel, Moschus, Zeder"],
+["Eau Capitale","Diptyque",["chypre","floral","zitrus"],["iris","kraeuter"],3,2,3,["ganzjahr","herbst"],["alltag","abend","event"],["klassisch","kreativ"],["gepflegt","verfuehrung"],"f",2,["rose","patchouli"],"Bergamotte, Rose, Patschuli, Pfeffer, Moschus"],
+["Amyris Femme","Maison Francis Kurkdjian",["floral","holzig","gourmand"],["iris","cremig"],3,3,2,["ganzjahr","fruehling"],["alltag","abend"],["klassisch","sinnlich"],["gepflegt","waerme"],"f",3,[],"Amyris-Holz, Iris, Jasmin, Vanille, Moschus"],
+["Nubian Musk","Sana Jardin",["moschus","amber","holzig"],["waesche","cremig"],3,3,3,["ganzjahr","herbst"],["alltag","abend"],["sinnlich","minimal"],["verfuehrung","waerme"],"u",2,[],"Moschus, Amber, Sandelholz, Rose, Patschuli"],
+["Hundred Silent Ways","Nishane",["floral","gourmand","amber"],["cremig","bluete"],4,4,3,["herbst","winter"],["abend","event"],["sinnlich","klassisch"],["waerme","verfuehrung"],"u",2,["vanille"],"Orangenblüte, Mandel, Vanille, Sandelholz, Moschus"]
+);
+
+/* ── Nachtrag 9: Wunschliste und fehlende Nischenhaeuser ── */
+D.push(
+["Light Blue pour Homme","Dolce & Gabbana",["zitrus","holzig","aromatisch"],["kraeuter","salzhaut"],3,2,1,["sommer"],["freizeit","alltag"],["sportlich"],["gepflegt"],"m",1,[],"Grapefruit, Bergamotte, Rosenholz, Pfeffer, Weihrauch"],
+["The One for Men","Dolce & Gabbana",["amber","gourmand","aromatisch"],["basar","honig"],4,3,2,["herbst","winter"],["abend","alltag"],["klassisch","sinnlich"],["waerme","verfuehrung"],"m",1,[],"Tabak, Kardamom, Ingwer, Zeder, Amber"],
+["The Muse","Zarkoperfume",["floral","moschus","holzig"],["bluete","waesche"],4,3,3,["fruehling","ganzjahr"],["alltag","abend","event"],["kreativ","sinnlich"],["gepflegt","verfuehrung"],"f",3,[],"Birne, Jasmin, Moschus, Zeder, Ambroxan"],
+["Pink Molecule 090.09","Zarkoperfume",["holzig","gourmand","floral"],["cremig","bibliothek"],4,3,3,["ganzjahr","herbst"],["alltag","abend","signature"],["kreativ","minimal"],["gepflegt","verfuehrung"],"u",3,["patchouli"],"Zeder, Patschuli, Kakao, Jasmin, Moschus"],
+["Uden","Xerjoff",["leder","amber","holzig"],["bibliothek","basar"],4,3,4,["herbst","winter"],["abend","event"],["klassisch","extrovertiert"],["autoritaet","statement"],"m",4,[],"Bergamotte, Gewürze, Leder, Patschuli, Amber"],
+["Uden Overdose","Xerjoff",["leder","amber","holzig"],["bibliothek","basar"],5,3,4,["winter"],["abend","event"],["extrovertiert","rebellisch"],["statement","autoritaet"],"m",4,[],"Gewürze, Leder, Oud, Patschuli, Amber"],
+["Torino21","Xerjoff",["gourmand","zitrus","amber"],["honig","cremig"],4,4,2,["herbst","ganzjahr"],["abend","alltag"],["extrovertiert","sinnlich"],["waerme"],"u",4,["suess","vanille"],"Bergamotte, Mandel, Vanille, Tonka, Moschus"],
+["Sunshine Man","Amouage",["aromatisch","gourmand","leder"],["honig","kraeuter"],4,4,3,["herbst","winter"],["abend","alltag"],["extrovertiert","sinnlich"],["waerme","verfuehrung"],"m",3,["suess"],"Lavendel, Kardamom, Tonka, Leder, Amber"],
+["Noir","Tom Ford",["floral","amber","gourmand"],["iris","basar"],4,3,3,["herbst","winter"],["abend","event"],["klassisch","sinnlich"],["verfuehrung","autoritaet"],"m",2,["pudrig"],"Bergamotte, Veilchen, Iris, Muskatnuss, Amber, Vanille"],
+["A'mmare","Carthusia",["aquatisch","zitrus","holzig"],["ozean","salzhaut"],3,1,2,["sommer"],["freizeit","alltag"],["sportlich","minimal"],["gepflegt","kopfkino"],"u",2,["aquatisch"],"Bergamotte, Meeresnoten, Zeder, Moschus"],
+["Villa Neroli","BDK Parfums",["floral","zitrus","gruen"],["bluete","kraeuter"],3,2,2,["fruehling","sommer"],["alltag","event","signature"],["klassisch","minimal"],["gepflegt"],"u",2,[],"Neroli, Orangenblüte, Petitgrain, Basilikum, Moschus"],
+["Eau de Memo","Memo Paris",["floral","leder","gruen"],["bluete","bibliothek"],4,3,3,["fruehling","herbst"],["abend","alltag"],["klassisch","kreativ"],["gepflegt","verfuehrung"],"u",3,["rose"],"Apfel, Rose, Weihrauch, Leder, Patschuli"],
+["Mandorlo di Sicilia","Acqua di Parma",["gourmand","zitrus","floral"],["cremig","bluete"],3,3,1,["sommer","fruehling"],["alltag","freizeit"],["minimal","sinnlich"],["waerme","gepflegt"],"u",2,[],"Mandel, Zitrone, Orangenblüte, Moschus, Zeder"],
+["Bleu Turquoise","Armani Privé",["zitrus","aquatisch","aromatisch"],["ozean","salzhaut"],3,2,2,["sommer"],["freizeit","alltag","event"],["klassisch","sportlich"],["gepflegt"],"u",3,["aquatisch"],"Zitrone, Meeresnoten, Ingwer, Zeder, Moschus"],
+["Passage d'Enfer","L'Artisan Parfumeur",["weihrauch","floral","moschus"],["weihrauch","waesche"],2,1,3,["ganzjahr","herbst"],["alltag","signature"],["minimal","intellektuell"],["gepflegt","kopfkino"],"u",2,[],"Weihrauch, Lilie, weißer Moschus, Aloe, Sandelholz"],
+["Timbuktu","L'Artisan Parfumeur",["weihrauch","holzig","gruen"],["weihrauch","basar"],3,2,4,["herbst","ganzjahr"],["alltag","abend"],["intellektuell","kreativ"],["kopfkino","gepflegt"],"u",2,["patchouli"],"Weihrauch, Mango, Myrrhe, Patschuli, Vetiver"],
+["Premier Figuier","L'Artisan Parfumeur",["gruen","gourmand","holzig"],["feige","cremig"],2,3,2,["sommer","fruehling"],["alltag","freizeit"],["minimal","kreativ"],["kopfkino","gepflegt"],"u",2,[],"Feigenblatt, Feigenmilch, Kokos, Sandelholz, Mandel"],
+["Mûre et Musc","L'Artisan Parfumeur",["gourmand","moschus","zitrus"],["obstgarten","waesche"],3,3,2,["fruehling","sommer"],["alltag","freizeit","signature"],["minimal","sinnlich"],["gepflegt","waerme"],"u",2,[],"Brombeere, Moschus, Zitrone, Efeu, Sandelholz"],
+["B683","Marc-Antoine Barrois",["leder","amber","holzig"],["bibliothek","basar"],4,2,3,["herbst","winter","ganzjahr"],["abend","event","alltag"],["klassisch","intellektuell"],["autoritaet","gepflegt"],"m",3,[],"Leder, Gewürze, Ambroxan, Patschuli, Zeder"],
+["Ganymede","Marc-Antoine Barrois",["leder","zitrus","moschus"],["asphalt","iris"],4,2,4,["ganzjahr","fruehling"],["alltag","abend","event"],["kreativ","minimal"],["statement","gepflegt"],"u",3,[],"Mandarine, Safran, Wildleder, Immortelle, Mineralmoschus"],
+["Tilia","Marc-Antoine Barrois",["floral","gruen","moschus"],["bluete","kraeuter"],3,2,3,["fruehling","sommer"],["alltag","event"],["minimal","kreativ"],["gepflegt","kopfkino"],"u",3,[],"Lindenblüte, Birne, Tee, Moschus, Zeder"],
+["Crystal Saffron","Matière Première",["leder","holzig","moschus"],["iris","bibliothek"],4,2,3,["ganzjahr","herbst"],["alltag","abend","signature"],["minimal","sinnlich"],["gepflegt","verfuehrung"],"u",3,[],"Safran, Wildleder, Sandelholz, Moschus, Zeder"],
+["Radical Rose","Matière Première",["floral","holzig","amber"],["iris","basar"],4,3,3,["herbst","winter"],["abend","event"],["kreativ","sinnlich"],["statement","verfuehrung"],"u",3,["rose","oud","patchouli"],"Rose, Oud, Safran, Patschuli, Amber"],
+["Neroli Oranger","Matière Première",["floral","zitrus","gruen"],["bluete","kraeuter"],3,2,2,["fruehling","sommer"],["alltag","event","signature"],["klassisch","minimal"],["gepflegt"],"u",3,[],"Neroli, Orangenblüte, Petitgrain, Bergamotte, Moschus"],
+["Megamare","Orto Parisi",["aquatisch","holzig","amber"],["ozean","asphalt"],5,1,4,["sommer","ganzjahr"],["freizeit","alltag","abend"],["kreativ","rebellisch"],["statement","kopfkino"],"u",3,["aquatisch"],"Meeresnoten, Algen, Ambergris, Mineralnoten, Treibholz"],
+["Terroni","Orto Parisi",["gruen","holzig","chypre"],["waldboden","kraeuter"],5,2,5,["herbst","winter"],["abend","alltag"],["rebellisch","intellektuell"],["statement","kopfkino"],"u",3,["patchouli"],"Erde, Tomatenblatt, Patschuli, Tabak, Moos"],
+["Boccanera","Orto Parisi",["leder","weihrauch","amber"],["kamin","bibliothek"],5,2,5,["winter"],["abend"],["rebellisch","sinnlich"],["statement","verfuehrung"],"u",3,["animalisch","rauchig"],"Leder, Rauch, Kastoreum, Amber, Harz"],
+["New York","Parfums de Nicolaï",["aromatisch","amber","zitrus"],["basar","bibliothek"],4,2,3,["herbst","ganzjahr"],["alltag","abend","event"],["klassisch","intellektuell"],["autoritaet","gepflegt"],"m",2,[],"Bergamotte, Lavendel, Zimt, Vetiver, Amber"],
+["Sacrebleu Intense","Parfums de Nicolaï",["gourmand","floral","amber"],["honig","obstgarten"],4,4,3,["herbst","winter"],["abend","event"],["sinnlich","klassisch"],["waerme","verfuehrung"],"f",2,["suess","vanille"],"Pflaume, Tonka, Vanille, Nelke, Sandelholz"],
+["Musc Intense","Parfums de Nicolaï",["moschus","gourmand","holzig"],["waesche","cremig"],3,3,2,["ganzjahr"],["alltag","signature"],["minimal","sinnlich"],["gepflegt","waerme"],"u",2,["vanille","patchouli"],"Moschus, Vanille, Patschuli, Tonka, Sandelholz"],
+["1740 Marquis de Sade","Histoires de Parfums",["leder","gourmand","amber"],["honig","bibliothek"],4,3,4,["herbst","winter"],["abend"],["rebellisch","sinnlich"],["verfuehrung","statement"],"m",2,["animalisch"],"Immortelle, Leder, Patschuli, Davana, Zibet-Akkord"],
+["1899 Hemingway","Histoires de Parfums",["amber","aromatisch","gourmand"],["basar","bibliothek"],4,3,3,["herbst","winter"],["abend","alltag"],["klassisch","intellektuell"],["waerme","autoritaet"],"u",2,[],"Bergamotte, Zimt, Nelke, Tonka, Sandelholz"],
+["Ambre 114","Histoires de Parfums",["amber","weihrauch","gourmand"],["basar","honig"],4,4,3,["winter","herbst"],["abend","event"],["sinnlich","klassisch"],["waerme","verfuehrung"],"u",2,["suess","vanille"],"Amber, Weihrauch, Vanille, Patschuli, Zimt"],
+["Bois d'Iris","Van Cleef & Arpels",["floral","holzig","weihrauch"],["iris","bibliothek"],3,1,3,["ganzjahr","herbst"],["alltag","event","abend"],["klassisch","intellektuell"],["gepflegt","autoritaet"],"u",3,["pudrig"],"Iris, Zeder, Vetiver, Weihrauch, Moschus"],
+["Santal Blanc","Van Cleef & Arpels",["holzig","gourmand","amber"],["cremig","bibliothek"],3,3,2,["ganzjahr","herbst"],["alltag","abend"],["klassisch","minimal"],["waerme","gepflegt"],"u",3,[],"Sandelholz, Tonka, Iris, Kardamom, Moschus"],
+["Black Gemstone","Stéphane Humbert Lucas 777",["weihrauch","holzig","leder"],["weihrauch","kamin"],5,1,5,["winter","herbst"],["abend"],["rebellisch","intellektuell"],["statement","kopfkino"],"u",4,["rauchig","oud"],"Weihrauch, schwarzer Pfeffer, Oud, Rauch, Harz"],
+["Soleil de Jeddah","Stéphane Humbert Lucas 777",["gourmand","holzig","amber"],["honig","basar"],5,4,4,["herbst","winter"],["abend","event"],["extrovertiert","sinnlich"],["statement","verfuehrung"],"u",4,["suess","oud"],"Mango, Oud, Safran, Sandelholz, Amber"],
+["Marrakech Intense","Aesop",["basar","holzig","floral"],["basar","cremig"],2,2,3,["ganzjahr","herbst"],["alltag","signature"],["minimal","intellektuell"],["gepflegt","kopfkino"],"u",2,[],"Nelke, Kardamom, Sandelholz, Neroli, Zeder"],
+["Hwyl","Aesop",["gruen","weihrauch","holzig"],["waldboden","weihrauch"],3,1,4,["herbst","winter"],["alltag","abend"],["intellektuell","minimal"],["kopfkino","gepflegt"],"u",2,[],"Zypresse, Vetiver, Weihrauch, Wacholder, Moos"],
+["Fougère Royale","Houbigant",["aromatisch","chypre","gruen"],["kraeuter","waldboden"],4,2,3,["ganzjahr","herbst"],["alltag","abend","event"],["klassisch","intellektuell"],["autoritaet","gepflegt"],"m",3,[],"Lavendel, Kamille, Eichenmoos, Kumarin, Zimt"],
+["Aqva pour Homme","Bvlgari",["aquatisch","holzig","amber"],["ozean","salzhaut"],3,1,2,["sommer","ganzjahr"],["alltag","freizeit","signature"],["sportlich","minimal"],["gepflegt"],"m",1,["aquatisch"],"Meeresalgen, Mandarine, Petitgrain, Mineralamber"],
+["Acqua di Giò","Giorgio Armani",["aquatisch","zitrus","floral"],["ozean","salzhaut"],3,1,1,["sommer"],["freizeit","alltag","signature"],["sportlich"],["gepflegt"],"m",1,["aquatisch"],"Bergamotte, Meeresnoten, Jasmin, Rosmarin, Patschuli"]
+);
+
+/* Sperre gegen Dubletten: Zwei identische Eintraege koennten sonst zwei der
+   zehn Plaetze belegen, weil die Haus-Begrenzung beide durchlaesst. */
+const _gesehen = {};
+const F = D.filter(function(a){
+  const k = a[0] + '|' + a[1];
+  if(_gesehen[k]) return false;
+  _gesehen[k] = 1; return true;
+}).map(a=>({n:a[0],h:a[1],fam:a[2],mood:a[3].slice(),sil:a[4],sweet:a[5],bold:a[6],seas:a[7],occ:a[8],vibe:a[9],eff:a[10],g:a[11],p:a[12],tags:a[13],notes:a[14]}));
 
 /* Vier Szenen werden aus Familien und Noten abgeleitet, damit sie nicht
    in 234 Zeilen von Hand gepflegt werden müssen. */
@@ -1558,6 +1659,8 @@ function AQ(){
   const exp = state.a.exp || 'fortgeschritten';
   return Q.filter(function(q){ return !q.pfad || q.pfad.indexOf(exp) >= 0; });
 }
+/* Der Zwischenschritt ist ein Schritt, aber keine Frage. */
+function frageZahl(){ return AQ().filter(function(q){ return q.kind !== 'info' }).length; }
 function kapitelInfo(){
   const A = AQ(), akt = A[state.step];
   if(!akt) return null;
@@ -1608,7 +1711,7 @@ function score(f,a,anc,ctx){
   p.occ   = W.occ * (12 * f1(occHit.length, a.occ.length, Math.min(f.occ.length,3)) + (seasOk ? 8 : 0));
   p.sil   = W.sil * Math.max(0, 10 - Math.abs(f.sil - sT)*4);
   /* Milder Abzug: schlichte Bauart ist kein Makel, nur eine Abweichung. */
-  p.bold  = Math.max(0, 10 - Math.abs(f.bold - bT)*2.7);
+  p.bold  = Math.max(0, 10 - Math.abs(f.bold - bT)*4.2);
   p.sweet = W.sweet * Math.max(0, 9 - Math.abs(f.sweet - wT)*3);
   /* Notenebene: die konkreteste Angabe, die jemand machen kann. */
   p.notes = 0;
@@ -1632,7 +1735,14 @@ function score(f,a,anc,ctx){
   let other = 0;
   other += 8 * f1(vibeHit.length, a.vibe.length, Math.min(f.vibe.length,3));
   other += 8 * f1(effHit.length, a.eff.length, Math.min(f.eff.length,2));
-  other += a.gender==='egal' ? 4 : (f.g===a.gender ? 6 : (f.g==='u' ? 5 : -9));
+  other += (function(){
+    /* a.gender ist seit der Mehrfachauswahl ein Array. Wurde das hier nicht
+       mitgezogen, bekam jeder nicht-unisex Duft minus neun Punkte, obwohl der
+       Nutzer seinen Code ausdruecklich angekreuzt hatte. */
+    const G = Array.isArray(a.gender) ? a.gender : (a.gender ? [a.gender] : []);
+    if(G.length === 0 || G.length >= 3) return 4;
+    return G.indexOf(f.g) >= 0 ? 6 : -9;
+  })();
   const bud = +a.budget;
   other += f.p<=bud ? 6 : -3;          /* Ausschluss passiert in rank(), nicht hier */
   if(a.exp==='einsteiger'){ other += f.bold>=4.5 ? -7 : (f.bold<=3 ? 3 : 0); }
@@ -1675,10 +1785,25 @@ function rank(a){
      um ein Preisband gelockert. */
   const bud = +a.budget;
   const ueberBudget = f => bud < 4 && f.p > bud;
+  /* "Nur maskulin" und "Nur feminin" sind ausdrueckliche Ausschluesse.
+     Wer Unisex mitnehmen will, waehlt die kombinierten Optionen. */
+  const GA = Array.isArray(a.gender) ? a.gender : (a.gender ? [a.gender] : []);
+  const codeRaus = f => GA.length > 0 && GA.length < 3 && GA.indexOf(f.g) < 0;
+  /* Wagemut wirkte gemessen zu null: der abgestufte Abzug ist zu mild, um in
+     einer Zehnerliste etwas zu bewegen. An den beiden Extremen wird die Angabe
+     deshalb zur Bedingung - wer "polarisierend" waehlt, will keine braven
+     Duefte, und wer "Crowd-Pleaser" waehlt, keine schwierigen. Die zwei
+     mittleren Stufen bleiben rein abgestuft. */
+  const mutRaus = f => (a.bold === 'polarisierend' && f.bold < 3)
+                    || (a.bold === 'crowdpleaser'  && f.bold > 4);
   const grund = f => inter(a.nogo,f.tags).length>0 || skip.has(f.n);
-  const blocked = f => grund(f) || ueberBudget(f);
+  const blocked = f => grund(f) || ueberBudget(f) || codeRaus(f) || mutRaus(f);
   let pool = F.filter(f=>!blocked(f));
-  if(pool.length < 25) pool = F.filter(f=>!grund(f) && (bud>=4 || f.p <= bud+1));
+  /* Notfall-Lockerung in dieser Reihenfolge: zuerst faellt die Wagemut-Bedingung,
+     erst danach wird das Budget angetastet. Das Budget ist das Versprechen,
+     das am wenigsten gebrochen werden darf. */
+  if(pool.length < 25) pool = F.filter(f=>!grund(f) && !ueberBudget(f) && !codeRaus(f));
+  if(pool.length < 25) pool = F.filter(f=>!grund(f) && !codeRaus(f) && (bud>=4 || f.p <= bud+1));
   if(pool.length < 15) pool = F.filter(f=>!skip.has(f.n));
   const MAX = maxScore(a,anc);
   return {list: pool.map(f=>score(f,a,anc,ctx)).sort((x,y)=>y.s-x.s), MAX, anc};
@@ -1774,7 +1899,7 @@ function radarFromFragrance(f){
   ];
 }
 function radarSVG(you, them){
-  const cx=100, cy=96, R=64, N=6;
+  const cx=124, cy=96, R=64, N=6;   /* breiterer Rahmen: die linken Achsentitel liefen sonst aus dem Bild */
   const pt = (i,r)=>{ const ang = -Math.PI/2 + i*2*Math.PI/N; return [cx+Math.cos(ang)*R*r, cy+Math.sin(ang)*R*r]; };
   const poly = v => v.map((x,i)=>pt(i,Math.max(.06,x)).map(n=>n.toFixed(1)).join(',')).join(' ');
   const rings = [.33,.66,1].map(r=>`<polygon class="grid" points="${poly([r,r,r,r,r,r])}"></polygon>`).join('');
@@ -1784,7 +1909,7 @@ function radarSVG(you, them){
     const anchor = x>cx+3?'start':(x<cx-3?'end':'middle');
     return `<text x="${x.toFixed(1)}" y="${(y+3).toFixed(1)}" text-anchor="${anchor}">${t}</text>`;
   }).join('');
-  return `<svg class="radar" viewBox="0 0 200 192" role="img" aria-label="Duftprofil-Radar">
+  return `<svg class="radar" viewBox="0 0 248 196" role="img" aria-label="Duftprofil-Radar">
     ${rings}${spokes}
     <polygon class="them" points="${poly(them)}"></polygon>
     <polygon class="you" points="${poly(you)}"></polygon>
@@ -1798,7 +1923,6 @@ const rail = document.getElementById('rail');
 const fluid = document.getElementById('fluid');
 const stepno = document.getElementById('stepno');
 const mastnote = document.getElementById('mastnote');
-
 
 function hexA(hex,alpha){
   const n = parseInt(hex.slice(1),16);
@@ -1861,6 +1985,10 @@ function renderIntro(){
 }
 
 function renderStep(){
+  /* Wird die Erfahrungsfrage nachtraeglich geaendert, wird die Fragenliste
+     kuerzer - dann darf der Schrittzeiger nicht ins Leere zeigen. */
+  if(state.step >= AQ().length) state.step = AQ().length - 1;
+  if(state.step < 0) state.step = 0;
   /* Familienfrage aus den zuvor gewählten Bildern vorbelegen */
   if(AQ()[state.step].id==='fam' && !state.a.fam){
     state.a.fam = suggestFam(state.a.mood||[]);
@@ -1872,11 +2000,23 @@ function renderStep(){
   if(q.kind==='group'){
     let off=0;
     body = q.groups.map(g=>{
-      const html = `<div class="group"><p class="grouplabel">${esc(g.label)}</p><div class="opts two">
-        ${g.o.map((o,i)=>optHTML(o,off+i,state.a[g.key]===o[0],g.key)).join('')}
+      const html = `<div class="group"><p class="grouplabel">${esc(g.label)}</p>${g.hinweis?`<p class="note">${g.hinweis}</p>`:''}<div class="opts two">
+        ${g.o.map((o,i)=>optHTML(o,off+i, g.multi ? (state.a[g.key]||[]).indexOf(o[0])>=0 : state.a[g.key]===o[0], g.key)).join('')}
       </div></div>`;
       off += g.o.length; return html;
     }).join('');
+  } else if(q.kind==='info'){
+    const beant = AQ().slice(0,state.step).filter(function(qq){
+      if(qq.kind==='info') return false;
+      const v = state.a[qq.id];
+      return Array.isArray(v) ? v.length>0 : (qq.kind==='group' ? true : !!v);
+    }).length;
+    body = '<div class="schnitt">'
+      + '<div class="fertig"><b>' + beant + ' Fragen beantwortet</b> · dein Profil ist bereits auswertbar</div>'
+      + '<h2>Ab hier ist alles freiwillig</h2>'
+      + '<p>Die naechsten Fragen — Lieblingsnoten, Ankerduefte, Abneigungen — sind die schaerfsten im ganzen Fragebogen. Ein bekannter Duft, den du magst, verraet mehr als drei Duftfamilien. Zwei Minuten mehr, ein spuerbar besseres Ergebnis.</p>'
+      + '<p>Wenn du keine Lust mehr hast: Das Ergebnis funktioniert auch ohne, du bekommst dann eine etwas breitere Auswahl.</p>'
+      + '</div>';
   } else {
     const sel = state.a[q.id]||[];
     body = `<div class="opts${q.cols?' two':''}">
@@ -1909,7 +2049,8 @@ function renderStep(){
     <div class="nav">
       <button class="ghost" id="back" ${state.step===0?'hidden':''}>← Zurück</button>
       <span id="hint"></span>
-      <button class="cta" id="next">${state.step===AQ().length-1?'Profil erstellen':'Weiter'}</button>
+      ${q.kind==='info' ? `<button class="ghost" id="direkt">Direkt zum Ergebnis</button>` : ''}
+      <button class="cta" id="next">${state.step===AQ().length-1?'Profil erstellen':(q.kind==='info'?'Weiter, ich habe Zeit':'Weiter')}</button>
     </div>
   </div>`;
   stage.querySelectorAll('.opt').forEach(btn=>{
@@ -1932,13 +2073,20 @@ function renderStep(){
       b.hidden = t.length>0 && b.textContent.toLowerCase().indexOf(t) === -1;
     });
   };
+  const dz = document.getElementById('direkt');
+  if(dz) dz.onclick = ()=>{
+    AQ().forEach(function(qq){ if(qq.optional && !state.a[qq.id]) state.a[qq.id] = []; });
+    const fr = AQ().filter(function(qq){ return qq.kind==='group'; })[0];
+    if(fr) fr.groups.forEach(function(g){ if(!state.a[g.key]) state.a[g.key] = g.multi ? [g.o[0][0]] : g.o[0][0]; });
+    renderZeremonie(renderResult);
+  };
   const st = document.getElementById('skiptop');
   if(st) st.onclick = ()=>{ state.a[q.id] = []; advance(); };
   const sa = document.getElementById('skipall');
   if(sa) sa.onclick = ()=>{
     AQ().forEach(function(qq){ if(qq.optional && !state.a[qq.id]) state.a[qq.id] = []; });
     const fr = AQ().filter(function(qq){ return qq.kind==='group'; })[0];
-    if(fr) fr.groups.forEach(function(g){ if(!state.a[g.key]) state.a[g.key] = g.o[0][0]; });
+    if(fr) fr.groups.forEach(function(g){ if(!state.a[g.key]) state.a[g.key] = g.multi ? [g.o[0][0]] : g.o[0][0]; });
     renderResult();
   };
   document.getElementById('next').onclick = advance;
@@ -1955,6 +2103,16 @@ function optHTML(o,i,on,key){
 
 function pick(btn){
   const q = AQ()[state.step], key = btn.dataset.key, v = btn.dataset.v;
+  if(q.kind==='group'){
+    const grp = q.groups.filter(function(g){ return g.key===key })[0];
+    if(grp && grp.multi){
+      const cur = state.a[key] = state.a[key]||[];
+      const at = cur.indexOf(v);
+      if(at>-1) cur.splice(at,1); else cur.push(v);
+      stage.querySelectorAll('.opt[data-key="'+key+'"]').forEach(function(b){ b.setAttribute('aria-pressed', cur.indexOf(b.dataset.v)>=0); });
+      syncNext(); return;
+    }
+  }
   if(q.kind==='single' || q.kind==='group'){
     state.a[key] = v;
     stage.querySelectorAll(`.opt[data-key="${key}"]`).forEach(b=>b.setAttribute('aria-pressed', b===btn));
@@ -1970,14 +2128,18 @@ function pick(btn){
 
 function ready(){
   const q = AQ()[state.step];
+  if(!q) return false;
+  if(q.kind==='info') return true;
   if(q.kind==='single') return !!state.a[q.id];
-  if(q.kind==='group') return q.groups.every(g=>!!state.a[g.key]);
+  if(q.kind==='group') return q.groups.every(function(g){ return g.multi ? (state.a[g.key]||[]).length>0 : !!state.a[g.key]; });
   return (state.a[q.id]||[]).length >= q.min;
 }
 
 function syncNext(){
   const q = AQ()[state.step], btn = document.getElementById('next'), hint = document.getElementById('hint');
+  if(!q || !btn) return;
   btn.disabled = !ready();
+  if(q.kind==='info'){ hint.innerHTML=''; return; }
   if(q.kind==='multi'){
     const n = (state.a[q.id]||[]).length;
     let pips = '';
@@ -1999,11 +2161,16 @@ function syncNext(){
 
 function advance(){
   if(!ready()) return;
-  if(state.step===AQ().length-1) renderResult();
+  if(state.step===AQ().length-1){ renderZeremonie(renderResult); }
   else { state.step++; renderStep(); }
 }
 
 document.addEventListener('keydown', e=>{
+  /* Tastenkuerzel gelten nicht, waehrend in ein Feld getippt wird. Sonst
+     sprang die Ruecktaste eine Frage zurueck, statt Zeichen zu loeschen,
+     und Ziffern kreuzten nebenbei Antworten an. */
+  const t = e.target;
+  if(t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
   if(state.step<0){ if(e.key==='Enter'){ var g = document.getElementById('go'); if(g) g.click(); } return; }
   if(state.step>=AQ().length) return;
   if(e.key==='Enter'){ e.preventDefault(); advance(); return; }
@@ -2229,233 +2396,180 @@ function notenKompass(a, top){
   return {treffer:treffer, meiden:meiden};
 }
 
+/* Duftpass als Klappkarte: zwei Seiten im Postkartenformat statt einer
+   endlosen Bahn. Beide Seiten bekommen dieselbe Hoehe, damit sie als Paar
+   wirken. Layouthoehen werden - wie immer - genau einmal berechnet. */
 function buildPass(name,blurb,a,anc,top,MAX){
-  const W = 1080, M = 80, CW = W - 2*M;
+  const W = 1080, M = 76, CW = W - 2*M;
   const PAPER='#FDF6F0', INK='#33262C', MID='#6E5C5C', DIM='#9A8781',
         CORAL='#F4643C', TEAL='#17A2A2', GRUEN='#3FA98C', LINE='#EBDCCF';
   const FS = w => `600 ${w}px "Fraunces",Georgia,serif`;
   const DS = (w,s) => `${w} ${s}px "DM Sans",system-ui,sans-serif`;
   const MO = s => `500 ${s}px "DM Mono",monospace`;
   const m = document.createElement('canvas').getContext('2d');
-  const fit = (txt,maxW,font)=>{
-    m.font = font; let t = String(txt);
-    if(m.measureText(t).width <= maxW) return t;
-    while(t.length > 4 && m.measureText(t+'…').width > maxW) t = t.slice(0,-1);
-    return t + '…';
-  };
-  const cap = s => String(s).charAt(0).toUpperCase() + String(s).slice(1);
+  const fit = (t,maxW,font)=>{ m.font=font; let s=String(t);
+    if(m.measureText(s).width<=maxW) return s;
+    while(s.length>4 && m.measureText(s+'…').width>maxW) s=s.slice(0,-1);
+    return s+'…'; };
+  const cap = s => String(s).charAt(0).toUpperCase()+String(s).slice(1);
   const noTags = s => String(s).replace(/<[^>]+>/g,'');
+  let stamp=''; try{ stamp = new Date().toLocaleDateString('de-DE',{day:'numeric',month:'long',year:'numeric'}); }catch(e){}
 
   /* ── Inhalte ── */
-  const nameL  = passLines(m, name, CW, FS(70));
-  const blurbL = passLines(m, blurb, CW, DS(400,26));
-  const beratL = beraterText(a,anc).map(t=>passLines(m, t, CW, DS(400,22)));
+  const nameL  = passLines(m, name, CW, FS(62));
+  const blurbL = passLines(m, blurb, CW, DS(400,23));
+  const beratL = beraterText(a,anc).map(t=>passLines(m, t, CW, DS(400,20)));
   const komp = notenKompass(a, top);
-  const HALB = (CW-60)/2;
-  const treffL = passLines(m, komp.treffer.join(' · '), HALB, DS(500,21));
-  const meidL  = passLines(m, komp.meiden.length ? komp.meiden.join(' · ') : 'Keine Ausschlüsse angegeben.', HALB, DS(500,21));
-
-  const RAD_R = 142, RAD_LBL = 178, RAD_CX = M + RAD_R + 100;
-  const IX = M + 470, IW = W - M - IX;
-  const rar = rarity(a), sens = sensitivity(a, top), blind = blindSpots(a, top), tens = tensions(a);
-  const ins = [];
-  ins.push(['Wie eng diese Ecke ist', rar.pct + ' % der Auswahl treffen dieses Muster — ' + rar.n + ' von ' + F.length + ' Düften.']);
-  if(sens.length) ins.push(['Größter Hebel', cap(sens[0].label) + ': eine andere Antwort dort tauscht ' + sens[0].churn + ' % der Empfehlungen aus.']);
-  if(blind.length) ins.push(['Blinder Fleck', blind[0].fam + ' nie angekreuzt, prägt aber ' + blind[0].n + ' der 10 Treffer.']);
-  if(tens.length && ins.length < 4) ins.push([tens[0][0], noTags(tens[0][1])]);
-  const insL = ins.map(t=>({ head:t[0], lines:passLines(m, t[1], IW, DS(400,20)) }));
-  const capL = passLines(m, 'Fläche: dieses Profil · Linie: ' + top[0].f.n, RAD_R*2 + 40, DS(400,17));
-
-  const famZ = {}; top.slice(0,10).forEach(r=>r.f.fam.forEach(k=>famZ[k]=(famZ[k]||0)+1));
-  const famGes = Object.keys(famZ).reduce((s,k)=>s+famZ[k],0) || 1;
-  const famS = Object.keys(famZ).sort((x,y)=>famZ[y]-famZ[x]);
-
-  const rollen = [];
-  const belegt = {};
-  a.occ.forEach(function(o){
-    for(let i=0;i<top.length;i++){ if(top[i].f.occ.indexOf(o)>=0 && !belegt[top[i].f.n]){ belegt[top[i].f.n]=1; rollen.push([LBL[o], top[i].f]); break; } }
-  });
-
+  const HALB = (CW-52)/2;
+  const treffL = passLines(m, komp.treffer.join(' · '), HALB, DS(500,19));
+  const meidL  = passLines(m, komp.meiden.length ? komp.meiden.join(' · ') : 'Keine Ausschlüsse angegeben.', HALB, DS(500,19));
   const rows = dossierRows(a,anc);
   const half = Math.ceil(rows.length/2);
-  const COLW = 420, GAP = CW - 2*COLW;
+  const COLW = (CW-52)/2;
   const colsF = [rows.slice(0,half), rows.slice(half)].map(col=>
-    col.map(r=>({ head:r[0], muted:r[1]==='—', lines:passLines(m, r[1], COLW, DS(500,21)) })));
-  const fieldH = f => 30 + (f.lines.length-1)*28 + 24;
+    col.map(r=>({head:r[0], muted:r[1]==='—', lines:passLines(m, r[1], COLW, DS(500,18))})));
+  const fieldH = f => 25 + (f.lines.length-1)*24 + 18;
   const colH = colsF.map(col=>col.reduce((s,f)=>s+fieldH(f),0));
   const picks = top.slice(0,5);
   const mets = meters(a);
+  const famZ = {}; top.slice(0,10).forEach(r=>r.f.fam.forEach(k=>famZ[k]=(famZ[k]||0)+1));
+  const famGes = Object.keys(famZ).reduce((s,k)=>s+famZ[k],0)||1;
+  const famS = Object.keys(famZ).sort((x,y)=>famZ[y]-famZ[x]);
+  const RAD_R = 132, RAD_LBL = 158;
 
-  /* ── Y-Werte, genau einmal ── */
-  const yStrip = 84, stripH = 18;
-  const yHead  = yStrip + stripH + 54;
-  const yName  = yHead + 84;
-  const yBlurb = yName + (nameL.length-1)*78 + 62;
-  let yy = yBlurb + (blurbL.length-1)*38;
+  /* ── Hoehen beider Seiten ── */
+  let y1 = 70 + 16 + 46;                       /* Streifen + Kopfzeile */
+  const yName = y1 + 62; y1 = yName + (nameL.length-1)*70 + 46;
+  const yBlurb = y1; y1 = yBlurb + (blurbL.length-1)*34 + 40;
+  const yRadC = y1 + RAD_LBL + 8;
+  const yCapt = yRadC + RAD_LBL + 34;
+  y1 = yCapt + 26;
+  const yMet = y1 + 30; y1 = yMet + 92;
+  const yPickL = y1 + 34; const yPick = yPickL + 44;
+  y1 = yPick + (picks.length-1)*76 + 30;
+  const H1 = y1 + 78;
 
-  const yR0 = yy + 44, yL0 = yR0 + 46, yBerat = yL0 + 40;
-  let bh = 0; beratL.forEach(l=>{ bh += l.length*31 + 12; });
-  yy = yBerat + bh;
+  let y2 = 70 + 16 + 46;
+  const yB2 = y2 + 40; let bh=0; beratL.forEach(l=>{ bh += l.length*28 + 10; });
+  y2 = yB2 + bh + 14;
+  const yKL = y2 + 30, yKomp = yKL + 34;
+  y2 = yKomp + 26 + Math.max(treffL.length, meidL.length)*26 + 16;
+  const yDL = y2 + 30, yDos = yDL + 34;
+  y2 = yDos + Math.max(colH[0], colH[1]) + 8;
+  const yFL = y2 + 26, yFam = yFL + 26;
+  y2 = yFam + 46;
+  const H2 = y2 + 150;
+  const H = Math.max(H1, H2, 1400);
 
-  const yR1 = yy + 26, yL1 = yR1 + 46, yMet = yL1 + 42;
-  const METH = 100;
-  const yBand = yMet + METH;
-  const yRadC = yBand + RAD_LBL + 16;
-  const yCap  = yRadC + RAD_LBL + 40;
-  const radBot = yCap + (capL.length-1)*24 + 14;
-  let insBot = yBand + 34;
-  insL.forEach(o=>{ insBot += 24 + o.lines.length*28 + 22; });
-  yy = Math.max(radBot, insBot);
-
-  const yR2 = yy + 34, yL2 = yR2 + 46, yKomp = yL2 + 44;
-  const kompH = 30 + Math.max(treffL.length, meidL.length)*29 + 20;
-  yy = yKomp + kompH;
-
-  const yR3 = yy + 20, yL3 = yR3 + 46, yFam = yL3 + 34;
-  const famH = 22 + 18 + 26;
-  yy = yFam + famH;
-
-  const yR4 = yy + 26, yL4 = yR4 + 46, yDos = yL4 + 44;
-  yy = yDos + Math.max(colH[0], colH[1]);
-
-  const yR5 = yy + 18, yL5 = yR5 + 46, yPick = yL5 + 48;
-  const PICKH = 86;
-  yy = yPick + (picks.length-1)*PICKH + 34;
-
-  let yRol = 0, yL6 = 0, yR6 = 0;
-  if(rollen.length > 1){
-    yR6 = yy + 20; yL6 = yR6 + 46; yRol = yL6 + 40;
-    yy = yRol + (rollen.length-1)*54 + 24;
+  /* ── Zeichenhelfer ── */
+  function neu(){
+    const cv = document.createElement('canvas');
+    cv.width = W; cv.height = H;
+    const x = cv.getContext('2d');
+    x.textAlign='left'; x.textBaseline='alphabetic';
+    x.fillStyle = PAPER; x.fillRect(0,0,W,H);
+    const acc = AQ().map(q=>q.acc), sw = CW/acc.length;
+    acc.forEach((col,i)=>{ x.fillStyle=col; x.fillRect(M+i*sw, 70, sw-4, 16); });
+    return {cv:cv, x:x};
   }
-  const H = yy + 180;   /* Platz fuer Hinweiskasten (H-136 bis H-74) und Fusszeile */
+  const rule = (x,yv) => { x.strokeStyle=LINE; x.lineWidth=2; x.beginPath(); x.moveTo(M,yv); x.lineTo(W-M,yv); x.stroke(); };
+  const label = (x,t,yv,col) => { x.fillStyle=col||CORAL; x.font=DS(700,18); x.fillText(t,M,yv); };
 
-  /* ── Zeichnen ── */
-  const cv = document.createElement('canvas');
-  cv.width = W; cv.height = H;
-  const x = cv.getContext('2d');
-  x.textAlign='left'; x.textBaseline='alphabetic';
-  x.fillStyle = PAPER; x.fillRect(0,0,W,H);
-
-  const acc = AQ().map(q=>q.acc), sw = CW/acc.length;
-  acc.forEach((col,i)=>{ x.fillStyle = col; x.fillRect(M + i*sw, yStrip, sw-5, stripH); });
-
-  let stamp='';
-  try{ stamp = new Date().toLocaleDateString('de-DE',{day:'numeric',month:'long',year:'numeric'}); }catch(e){}
-  x.fillStyle = DIM; x.font = DS(700,21);
-  x.fillText('D U F T P A S S', M, yHead);
-  x.textAlign='right'; x.font = DS(400,19); x.fillText(stamp, W-M, yHead); x.textAlign='left';
-
-  x.fillStyle = INK; x.font = FS(70); putLines(x, nameL, M, yName, 78);
-  x.fillStyle = MID; x.font = DS(400,26); putLines(x, blurbL, M, yBlurb, 38);
-
-  const rule = yv => { x.strokeStyle=LINE; x.lineWidth=2; x.beginPath(); x.moveTo(M,yv); x.lineTo(W-M,yv); x.stroke(); };
-  const label = (t,yv,col) => { x.fillStyle = col||CORAL; x.font = DS(700,19); x.fillText(t, M, yv); };
-
-  rule(yR0);
-  label('FÜR DIE BERATUNG', yL0);
-  let by = yBerat;
-  x.font = DS(400,22);
-  beratL.forEach(l=>{ x.fillStyle = INK; putLines(x, l, M, by, 31); by += l.length*31 + 12; });
-
-  rule(yR1);
-  label('PROFIL IN ZAHLEN', yL1);
-  const mw = (CW - 3*18)/4;
+  /* ── Seite 1: das Profil ── */
+  const s1 = neu(), x1 = s1.x;
+  x1.fillStyle = DIM; x1.font = DS(700,19);
+  x1.fillText('D U F T P A S S', M, 70+16+40);
+  x1.textAlign='right'; x1.font = DS(400,17); x1.fillText(stamp, W-M, 70+16+40); x1.textAlign='left';
+  x1.fillStyle = INK; x1.font = FS(62); putLines(x1, nameL, M, yName, 70);
+  x1.fillStyle = MID; x1.font = DS(400,23); putLines(x1, blurbL, M, yBlurb, 34);
+  passRadar(x1, W/2, yRadC, RAD_R, radarFromAnswers(a), radarFromFragrance(top[0].f), RAD_LBL);
+  x1.fillStyle = DIM; x1.font = DS(400,16); x1.textAlign='center';
+  x1.fillText('Fläche: dieses Profil · Linie: ' + fit(top[0].f.n, CW-200, DS(400,16)), W/2, yCapt);
+  x1.textAlign='left';
+  const mw = (CW - 3*16)/4;
   mets.forEach((mt,i)=>{
-    const mx = M + i*(mw+18);
-    x.fillStyle = DIM;  x.font = DS(700,16); x.fillText(String(mt[0]).toUpperCase(), mx, yMet);
-    x.fillStyle = INK;  x.font = FS(27);     x.fillText(fit(mt[1], mw, FS(27)), mx, yMet+36);
-    x.fillStyle = LINE; x.fillRect(mx, yMet+52, mw-14, 7);
-    x.fillStyle = CORAL; x.fillRect(mx, yMet+52, (mw-14)*(mt[2]/100), 7);
+    const mx = M + i*(mw+16);
+    x1.fillStyle=DIM;  x1.font=DS(700,15); x1.fillText(String(mt[0]).toUpperCase(), mx, yMet);
+    x1.fillStyle=INK;  x1.font=FS(25);     x1.fillText(fit(mt[1], mw, FS(25)), mx, yMet+32);
+    x1.fillStyle=LINE; x1.fillRect(mx, yMet+46, mw-12, 6);
+    x1.fillStyle=CORAL;x1.fillRect(mx, yMet+46, (mw-12)*(mt[2]/100), 6);
   });
-  passRadar(x, RAD_CX, yRadC, RAD_R, radarFromAnswers(a), radarFromFragrance(top[0].f), RAD_LBL);
-  x.fillStyle = DIM; x.font = DS(400,17); x.textAlign='center';
-  putLines(x, capL, RAD_CX, yCap, 24); x.textAlign='left';
-  let iy = yBand + 34;
-  insL.forEach(o=>{
-    x.fillStyle = TEAL; x.font = DS(700,16); x.fillText(String(o.head).toUpperCase(), IX, iy);
-    x.fillStyle = INK;  x.font = DS(400,20); putLines(x, o.lines, IX, iy+26, 28);
-    iy += 24 + o.lines.length*28 + 22;
+  rule(x1, yPickL-24);
+  label(x1, 'PASST DAZU · TOP ' + picks.length + ' AUS ' + F.length + ' DÜFTEN', yPickL);
+  const nmax = W - M - 118 - (M + 56);
+  picks.forEach((r,i)=>{
+    const ty = yPick + i*76;
+    x1.fillStyle=CORAL; x1.font=MO(21); x1.fillText(String(i+1).padStart(2,'0'), M, ty);
+    x1.fillStyle=INK;   x1.font=FS(28); x1.fillText(fit(r.f.n, nmax, FS(28)), M+56, ty);
+    x1.fillStyle=DIM;   x1.font=DS(500,16);
+    x1.fillText(fit(String(r.f.h).toUpperCase()+'  ·  '+r.f.notes, nmax, DS(500,16)), M+56, ty+23);
+    x1.fillStyle=CORAL; x1.font=MO(24); x1.textAlign='right';
+    x1.fillText(pctOf(r.s,MAX)+'%', W-M, ty); x1.textAlign='left';
   });
+  x1.fillStyle=DIM; x1.font=DS(400,16);
+  x1.fillText('Sillage · Seite 1 von 2 · Rückseite: Beratung, Notenkompass, Steckbrief', M, H-44);
 
-  rule(yR2);
-  label('NOTENKOMPASS', yL2);
-  x.fillStyle = GRUEN; x.font = DS(700,16); x.fillText('DIESE NOTEN TREFFEN', M, yKomp);
-  x.fillStyle = INK; x.font = DS(500,21); putLines(x, treffL, M, yKomp+30, 29);
-  x.fillStyle = CORAL; x.font = DS(700,16); x.fillText('DIESE NOTEN MEIDEN', M+HALB+60, yKomp);
-  x.fillStyle = komp.meiden.length ? INK : DIM; x.font = DS(500,21);
-  putLines(x, meidL, M+HALB+60, yKomp+30, 29);
-
-  rule(yR3);
-  label('WORAUS DIE AUSWAHL BESTEHT', yL3);
-  let fx = M;
-  famS.forEach(k=>{
-    const w = CW * (famZ[k]/famGes);
-    x.fillStyle = FAMCOL[k]; x.fillRect(fx, yFam, Math.max(2,w-3), 18);
-    fx += w;
-  });
-  let lx = M;
-  x.font = DS(500,17);
-  famS.slice(0,6).forEach(k=>{
-    const t = FAMLBL[k] + ' ' + Math.round(famZ[k]/famGes*100) + '%';
-    x.fillStyle = FAMCOL[k]; x.fillRect(lx, yFam+34, 11, 11);
-    x.fillStyle = MID; x.fillText(t, lx+17, yFam+44);
-    lx += m.measureText(t).width + 46;
-  });
-
-  rule(yR4);
-  label('STECKBRIEF · ALLE ' + AQ().length + ' ANTWORTEN', yL4);
+  /* ── Seite 2: die Beratung ── */
+  const s2 = neu(), x2 = s2.x;
+  x2.fillStyle = DIM; x2.font = DS(700,19);
+  x2.fillText('R Ü C K S E I T E', M, 70+16+40);
+  x2.textAlign='right'; x2.font=DS(600,19); x2.fillStyle=INK;
+  x2.fillText(fit(name, CW-260, DS(600,19)), W-M, 70+16+40); x2.textAlign='left';
+  label(x2, 'FÜR DIE BERATUNG', yB2-14);
+  let by = yB2 + 18; x2.font = DS(400,20);
+  beratL.forEach(l=>{ x2.fillStyle=INK; putLines(x2, l, M, by, 28); by += l.length*28 + 10; });
+  rule(x2, yKL-22);
+  label(x2, 'NOTENKOMPASS', yKL);
+  x2.fillStyle=GRUEN; x2.font=DS(700,15); x2.fillText('DIESE NOTEN TREFFEN', M, yKomp);
+  x2.fillStyle=INK; x2.font=DS(500,19); putLines(x2, treffL, M, yKomp+26, 26);
+  x2.fillStyle=CORAL; x2.font=DS(700,15); x2.fillText('DIESE NOTEN MEIDEN', M+HALB+52, yKomp);
+  x2.fillStyle = komp.meiden.length ? INK : DIM; x2.font=DS(500,19);
+  putLines(x2, meidL, M+HALB+52, yKomp+26, 26);
+  rule(x2, yDL-22);
+  label(x2, 'STECKBRIEF · ALLE ' + frageZahl() + ' ANTWORTEN', yDL);
   colsF.forEach((col,ci)=>{
-    let cy = yDos; const cx0 = M + ci*(COLW+GAP);
+    let cy = yDos; const cx0 = M + ci*(COLW+52);
     col.forEach(f=>{
-      x.fillStyle = DIM; x.font = DS(700,16); x.fillText(String(f.head).toUpperCase(), cx0, cy);
-      x.fillStyle = f.muted ? DIM : INK; x.font = DS(500,21);
-      putLines(x, f.lines, cx0, cy+30, 28);
+      x2.fillStyle=DIM; x2.font=DS(700,14); x2.fillText(String(f.head).toUpperCase(), cx0, cy);
+      x2.fillStyle = f.muted ? DIM : INK; x2.font=DS(500,18);
+      putLines(x2, f.lines, cx0, cy+25, 24);
       cy += fieldH(f);
     });
   });
-
-  rule(yR5);
-  label('PASST DAZU · TOP ' + picks.length + ' AUS ' + F.length + ' DÜFTEN', yL5);
-  const nameMax = W - M - 130 - (M + 64);
-  picks.forEach((r,i)=>{
-    const ty = yPick + i*PICKH;
-    x.fillStyle = CORAL; x.font = MO(24); x.fillText(String(i+1).padStart(2,'0'), M, ty);
-    x.fillStyle = INK;   x.font = FS(32); x.fillText(fit(r.f.n, nameMax, FS(32)), M+64, ty);
-    x.fillStyle = DIM;   x.font = DS(500,18);
-    x.fillText(fit(String(r.f.h).toUpperCase() + '  ·  ' + r.f.notes, nameMax, DS(500,18)), M+64, ty+26);
-    x.fillStyle = CORAL; x.font = MO(27); x.textAlign='right';
-    x.fillText(pctOf(r.s,MAX)+'%', W-M, ty); x.textAlign='left';
+  rule(x2, yFL-20);
+  label(x2, 'WORAUS DIE AUSWAHL BESTEHT', yFL);
+  let fx = M;
+  famS.forEach(k=>{ const w = CW*(famZ[k]/famGes); x2.fillStyle=FAMCOL[k]; x2.fillRect(fx, yFam, Math.max(2,w-3), 15); fx += w; });
+  let lx = M; x2.font = DS(500,15);
+  famS.slice(0,6).forEach(k=>{
+    const t = FAMLBL[k]+' '+Math.round(famZ[k]/famGes*100)+'%';
+    x2.fillStyle=FAMCOL[k]; x2.fillRect(lx, yFam+28, 10, 10);
+    x2.fillStyle=MID; x2.fillText(t, lx+15, yFam+37);
+    lx += m.measureText(t).width + 42;
   });
+  x2.fillStyle=INK; x2.fillRect(M, H-124, CW, 54);
+  x2.fillStyle='#F6ECE4'; x2.font=DS(700,16);
+  x2.fillText('BITTE VOR DEM KAUF AUF DER HAUT TESTEN', M+20, H-98);
+  x2.fillStyle='#D8C7BE'; x2.font=DS(400,15);
+  x2.fillText('Eine begründete Vorauswahl aus ' + F.length + ' Düften — kein Marktüberblick und kein Urteil.', M+20, H-78);
+  x2.fillStyle=DIM; x2.font=DS(400,16);
+  x2.fillText('Sillage · Seite 2 von 2 · erstellt am ' + stamp, M, H-44);
 
-  if(rollen.length > 1){
-    rule(yR6);
-    label('JE ANLASS', yL6);
-    rollen.forEach((rl,i)=>{
-      const ry = yRol + i*54;
-      x.fillStyle = TEAL; x.font = DS(700,17); x.fillText(String(rl[0]).toUpperCase(), M, ry);
-      x.fillStyle = INK;  x.font = FS(26);
-      x.fillText(fit(rl[1].n + '  ·  ' + rl[1].h, CW, FS(26)), M, ry+30);
-    });
-  }
-
-  x.fillStyle = DIM; x.font = DS(400,18);
-  x.fillStyle = INK; x.fillRect(M, H-136, CW, 62);
-  x.fillStyle = '#F6ECE4'; x.font = DS(700,17);
-  x.fillText('BITTE VOR DEM KAUF AUF DER HAUT TESTEN', M+22, H-108);
-  x.fillStyle = '#D8C7BE'; x.font = DS(400,17);
-  x.fillText('Diese Karte ist eine begründete Vorauswahl aus ' + F.length + ' Düften, kein Marktüberblick und kein Urteil.', M+22, H-86);
-  x.fillStyle = DIM; x.font = DS(400,18);
-  x.fillText('Sillage · Duftprofil aus ' + AQ().length + ' Fragen · erstellt am ' + stamp, M, H-42);
-  return cv.toDataURL('image/png');
+  return {vorn: s1.cv.toDataURL('image/png'), hinten: s2.cv.toDataURL('image/png')};
 }
 async function renderPass(name,blurb,a,anc,top,MAX){
   try{ if(document.fonts && document.fonts.ready) await document.fonts.ready; }catch(e){}
-  const img = document.getElementById('passimg');
-  if(!img) return;
-  try{ img.src = buildPass(name,blurb,a,anc,top,MAX); }
-  catch(e){ const w = img.closest('.passwrap'); if(w) w.innerHTML = '<p>Der Duftpass lässt sich in dieser Ansicht nicht erzeugen. Der Steckbrief oben enthält dieselben Angaben als Text.</p>'; }
+  const v = document.getElementById('passvorn'), h = document.getElementById('passhinten');
+  if(!v || !h) return;
+  try{
+    const bilder = buildPass(name,blurb,a,anc,top,MAX);
+    v.src = bilder.vorn;
+    h.src = bilder.hinten;
+  }catch(e){
+    const w = v.closest('.passwrap');
+    if(w) w.innerHTML = '<p>Der Duftpass lässt sich in dieser Ansicht nicht erzeugen. Der Steckbrief oben enthält dieselben Angaben als Text.</p>';
+  }
 }
-
 /* ═══ Deutung — was die Antworten zusammengenommen ergeben ═══ */
 
 /* Wie dicht ist die Ecke, in der du suchst? */
@@ -2577,6 +2691,7 @@ function renderDuell(list){
   box.querySelectorAll('[data-seite]').forEach(function(btn){
     btn.onclick = function(){
       const s = btn.dataset.seite;
+      if(state.duell && !state.duellVorher) state.duellVorher = state.duellBasis || [];
       if(s !== 'skip'){
         const gewaehlt = s === 'a' ? par[0] : par[1];
         const verworfen = s === 'a' ? par[1] : par[0];
@@ -2586,10 +2701,27 @@ function renderDuell(list){
         saveState();
       }
       state.duell.runde++;
-      if(state.duell.runde >= paare.length){ state.duell = null; renderResult(); }
+      if(state.duell.runde >= paare.length){ state.duell = null; state.duellFertig = true; renderResult(); }
       else renderDuell(list);
     };
   });
+}
+
+/* Zeremonie: eine kurze Zaesur, bevor das Ergebnis steht. */
+function renderZeremonie(danach){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ danach(); return; }
+  paintChrome();
+  const farben = AQ().map(function(q){ return q.acc; });
+  stage.innerHTML = '<div class="zeremonie">'
+    + '<svg class="zflakon" viewBox="0 0 46 64" aria-hidden="true">'
+    + '<rect x="16" y="0" width="14" height="8" rx="2.5" fill="#33262C"></rect>'
+    + '<rect x="18" y="8" width="10" height="4" rx="1.5" fill="#DCC8B8"></rect>'
+    + '<path d="M18.5 12v4.6c0 1.6-.9 2.7-2.3 3.7C12.4 23 10 26.6 10 31.4V55a5 5 0 0 0 5 5h16a5 5 0 0 0 5-5V31.4c0-4.8-2.4-8.4-6.2-11.1-1.4-1-2.3-2.1-2.3-3.7V12z" fill="#fff" stroke="#DCC8B8" stroke-width="1.4"></path>'
+    + '<path d="M10 30h26v25a5 5 0 0 1-5 5H15a5 5 0 0 1-5-5z" fill="#F4643C" opacity=".9"></path></svg>'
+    + '<div class="zstreifen">' + farben.map(function(f,i){
+        return '<i style="background:' + f + ';animation-delay:' + (0.25 + i*0.055) + 's"></i>'; }).join('') + '</div>'
+    + '<p>Dein Profil entsteht …</p></div>';
+  setTimeout(danach, 1700);
 }
 
 function renderResult(){
@@ -2638,7 +2770,10 @@ function renderResult(){
   <div class="fade reveal">
     <p class="verdict-eyebrow">Dein Duftprofil</p>
     <h1 class="archetype">${esc(name)}</h1>
-    <div class="strip" title="Die Farben deiner Antworten">${AQ().map(q=>`<i style="background:${q.acc}"></i>`).join('')}</div>
+    <div class="stripwrap">
+      <div class="strip" title="Die Farben deiner Antworten">${AQ().map(q=>`<i style="background:${q.acc}"></i>`).join('')}</div>
+      <p class="stripnote">Das sind die Farben deiner Antworten — eine Signatur, die kein zweites Profil so hat.</p>
+    </div>
     <p class="profile-text">${esc(blurb)}</p>
 
     <div class="panel">
@@ -2730,6 +2865,17 @@ function renderResult(){
     </ul>
     <div class="sec-head"><h2>Feinschliff</h2><hr><span>zwei Minuten, deutlich besseres Ergebnis</span></div>
     <p class="caveat short">Bei einer direkten Wahl zwischen zwei Düften entscheidet der Bauch — und der ist verlässlicher als jede Selbsteinschätzung. Fünf Paare genügen, um die Liste spürbar zu schärfen.</p>
+    ${(function(){
+      if(!state.duellFertig || !state.duellVorher || !state.duellVorher.length) return '';
+      const jetzt = chart.map(function(r){ return r.f.n; });
+      const neu = jetzt.filter(function(n){ return state.duellVorher.indexOf(n) < 0; });
+      const raus = state.duellVorher.filter(function(n){ return jetzt.indexOf(n) < 0; });
+      if(!neu.length && !raus.length) return '<div class="duellbilanz"><b>Deine Wahl hat bestätigt, was schon da war</b><p>Die Liste bleibt unverändert — ein gutes Zeichen: Dein Profil war bereits stimmig.</p></div>';
+      return '<div class="duellbilanz"><b>Das haben deine Duelle verändert</b><p>'
+        + '<em>' + neu.length + ' neu</em> in der Liste' + (neu.length?': ' + esc(neu.slice(0,3).join(', ')):'')
+        + (raus.length ? ' · <em>' + raus.length + ' gefallen</em>: ' + esc(raus.slice(0,3).join(', ')) : '')
+        + '.</p></div>';
+    })()}
     <div id="duell"></div>
 
     <div class="recalc" id="recalcbar"${fbCount?'':' hidden'}>
@@ -2737,7 +2883,17 @@ function renderResult(){
     </div>
 
     <div class="famline">
-      <div class="famstack">${famSorted.map(e=>`<i style="width:${(e[1]/famTotal*100).toFixed(1)}%;background:${FAMCOL[e[0]]}"></i>`).join('')}</div>
+      <div class="orgel">${famSorted.slice(0,7).map(function(e){
+      const anteil = e[1]/famTotal;
+      const hoehe = Math.max(6, Math.round(30 * anteil / (famSorted[0][1]/famTotal)));
+      return `<div class="orgelflakon" title="${esc(FAMLBL[e[0]])}">
+        <svg viewBox="0 0 46 64" aria-hidden="true">
+          <rect class="k" x="16" y="0" width="14" height="8" rx="2.5"></rect>
+          <path class="g" d="M18.5 12v4.6c0 1.6-.9 2.7-2.3 3.7C12.4 23 10 26.6 10 31.4V55a5 5 0 0 0 5 5h16a5 5 0 0 0 5-5V31.4c0-4.8-2.4-8.4-6.2-11.1-1.4-1-2.3-2.1-2.3-3.7V12z"></path>
+          <path d="M10 ${60-hoehe}h26v${hoehe-5}a5 5 0 0 1-5 5H15a5 5 0 0 1-5-5z" fill="${FAMCOL[e[0]]}" opacity=".92"></path>
+        </svg>
+        <b>${esc(FAMLBL[e[0]])}</b><span>${Math.round(anteil*100)}%</span>
+      </div>`;}).join('')}</div>
       <ul class="famkey">${famSorted.slice(0,7).map(e=>`<li><em style="background:${FAMCOL[e[0]]}"></em>${esc(FAMLBL[e[0]])} <span style="color:var(--ink-dim)">${Math.round(e[1]/famTotal*100)}%</span></li>`).join('')}</ul>
     </div>
 
@@ -2765,10 +2921,13 @@ function renderResult(){
       </ol>
     </div>
 
-    <div class="sec-head"><h2>Dein Duftpass</h2><hr><span>das komplette Ergebnis auf einer Karte</span></div>
+    <div class="sec-head"><h2>Dein Duftpass</h2><hr><span>zwei Seiten zum Ausdrucken</span></div>
     <div class="passwrap">
-      <img id="passimg" alt="Duftpass ${esc(name)}">
-      <p>Alle ${AQ().length} Antworten, Archetyp, Kennwerte und Empfehlungen auf einem Bild — zum Vorzeigen in der Parfümerie. Rechtsklick oder langes Antippen speichert es. Einen Download startet die Seite bewusst nicht selbst, der wird in eingebetteten Ansichten blockiert.</p>
+      <div class="passpaar">
+        <figure><img id="passvorn" alt="Duftpass Vorderseite: ${esc(name)}"><figcaption>Vorderseite · Profil</figcaption></figure>
+        <figure><img id="passhinten" alt="Duftpass Rückseite: ${esc(name)}"><figcaption>Rückseite · Beratung</figcaption></figure>
+      </div>
+      <p>Beide Seiten zusammen enthalten alle ${frageZahl()} Antworten, Archetyp, Kennwerte und Empfehlungen — zum Vorzeigen in der Parfümerie. Rechtsklick oder langes Antippen speichert es. Einen Download startet die Seite bewusst nicht selbst, der wird in eingebetteten Ansichten blockiert.</p>
       <button class="ghost" id="passcopy">Bild in die Zwischenablage</button>
     </div>
 
@@ -2802,15 +2961,16 @@ function renderResult(){
   document.querySelectorAll('.fb button').forEach(b=>{
     b.onclick = ()=> setFb(b.dataset.n, b.classList.contains('yes') ? 1 : -1);
   });
+  state.duellBasis = chart.map(function(r){ return r.f.n; });
   renderDuell(list);
   const rc = document.getElementById('recalc');
   if(rc) rc.onclick = ()=>renderResult();
   renderPass(name, blurb, a, anc, chart, MAX);
   const pc = document.getElementById('passcopy');
   if(pc) pc.onclick = async ()=>{
-    const img = document.getElementById('passimg');
+    const img = document.getElementById('passvorn');
     try{
-      const blob = await (await fetch(img.src)).blob();
+      const blob = await (await fetch(document.getElementById('passvorn').src)).blob();
       await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
       pc.textContent = 'Kopiert ✓';
     }catch(err){ pc.textContent = 'Geht hier nicht — bitte per Rechtsklick sichern'; }
@@ -2825,7 +2985,7 @@ function renderResult(){
   };
   saveState();
   document.getElementById('again').onclick = ()=>{
-    state.step=-1; state.a={}; state.fb={}; state.duell=null;
+    state.step=-1; state.a={}; state.fb={}; state.duell=null; state.duellVorher=null; state.duellFertig=false;
     try{ localStorage.removeItem(STORE); }catch(e){}
     wardrobeUsed.clear(); /* Kopfzeile bekommt beim Scrollen einen Schatten. */
 window.addEventListener('scroll', function(){
@@ -2871,7 +3031,7 @@ const wardrobeUsed = new Set();
 /* Steckbrief: das Profil als Liste — mitnehmbar, ohne die Empfehlungen */
 function dossierRows(a,anc){
   const BUD = {1:'bis 100 €',2:'100 – 200 €',3:'200 – 350 €',4:'offen'};
-  const GEN = {egal:'egal',u:'unisex',m:'eher maskulin',f:'eher feminin'};
+  const GEN = {u:'Unisex',m:'Maskulin',f:'Feminin'};
   return [
     ['Duftfamilien', a.fam.map(k=>FAMLBL[k]).join(', ')],
     ['Szenen', a.mood.map(k=>MOODLBL[k]).join(', ')],
@@ -2884,12 +3044,12 @@ function dossierRows(a,anc){
     ['Wirkung', a.eff.map(k=>LBL[k]).join(', ')],
     ['No-Gos', a.nogo.length ? a.nogo.map(k=>LBL[k]).join(', ') : '—'],
     ['Ankerdüfte', anc ? anc.names.join(', ') : '—'],
-    ['Duftcode', GEN[a.gender]],
+    ['Duftcode', (Array.isArray(a.gender)?a.gender:[a.gender]).filter(Boolean).map(function(k){return GEN[k]||k}).join(', ') || '—'],
     ['Budget', BUD[a.budget]],
     ['Haltbarkeit', LBL[a.longevity]||'—'],
     ['Abneigungen', (a.anchorneg&&a.anchorneg.length) ? a.anchorneg.map(k=>ANCHORS[k].n).join(', ') : '—'],
     ['Lieblingsnoten', (a.notes&&a.notes.length) ? a.notes.join(', ') : '—'],
-    ['Schwerpunkt', a.focus ? {fam:'Duftrichtung',sil:'Präsenz',occ:'Anlass',sweet:'Süße'}[a.focus] : '—'],
+
     ['Erfahrung', LBL[a.exp]]
   ];
 }
