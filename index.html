@@ -350,6 +350,86 @@ details.fold .dossier{box-shadow:none;padding:0;margin:0 0 1rem}
 .famline{margin:1.4rem 0 0}
 .caveat.short{padding:.85rem 1.1rem;font-size:.9rem;margin-bottom:1rem}
 
+/* Suchfeld in langen Auswahllisten */
+.qsearch{
+  all:unset;box-sizing:border-box;display:block;width:100%;max-width:420px;
+  background:var(--card);border:1.5px solid var(--line);border-radius:99px;
+  padding:.7rem 1.1rem;font-size:.95rem;color:var(--ink);margin:0 0 1rem;
+  box-shadow:var(--shadow);
+}
+.qsearch::placeholder{color:var(--ink-dim)}
+.qsearch:focus{border-color:var(--acc);outline:none}
+.opt[hidden]{display:none !important}
+.searchinfo{font-size:.83rem;color:var(--ink-dim);margin:-.6rem 0 1rem}
+
+/* Der wichtigste Schritt nach dem Ergebnis */
+.nextstep{background:var(--ink);color:#F6ECE4;border-radius:var(--r);padding:1.6rem 1.7rem;margin:2.4rem 0 0}
+.nextstep h3{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:1.4rem;margin:0 0 .7rem;color:#fff;letter-spacing:-.015em}
+.nextstep p{margin:0 0 .8rem;font-size:.96rem;color:#D8C7BE;max-width:62ch;line-height:1.6}
+.nextstep p:last-child{margin-bottom:0}
+.nextstep b{color:var(--sun)}
+.nextstep ol{margin:.2rem 0 0;padding-left:1.15rem;color:#D8C7BE;font-size:.94rem}
+.nextstep ol li{margin-bottom:.5rem}
+.nextstep ol li::marker{color:var(--sun);font-weight:700}
+
+/* Duell-Runde */
+.duell{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:1.5rem;margin:0 0 1.6rem}
+.duellkopf{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin:0 0 1rem;flex-wrap:wrap}
+.duellkopf b{font-family:"Fraunces",Georgia,serif;font-size:1.15rem;font-weight:600}
+.duellkopf span{font-family:"DM Mono",monospace;font-size:.8rem;color:var(--ink-dim)}
+.duellpaar{display:grid;grid-template-columns:1fr auto 1fr;gap:.8rem;align-items:stretch}
+@media(max-width:560px){.duellpaar{grid-template-columns:1fr;gap:.6rem}}
+.duellpaar .vs{align-self:center;font-family:"Fraunces",Georgia,serif;font-size:.95rem;color:var(--ink-dim)}
+.duellwahl{all:unset;box-sizing:border-box;cursor:pointer;padding:1rem 1.1rem;border-radius:var(--r-s);border:1.5px solid var(--line);background:var(--paper);transition:border-color .2s,transform .18s,background .2s}
+.duellwahl:hover{border-color:var(--acc);transform:translateY(-2px);background:#fff}
+.duellwahl:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.duellwahl b{display:block;font-family:"Fraunces",Georgia,serif;font-size:1.1rem;font-weight:600;line-height:1.2;margin-bottom:.2rem}
+.duellwahl span{display:block;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);font-weight:700;margin-bottom:.4rem}
+.duellwahl small{display:block;font-size:.83rem;color:var(--ink-mid);line-height:1.45}
+.duellskip{all:unset;cursor:pointer;font-size:.82rem;color:var(--ink-dim);border-bottom:1.5px solid var(--line-2);margin-top:.9rem;display:inline-block}
+.duellskip:hover{color:var(--coral);border-color:var(--coral)}
+.duellskip:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
+
+/* Farbwelten der Szenen: jede Karte traegt ihre eigene Stimmung,
+   rein aus Verlaeufen - kein einziges geladenes Bild. */
+.opt[data-v]{position:relative}
+.opt[data-key="mood"]::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:6px;border-radius:var(--r) 0 0 var(--r);
+  background:var(--szene,var(--line));
+}
+.opt[data-key="mood"]{padding-left:1.5rem;background-image:var(--szenebg,none);background-size:cover}
+.opt[data-key="mood"][aria-pressed="true"]{background-image:var(--szenebg,none)}
+.opt[data-v="zitrusgarten"]{--szene:linear-gradient(#F2C230,#8FBF3F);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(242,194,48,.20),transparent 62%)}
+.opt[data-v="kamin"]{--szene:linear-gradient(#B5651D,#5A2E12);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(181,101,29,.22),transparent 62%)}
+.opt[data-v="bibliothek"]{--szene:linear-gradient(#8A6242,#4A3423);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(138,98,66,.20),transparent 62%)}
+.opt[data-v="feige"]{--szene:linear-gradient(#7FA06A,#3E6B46);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(127,160,106,.22),transparent 62%)}
+.opt[data-v="bluete"]{--szene:linear-gradient(#F5C6D8,#E0518C);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(232,93,155,.16),transparent 62%)}
+.opt[data-v="weihrauch"]{--szene:linear-gradient(#9AA5B1,#4C5560);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(109,123,140,.20),transparent 62%)}
+.opt[data-v="ozean"]{--szene:linear-gradient(#7FC4DE,#1F6E96);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(47,139,201,.20),transparent 62%)}
+.opt[data-v="waesche"]{--szene:linear-gradient(#E8EDF2,#B9C6D2);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(185,198,210,.26),transparent 62%)}
+.opt[data-v="cremig"]{--szene:linear-gradient(#FFE1B0,#F0A85C);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(255,194,75,.26),transparent 62%)}
+.opt[data-v="waldboden"]{--szene:linear-gradient(#6E8B5A,#2F3F2A);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(87,110,70,.24),transparent 62%)}
+.opt[data-v="obstgarten"]{--szene:linear-gradient(#FFB48A,#D2603C);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(210,96,60,.18),transparent 62%)}
+.opt[data-v="nachtblueten"]{--szene:linear-gradient(#C9A7E8,#5B3A8C);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(123,90,217,.18),transparent 62%)}
+.opt[data-v="salzhaut"]{--szene:linear-gradient(#FFD9A8,#E0906A);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(224,144,106,.20),transparent 62%)}
+.opt[data-v="basar"]{--szene:linear-gradient(#E8A33C,#A8541C);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(232,163,60,.22),transparent 62%)}
+.opt[data-v="honig"]{--szene:linear-gradient(#F0C04A,#A86A22);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(240,192,74,.22),transparent 62%)}
+.opt[data-v="iris"]{--szene:linear-gradient(#D9D2E4,#8E82A8);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(142,130,168,.18),transparent 62%)}
+.opt[data-v="asphalt"]{--szene:linear-gradient(#B9BFC4,#5E676E);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(94,103,110,.18),transparent 62%)}
+.opt[data-v="kraeuter"]{--szene:linear-gradient(#B7C97A,#6B8A3A);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(140,170,80,.22),transparent 62%)}
+
+/* Ergebnis-Inszenierung */
+@keyframes revealUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes stripeIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.reveal .archetype{animation:revealUp .7s cubic-bezier(.2,.7,.3,1) .35s both}
+.reveal .verdict-eyebrow{animation:revealUp .5s ease .15s both}
+.reveal .strip{transform-origin:left;animation:stripeIn .8s cubic-bezier(.3,.8,.3,1) .55s both}
+.reveal .profile-text{animation:revealUp .6s ease .8s both}
+.reveal .panel{animation:revealUp .6s ease .95s both}
+@keyframes puffOut{0%{opacity:.55;transform:scale(.4)}100%{opacity:0;transform:scale(2.6)}}
+.flaskpuff{position:absolute;left:14px;top:2px;width:20px;height:20px;border-radius:50%;background:var(--acc);pointer-events:none;animation:puffOut .9s ease-out forwards}
+.masthead{position:relative}
+
 @media (max-width:560px){
   .pick{grid-template-columns:auto 1fr}
   .score{grid-column:2;text-align:left;display:flex;gap:.5rem;align-items:baseline;margin-top:.8rem}
@@ -464,20 +544,20 @@ const Q = [
   ]},
 { id:'fam', kind:'multi', min:1, max:4, cols:true, acc:'#F09A2B',
   eyebrow:'Duftfamilien', title:'Was riechst du <em>gerne</em>?',
-  sub:'Die klassischen Familien. Bis zu vier — falls du unsicher bist, kommt gleich eine Frage über Bilder statt Fachbegriffe.',
+  sub:'Bis zu vier. Unsicher? Aus deinen Bildern steht schon ein Vorschlag drin - dann einfach auf Weiter. Kein Vorwissen nötig.',
   o:[
-    ['zitrus','Zitrisch & Hesperidisch','Bergamotte, Zitrone, Grapefruit, Neroli.'],
-    ['gruen','Grün & Pflanzlich','Feigenblatt, Gras, Tomatenblatt, Vetiver.'],
-    ['aromatisch','Aromatisch & Fougère','Lavendel, Salbei, Rosmarin, Farn.'],
-    ['floral','Floral','Iris, Rose, Jasmin, Orangenblüte.'],
-    ['holzig','Holzig','Sandelholz, Zeder, Guajak, Oud.'],
-    ['weihrauch','Weihrauch & Harze','Olibanum, Myrrhe, Rauch, Stein.'],
-    ['amber','Amber & Orientalisch','Labdanum, Benzoe, Tonka, Gewürze.'],
-    ['gourmand','Gourmand','Vanille, Honig, Karamell, Kakao.'],
-    ['leder','Leder & Tabak','Kastoreum, Birkenteer, Tabakblatt.'],
-    ['chypre','Chypre','Eichenmoos, Patschuli, Bergamotte — herb-elegant.'],
-    ['aquatisch','Aquatisch & Marin','Salz, Meerbrise, Ozon.'],
-    ['moschus','Moschus & Skin','Ambroxan, weißer Moschus, zweite Haut.']
+    ['zitrus','Zitrisch & spritzig','Wie eine aufgeschnittene Zitrone: hell, sauber, wach.'],
+    ['gruen','Grün & pflanzlich','Zerriebene Blätter, frisch gemähtes Gras, Tomatenstaude.'],
+    ['aromatisch','Kräuterig','Lavendel, Salbei, Rosmarin - das klassische Rasierwasser-Gefühl.'],
+    ['floral','Blumig','Von der zarten Einzelblüte bis zum vollen Strauß.'],
+    ['holzig','Holzig','Sandelholz und Zeder: trocken, warm, ruhig.'],
+    ['weihrauch','Rauchig & harzig','Weihrauch, Harz, kalter Stein - kirchenartig, ernst.'],
+    ['amber','Warm & würzig','Zimt, Harze, süßliche Wärme. Fachbegriff: Amber.'],
+    ['gourmand','Süß & essbar','Vanille, Karamell, Kakao, Honig - zum Anbeißen.'],
+    ['leder','Leder & Tabak','Wie eine Lederjacke und eine Zigarrenkiste.'],
+    ['chypre','Herb & moosig','Bitterorange über Moos und Erde. Fachbegriff: Chypre.'],
+    ['aquatisch','Wässrig & salzig','Meeresluft, Ozon, nasser Stein.'],
+    ['moschus','Wie saubere Haut','Weich, nah, kaum greifbar. Fachbegriff: Moschus.']
   ]},
 { id:'mood', kind:'multi', min:1, max:3, cols:true, acc:'#7B5AD9',
   eyebrow:'Bilder', title:'Welche Szene <em>zieht dich an</em>?',
@@ -491,6 +571,10 @@ const Q = [
     ['weihrauch','Weihrauch in einer Steinkirche','Kühl, harzig, sakral, hallend.'],
     ['ozean','Kalte Gischt und Wind','Meersalz, Ozon, nasser Stein, nichts Warmes.'],
     ['waesche','Frisch gewaschene Wäsche','Sauber, warm, unaufdringlich, nah.'],
+    ['cremig','Sonnencreme auf warmer Haut','Vanille, Kokosmilch, Mandel — wohlig und weich.'],
+    ['waldboden','Waldboden nach dem Regen','Moos, feuchte Erde, Rinde, Pilze, Schatten.'],
+    ['obstgarten','Obstgarten im Spätsommer','Reife Pfirsiche, Birnen, Pflaumen, warmes Gras.'],
+    ['nachtblueten','Nachtblüten im Dunkeln','Jasmin und Tuberose, schwer und betörend.'],
     ['salzhaut','Salzige Haut nach dem Meer','Sonne, Kokos, Wärme auf der Schulter.'],
     ['basar','Gewürzbasar am Nachmittag','Zimt, Safran, Kardamom, Harz in Säcken.'],
     ['honig','Honig, Tabak, Karamell','Süß, klebrig-warm, ein bisschen dekadent.'],
@@ -564,9 +648,9 @@ const Q = [
     ['eigenwillig','Eigenwillig','Darf ungewohnt sein. Nicht jeder muss ihn mögen.'],
     ['polarisierend','Polarisierend','Reibung ist der Punkt. Gerne schwierig.']
   ]},
-{ id:'anchor', kind:'multi', min:0, max:3, cols:true, optional:true, acc:'#17A2A2',
+{ id:'anchor', kind:'multi', min:0, max:3, cols:true, optional:true, searchable:true, acc:'#17A2A2',
   eyebrow:'Ankerdüfte', title:'Kennst du einen davon — und <em>mochtest ihn</em>?',
-  sub:'Der stärkste Hebel im ganzen Fragebogen. Ein bekannter Duft, der dir gefallen hat, verrät mehr als drei Duftfamilien. Bis zu drei. Nichts auswählen ist völlig in Ordnung.',
+  sub:'Der stärkste Hebel im ganzen Fragebogen — ein bekannter Duft, der dir gefallen hat, verrät mehr als drei Duftfamilien. Bis zu drei. Kennst du keinen davon: einfach überspringen, das Ergebnis funktioniert auch ohne.',
   o:[
     ['a_sauvage','Dior Sauvage','Frisch-würzig, Ambroxan, überall.'],
     ['a_bdc','Bleu de Chanel','Holzig-zitrisch, glatt, unangreifbar.'],
@@ -579,7 +663,30 @@ const Q = [
     ['a_philosykos','Diptyque Philosykos','Feigenblatt, grün, mediterran.'],
     ['a_no5','Chanel N°5','Aldehyde, Blüten, Ikone.'],
     ['a_coco','Coco Mademoiselle','Patschuli, Orange, modern-klassisch.'],
-    ['a_ombre','LV Ombre Nomade','Weihrauch, Oud, dunkel und laut.']
+    ['a_ombre','LV Ombre Nomade','Weihrauch, Oud, dunkel und laut.'],
+    ['a_lemale','Jean Paul Gaultier Le Male','Lavendel, Vanille, Minze.'],
+    ['a_1million','Paco Rabanne 1 Million','Süß, würzig, sehr präsent.'],
+    ['a_eros','Versace Eros','Minze, Apfel, Vanille.'],
+    ['a_dh','Dior Homme Intense','Iris, Kakao, elegant-puderig.'],
+    ['a_lanuit',"YSL La Nuit de l'Homme",'Kardamom, Zeder, verführerisch.'],
+    ['a_adgp','Acqua di Giò Profumo','Meerbrise mit Weihrauch.'],
+    ['a_git','Creed Green Irish Tweed','Grün, sauber, klassisch.'],
+    ['a_layton','Parfums de Marly Layton','Apfel, Lavendel, Vanille.'],
+    ['a_interlude','Amouage Interlude Man','Weihrauch, Leder, kompromisslos.'],
+    ['a_ofg','Initio Oud for Greatness','Safran, Oud, laut und dunkel.'],
+    ['a_tamdao','Diptyque Tam Dao','Sandelholz, ruhig, meditativ.'],
+    ['a_mol01','Escentric Molecules Molecule 01','Nur eine Note, fast unsichtbar.'],
+    ['a_gypsy','Byredo Gypsy Water','Kiefer, Weihrauch, weich.'],
+    ['a_angel','Mugler Angel','Karamell, Patschuli, polarisierend.'],
+    ['a_flowerbomb','Viktor & Rolf Flowerbomb','Blüten, Zucker, üppig.'],
+    ['a_goodgirl','Carolina Herrera Good Girl','Tuberose, Kaffee, Kakao.'],
+    ['a_lveb','Lancôme La Vie Est Belle','Iris, Praline, sehr süß.'],
+    ['a_shalimar','Guerlain Shalimar','Vanille, Weihrauch, Ikone.'],
+    ['a_opium','YSL Opium','Gewürze, Harze, wuchtig.'],
+    ['a_pol','Frédéric Malle Portrait of a Lady','Rose, Patschuli, Weihrauch.'],
+    ['a_erbapura','Xerjoff Erba Pura','Früchte, Vanille, Sommer.'],
+    ['a_khamrah','Lattafa Khamrah','Dattel, Zimt, Praline.'],
+    ['a_wsss','Jo Malone Wood Sage & Sea Salt','Meersalz, Salbei, leicht.']
   ]},
 { id:'exp', kind:'single', cols:true, acc:'#8A6A46',
   eyebrow:'Erfahrung', title:'Wo stehst du <em>gerade</em>?',
@@ -598,6 +705,12 @@ const Q = [
       ['u','Unisex','Möglichst geschlechtsneutral.'],
       ['m','Eher maskulin','Klassisch maskulin codiert.'],
       ['f','Eher feminin','Klassisch feminin codiert.']
+    ]},
+    {key:'focus', label:'Worauf kommt es dir besonders an?', o:[
+      ['fam','Auf die Duftrichtung','Die Familien müssen stimmen, alles andere ist zweitrangig.'],
+      ['sil','Auf die Präsenz','Wie viel Raum er nimmt, ist mir am wichtigsten.'],
+      ['occ','Auf den Anlass','Er muss zur Situation passen, in der ich ihn trage.'],
+      ['sweet','Auf die Süße','Zu süß oder zu trocken wäre für mich das Ausschlusskriterium.']
     ]},
     {key:'budget', label:'Budget pro Flakon', o:[
       ['1','bis 100 €','Einstieg, viel Designer, etwas Nische.'],
@@ -619,17 +732,55 @@ Q.push(
     ['ewig','Ewig','Am nächsten Morgen ist der Pullover noch parfümiert.'],
     ['unklar','Weiß ich nicht','Habe nie darauf geachtet.']
   ]},
-{ id:'anchorneg', kind:'multi', min:0, max:3, cols:true, optional:true, acc:'#8E4585',
+{ id:'anchorneg', kind:'multi', min:0, max:3, cols:true, optional:true, searchable:true, acc:'#8E4585',
   eyebrow:'Abneigungen', title:'Und welchen fandst du <em>schrecklich</em>?',
-  sub:'Diagnostisch stärker als jede Zustimmung — Ablehnung schneidet mehr Suchraum weg. Bis zu drei. Was du eben als Anker gewählt hast, taucht hier nicht mehr auf.',
+  sub:'Diagnostisch stärker als jede Zustimmung — Ablehnung schneidet mehr Suchraum weg. Bis zu drei. Kennst du keinen davon oder fällt dir nichts ein: einfach überspringen, das ist völlig in Ordnung.',
   o:[] }
 );
+Q.push(
+{ id:'notes', kind:'multi', min:0, max:5, cols:true, optional:true, searchable:true, acc:'#3FA98C',
+  eyebrow:'Lieblingsnoten', title:'Gibt es Noten, die du <em>besonders liebst</em>?',
+  sub:'Die konkreteste Angabe im ganzen Fragebogen — genauer als jede Duftfamilie. Bis zu fünf. Wenn dir nichts einfällt: überspringen, das Ergebnis funktioniert auch ohne.',
+  o:[
+    ['Vanille','Vanille','Warm, süß, cremig.'],
+    ['Sandelholz','Sandelholz','Milchig-weiches Holz, sehr beruhigend.'],
+    ['Zeder','Zeder','Trockenes Bleistiftholz.'],
+    ['Amber','Amber','Harzige, honigfarbene Wärme.'],
+    ['Rose','Rose','Von frisch bis marmeladig-dunkel.'],
+    ['Vetiver','Vetiver','Erdige Wurzel, rauchig-grün.'],
+    ['Patschuli','Patschuli','Dunkel, erdig, ein wenig muffig-edel.'],
+    ['Jasmin','Jasmin','Üppige weiße Blüte, abends intensiv.'],
+    ['Leder','Leder','Von weichem Wildleder bis zur Sattelkammer.'],
+    ['Weihrauch','Weihrauch','Kühles Harz, sakral.'],
+    ['Iris','Iris','Puderig, kühl, teuer wirkend.'],
+    ['Tonka','Tonka','Mandel, Heu, süßliche Wärme.'],
+    ['Zimt','Zimt','Scharf-süße Küchenwärme.'],
+    ['Zitrone','Zitrone','Spritzig und hell.'],
+    ['Lavendel','Lavendel','Kräuterig-sauber, klassisch maskulin.'],
+    ['Eichenmoos','Eichenmoos','Waldboden, das Rückgrat der Chypres.'],
+    ['Oud','Oud','Agarholz: medizinisch, dunkel, polarisierend.'],
+    ['Kardamom','Kardamom','Grün-würzig, elegant.'],
+    ['Tabak','Tabak','Getrocknetes Blatt, honigsüß.'],
+    ['Safran','Safran','Ledrig-würzig, leicht metallisch.'],
+    ['Orangenblüte','Orangenblüte','Sonnig, weich, leicht seifig.'],
+    ['Grapefruit','Grapefruit','Bitter-frische Zitrusnote.'],
+    ['Honig','Honig','Klebrig-warm, fast animalisch.'],
+    ['Rum','Rum','Alkoholisch-süße Wärme.'],
+    ['Ylang-Ylang','Ylang-Ylang','Cremige, exotische Blüte.'],
+    ['Tuberose','Tuberose','Die lauteste weiße Blüte überhaupt.'],
+    ['Kaffee','Kaffee','Geröstet, bitter, gourmandig.'],
+    ['Kakao','Kakao','Dunkle Schokolade, trocken.'],
+    ['Kokos','Kokos','Sonnencreme und Strand.'],
+    ['Pfirsich','Pfirsich','Samtig, saftig, sommerlich.']
+  ]}
+);
+
 /* Die Abneigungsfrage nutzt dieselben Referenzdüfte wie die Ankerfrage. */
 Q.find(q=>q.id==='anchorneg').o = Q.find(q=>q.id==='anchor').o.slice();
 
 /* Reihenfolge: erst die Bilder — die versteht jeder — dann die Duftfamilien
    mit ihrem Fachvokabular, vorbelegt aus genau diesen Bildern. */
-const ORDER = ['occ','season','mood','fam','sweet','nogo','sil','longevity','vibe','eff','bold','anchor','anchorneg','exp','frame'];
+const ORDER = ['occ','season','mood','fam','notes','sweet','nogo','sil','longevity','vibe','eff','bold','anchor','anchorneg','exp','frame'];
 Q.sort((x,y)=>ORDER.indexOf(x.id)-ORDER.indexOf(y.id));
 const NUMWORD = {13:'Dreizehn',14:'Vierzehn',15:'Fünfzehn',16:'Sechzehn',17:'Siebzehn'};
 
@@ -1220,6 +1371,50 @@ D.push(
 ["Aziyadé","Parfum d'Empire",["gourmand","amber","weihrauch"],["basar","honig"],5,5,4,["winter"],["abend","event"],["extrovertiert","sinnlich"],["waerme","statement"],"u",2,["suess"],"Dattel, Kardamom, Nelke, Ingwer, Myrrhe"]
 );
 
+/* ── Nachtrag 6: Aquatisch und Skin Scents (gemessene Luecken) ── */
+D.push(
+["Sel Marin","Heeley",["aquatisch","zitrus","gruen"],["ozean"],3,1,3,["sommer","fruehling"],["alltag","freizeit","signature"],["minimal","intellektuell"],["gepflegt","kopfkino"],"u",2,["aquatisch"],"Meersalz, Zitrone, Algen, Vetiver, Ingwer"],
+["Eau de Gaga","Lady Gaga",["moschus","zitrus","leder"],["waesche"],2,2,2,["ganzjahr"],["alltag","signature"],["minimal"],["gepflegt"],"u",1,[],"Limette, Veilchenblatt, weißes Leder, Moschus"],
+["Aqua Celestia","Maison Francis Kurkdjian",["zitrus","gruen","moschus"],["ozean","waesche"],3,2,1,["sommer","fruehling"],["alltag","freizeit","signature"],["minimal","sportlich"],["gepflegt"],"u",3,[],"Limette, Minze, Mimose, Moschus"],
+["Aqua Vitae","Maison Francis Kurkdjian",["zitrus","holzig","moschus"],["waesche","asphalt"],3,2,1,["sommer","ganzjahr"],["alltag","signature"],["minimal","klassisch"],["gepflegt"],"u",3,[],"Bergamotte, Zitrone, Zeder, Tonka, Moschus"],
+["Petit Matin","Maison Francis Kurkdjian",["zitrus","aromatisch","moschus"],["waesche","kraeuter"],3,1,1,["fruehling","sommer"],["alltag","event","signature"],["minimal","klassisch"],["gepflegt"],"u",3,[],"Zitrone, Weißdorn, Lavendel, Ambroxan, Moschus"],
+["Bergamote Soleil","Atelier Cologne",["zitrus","aromatisch"],["kraeuter","salzhaut"],3,2,1,["sommer"],["freizeit","alltag"],["sportlich","minimal"],["gepflegt"],"u",1,[],"Bergamotte, Basilikum, Muskatellersalbei, Vetiver"],
+["Vanille Insensée","Atelier Cologne",["gourmand","zitrus","gruen"],["cremig","kraeuter"],3,3,2,["sommer","ganzjahr"],["alltag","signature"],["minimal","kreativ"],["gepflegt","waerme"],"u",1,["vanille"],"Limette, Koriander, Vanille, Eichenmoos, Vetiver"],
+["Acqua di Sale","Profumum Roma",["aquatisch","gruen","moschus"],["ozean","salzhaut"],4,1,3,["sommer"],["freizeit","alltag"],["minimal","kreativ"],["kopfkino","gepflegt"],"u",3,["aquatisch"],"Meersalz, Myrte, Algen, Moschus"],
+["Blu Mediterraneo Arancia","Acqua di Parma",["zitrus","gruen"],["kraeuter","salzhaut"],2,2,1,["sommer"],["freizeit","alltag"],["sportlich","minimal"],["gepflegt"],"u",2,[],"Orange, Kardamom, Zeder, Karamell"],
+["Bois Marin","Sana Jardin",["aquatisch","holzig","gruen"],["ozean"],3,1,3,["sommer","fruehling"],["alltag","freizeit"],["minimal","intellektuell"],["gepflegt"],"u",2,["aquatisch"],"Meersalz, Salbei, Treibholz, Ambrette"],
+["Virgin Island Water Cologne","Creed",["zitrus","aquatisch","gourmand"],["salzhaut","ozean"],3,3,1,["sommer"],["freizeit"],["sportlich","extrovertiert"],["kopfkino"],"u",4,["aquatisch"],"Limette, Kokos, Zuckerrohr, Meeresnoten"],
+["Sable Nu","Chabaud",["gourmand","moschus","amber"],["cremig","salzhaut"],3,4,2,["sommer","herbst"],["alltag","abend"],["sinnlich","minimal"],["waerme","verfuehrung"],"u",2,["suess","vanille"],"Kokosmilch, Vanille, Sandelholz, Moschus, Salz"],
+["Salted Caramel Musk","Zoologist",["gourmand","moschus"],["cremig","honig"],3,4,3,["herbst","winter"],["alltag","abend"],["sinnlich","kreativ"],["waerme"],"u",2,["suess"],"Karamell, Meersalz, Moschus, Mandel, Sandelholz"],
+["Musc Nomade","Annick Goutal",["moschus","amber","holzig"],["waesche","cremig"],2,2,3,["ganzjahr"],["alltag","signature"],["minimal","sinnlich"],["gepflegt","verfuehrung"],"u",2,[],"Ambrette, weißer Moschus, Papyrus, Amber"],
+["Musc Maori","Parfum d'Empire",["moschus","gourmand","holzig"],["cremig","waesche"],2,3,3,["ganzjahr","herbst"],["alltag","abend","signature"],["minimal","sinnlich"],["verfuehrung","gepflegt"],"u",2,["vanille"],"Kakao, Vanille, Moschus, Sandelholz, Patschuli"],
+["Musc Tonkin","Parfum d'Empire",["moschus","amber","leder"],["cremig","honig"],3,2,5,["herbst","winter"],["abend"],["rebellisch","sinnlich"],["verfuehrung","statement"],"u",3,["animalisch"],"Moschus, Zibet-Akkord, Honig, Leder, Amber"],
+["Cashmere Mist","Donna Karan",["moschus","floral","gourmand"],["waesche","cremig"],2,3,1,["ganzjahr"],["alltag","signature"],["minimal","sinnlich"],["gepflegt","waerme"],"f",1,["pudrig","vanille"],"Moschus, Jasmin, Sandelholz, Vanille, Bergamotte"],
+["Skin Musk","Bonne Bell",["moschus"],["waesche","cremig"],2,2,2,["ganzjahr"],["alltag","signature"],["minimal"],["gepflegt"],"u",1,[],"Weißer Moschus, Puder, Vanille"],
+["Glossier You","Glossier",["moschus","amber","floral"],["waesche","cremig"],2,3,2,["ganzjahr"],["alltag","signature"],["minimal","sinnlich"],["gepflegt","waerme"],"u",1,[],"Ambrette, Iris, rosa Pfeffer, Moschus"],
+["Baie 19 Eau de Parfum","Le Labo",["gruen","moschus","zitrus"],["asphalt","waesche"],2,1,3,["fruehling","sommer"],["alltag","freizeit"],["minimal","kreativ"],["kopfkino"],"u",3,[],"Wacholderbeere, Petrichor, Angelika, Moschus"],
+["Ambrette 9","Le Labo",["moschus","floral"],["waesche","cremig"],2,2,2,["ganzjahr","fruehling"],["alltag","signature"],["minimal"],["gepflegt"],"u",3,["pudrig"],"Ambrette, Moschus, Bergamotte, Iris"],
+["Musc 25","Le Labo",["moschus","floral","amber"],["waesche","iris"],3,2,4,["ganzjahr"],["abend","alltag"],["kreativ","intellektuell"],["kopfkino","gepflegt"],"u",3,["animalisch"],"Weißer Moschus, Aldehyde, Zibet-Akkord, Amber"],
+["Vetiver 46","Le Labo",["gruen","weihrauch","holzig"],["waldboden","weihrauch"],3,1,4,["herbst","winter"],["alltag","abend"],["intellektuell","minimal"],["gepflegt","kopfkino"],"u",3,["rauchig"],"Vetiver, Weihrauch, Pfeffer, Zeder, Gewürznelke"],
+["Patchouli 24","Le Labo",["leder","weihrauch","holzig"],["kamin","bibliothek"],4,2,5,["winter","herbst"],["abend"],["rebellisch","intellektuell"],["statement","kopfkino"],"u",3,["rauchig","patchouli"],"Birkenteer, Styrax, Vanille, Patschuli, Leder"],
+["Silver Iris","Nishane",["floral","moschus","holzig"],["iris","waesche"],3,2,3,["ganzjahr","fruehling"],["alltag","event"],["minimal","intellektuell"],["gepflegt"],"u",2,["pudrig"],"Iris, Ambrette, Sandelholz, Moschus"],
+["Kashnoir","Nishane",["gourmand","amber","holzig"],["cremig","honig"],3,4,3,["herbst","winter"],["abend","alltag"],["sinnlich","kreativ"],["waerme","verfuehrung"],"u",2,["suess","vanille"],"Kaschmirholz, Vanille, Tonka, Kakao, Moschus"],
+["Blackpepper","Comme des Garçons",["holzig","aromatisch"],["asphalt","kraeuter"],3,1,4,["ganzjahr","herbst"],["alltag","abend"],["minimal","rebellisch"],["kopfkino","gepflegt"],"u",2,[],"Schwarzer Pfeffer, Nelke, Zeder, Vetiver"],
+["Musc Invisible Extrait","Juliette Has a Gun",["moschus","gourmand","floral"],["waesche","cremig"],2,3,1,["ganzjahr"],["alltag","signature"],["minimal","sinnlich"],["gepflegt","waerme"],"u",2,[],"Birne, Orangenblüte, Moschus, Zeder, Vanille"],
+["Another 13 Extrait","Le Labo",["moschus","amber"],["waesche","cremig"],3,2,3,["ganzjahr"],["alltag","abend","signature"],["minimal","sinnlich"],["gepflegt","verfuehrung"],"u",4,[],"Ambroxan, Moschus, Jasmin, Moos"],
+["Cristalle Eau Verte","Chanel",["gruen","zitrus","floral"],["kraeuter","waesche"],2,1,2,["sommer","fruehling"],["alltag","freizeit"],["minimal","klassisch"],["gepflegt"],"f",2,[],"Zitrone, Jasmin, Basilikum, Vetiver"],
+["Eau de Cartier","Cartier",["zitrus","gruen","moschus"],["waesche","kraeuter"],2,1,1,["sommer","fruehling"],["alltag","freizeit","signature"],["minimal","sportlich"],["gepflegt"],"u",1,[],"Lavendel, Veilchenblatt, Zeder, Patschuli, Moschus"],
+["Cologne Indélébile","Frédéric Malle",["zitrus","floral","moschus"],["waesche"],3,1,2,["sommer","fruehling","ganzjahr"],["alltag","event","signature"],["minimal","klassisch"],["gepflegt"],"u",3,[],"Orangenblüte, Neroli, weißer Moschus, Bergamotte"],
+["Eau de Magnolia","Frédéric Malle",["floral","zitrus","chypre"],["bluete","kraeuter"],3,2,2,["fruehling","sommer"],["alltag","event"],["minimal","klassisch"],["gepflegt"],"u",3,[],"Magnolie, Grapefruit, Zeder, Eichenmoos"],
+["Angéliques Sous La Pluie","Frédéric Malle",["gruen","aromatisch","moschus"],["asphalt","kraeuter"],2,1,3,["fruehling","sommer"],["alltag","signature"],["minimal","intellektuell"],["gepflegt","kopfkino"],"u",3,[],"Angelika, Wacholder, Koriander, Zeder, Moschus"],
+["Vetyverio","Diptyque",["gruen","holzig","floral"],["waldboden","kraeuter"],3,1,2,["fruehling","ganzjahr"],["alltag","signature"],["minimal","klassisch"],["gepflegt"],"u",2,[],"Vetiver, Geranie, Muskatnuss, Zeder"],
+["Fleur de Peau","Diptyque",["moschus","floral","leder"],["waesche","iris"],3,2,3,["ganzjahr"],["abend","alltag"],["sinnlich","minimal"],["verfuehrung","gepflegt"],"u",2,["pudrig"],"Iris, Ambrette, Moschus, Wildleder, rosa Pfeffer"],
+["Eau Duelle","Diptyque",["gourmand","weihrauch","moschus"],["cremig","weihrauch"],3,3,2,["ganzjahr","herbst"],["alltag","abend","signature"],["minimal","kreativ"],["waerme","gepflegt"],"u",2,["vanille"],"Vanille, Weihrauch, Bergamotte, schwarzer Tee"],
+["Sunny Escape","Byredo",["gourmand","floral","moschus"],["cremig","salzhaut"],3,4,2,["sommer"],["freizeit","alltag"],["sinnlich","kreativ"],["waerme","kopfkino"],"u",2,["suess"],"Kokos, Ylang-Ylang, Sonnencreme-Akkord, Moschus"],
+["Blanche Extrait","Byredo",["moschus","floral"],["waesche"],2,1,2,["ganzjahr","fruehling"],["alltag","signature"],["minimal"],["gepflegt"],"f",3,["aldehyde","pudrig"],"Aldehyde, Pfingstrose, Moschus, Sandelholz"],
+["Silver Mountain Water Cologne","Creed",["zitrus","aquatisch","moschus"],["ozean","waesche"],2,1,1,["sommer"],["alltag","freizeit"],["minimal","sportlich"],["gepflegt"],"u",4,["aquatisch"],"Bergamotte, grüner Tee, Meeresnoten, Moschus"]
+);
+
 const F = D.map(a=>({n:a[0],h:a[1],fam:a[2],mood:a[3].slice(),sil:a[4],sweet:a[5],bold:a[6],seas:a[7],occ:a[8],vibe:a[9],eff:a[10],g:a[11],p:a[12],tags:a[13],notes:a[14]}));
 
 /* Vier Szenen werden aus Familien und Noten abgeleitet, damit sie nicht
@@ -1229,7 +1424,13 @@ F.forEach(f=>{
   const fam = k => f.fam.includes(k);
   const add = k => { if(!f.mood.includes(k)) f.mood.push(k); };
   if(fam('zitrus') && re('Zitrone|Bergamotte|Limette|Mandarine|Grapefruit|Orange|Zedrat|Petitgrain|Yuzu|Zitrus'))  add('zitrusgarten');
-  if(fam('floral') && re('Neroli|Orangenblüte|Jasmin|Tuberose|Ylang|Pfingstrose|Freesie|Magnolie|Lilie|Maiglöckchen|Gardenie|Narzisse|Osmanthus')) add('bluete');
+  if(fam('floral') && f.sil<=3 && re('Neroli|Orangenblüte|Pfingstrose|Freesie|Magnolie|Lilie|Maiglöckchen|Kirschblüte|Mimose|Veilchen')) add('bluete');
+  if(fam('floral') && f.sil>=4 && re('Tuberose|Jasmin|Ylang|Gardenie|Narzisse|Orangenblüte|Osmanthus')) add('nachtblueten');
+  if((fam('gourmand')||fam('amber')||fam('moschus')) && re('Vanille|Kokos|Milch|Mandel|Tonka|Karamell|Praline|Heliotrop|Kaschmir|Benzoe')) add('cremig');
+  if((fam('chypre')||fam('gruen')||fam('holzig')) && re('Eichenmoos|Moos|Patschuli|Farn|Zypresse|Kiefer|Tanne|Hemlock|Papyrus|Vetiver')) add('waldboden');
+  if(re('Pfirsich|Birne|Pflaume|Aprikose|Himbeere|Beere|Johannisbeere|Litschi|Apfel|Mango|Ananas|Kirsche|Melone|Rhabarber|Quitte')) add('obstgarten');
+  if(re('Feige')) add('feige');
+  if(re('Rauch|Birkenteer|Lagerfeuer|Whisky|Cognac|Torf|Kastanie|Guajak')) add('kamin');
   if(fam('aquatisch') || re('Meersalz|Meeresnoten|Salzluft|Salznote|Kelp|Ozon|Küstenmoos')) add('ozean');
   if((fam('amber')||fam('weihrauch')) && re('Zimt|Safran|Kardamom|Nelke|Muskat|Myrrhe|Labdanum|Weihrauch|Benzoe|Opoponax|Styrax|Harz')) add('basar');
 });
@@ -1249,7 +1450,30 @@ const ANCHORS = {
   a_philosykos:{n:'Philosykos',fam:['gruen','holzig'],mood:['feige','kraeuter'],sweet:2,sil:3,bold:2},
   a_no5:{n:'N°5',fam:['floral','moschus'],mood:['iris','waesche'],sweet:3,sil:4,bold:3},
   a_coco:{n:'Coco Mademoiselle',fam:['chypre','zitrus','floral'],mood:['iris'],sweet:3,sil:4,bold:2},
-  a_ombre:{n:'Ombre Nomade',fam:['weihrauch','holzig','floral'],mood:['weihrauch','kamin'],sweet:3,sil:5,bold:4}
+  a_ombre:{n:'Ombre Nomade',fam:['weihrauch','holzig','floral'],mood:['weihrauch','kamin'],sweet:3,sil:5,bold:4},
+  a_lemale:{n:'Le Male',fam:['aromatisch','gourmand','amber'],mood:['honig','waesche'],sweet:4,sil:5,bold:2},
+  a_1million:{n:'1 Million',fam:['gourmand','amber','zitrus'],mood:['honig'],sweet:5,sil:5,bold:2},
+  a_eros:{n:'Eros',fam:['gourmand','aromatisch','holzig'],mood:['honig'],sweet:5,sil:5,bold:2},
+  a_dh:{n:'Dior Homme Intense',fam:['floral','holzig','gourmand'],mood:['iris'],sweet:3,sil:4,bold:3},
+  a_lanuit:{n:"La Nuit de l'Homme",fam:['aromatisch','amber','holzig'],mood:['kraeuter'],sweet:3,sil:4,bold:1},
+  a_adgp:{n:'Acqua di Giò Profumo',fam:['aquatisch','weihrauch','holzig'],mood:['ozean','salzhaut'],sweet:1,sil:4,bold:2},
+  a_git:{n:'Green Irish Tweed',fam:['gruen','aromatisch','holzig'],mood:['kraeuter'],sweet:1,sil:4,bold:2},
+  a_layton:{n:'Layton',fam:['amber','gourmand','aromatisch'],mood:['honig'],sweet:4,sil:4,bold:2},
+  a_interlude:{n:'Interlude Man',fam:['weihrauch','holzig','leder'],mood:['weihrauch','kamin'],sweet:1,sil:5,bold:5},
+  a_ofg:{n:'Oud for Greatness',fam:['holzig','weihrauch','aromatisch'],mood:['weihrauch','kamin'],sweet:2,sil:5,bold:4},
+  a_tamdao:{n:'Tam Dao',fam:['holzig','weihrauch'],mood:['weihrauch','bibliothek'],sweet:1,sil:2,bold:2},
+  a_mol01:{n:'Molecule 01',fam:['holzig','moschus'],mood:['waesche','asphalt'],sweet:0,sil:2,bold:3},
+  a_gypsy:{n:'Gypsy Water',fam:['holzig','weihrauch','zitrus'],mood:['kamin','kraeuter'],sweet:2,sil:2,bold:2},
+  a_angel:{n:'Angel',fam:['gourmand','chypre'],mood:['honig','cremig'],sweet:5,sil:5,bold:5},
+  a_flowerbomb:{n:'Flowerbomb',fam:['floral','gourmand'],mood:['honig','iris'],sweet:5,sil:5,bold:3},
+  a_goodgirl:{n:'Good Girl',fam:['gourmand','floral','amber'],mood:['honig','iris'],sweet:5,sil:5,bold:3},
+  a_lveb:{n:'La Vie Est Belle',fam:['gourmand','floral'],mood:['iris','honig'],sweet:5,sil:5,bold:2},
+  a_shalimar:{n:'Shalimar',fam:['amber','gourmand','zitrus'],mood:['honig','iris'],sweet:4,sil:5,bold:4},
+  a_opium:{n:'Opium',fam:['amber','gourmand','weihrauch'],mood:['basar','honig'],sweet:4,sil:5,bold:5},
+  a_pol:{n:'Portrait of a Lady',fam:['floral','chypre','weihrauch'],mood:['weihrauch','iris'],sweet:3,sil:5,bold:4},
+  a_erbapura:{n:'Erba Pura',fam:['zitrus','gourmand','moschus'],mood:['salzhaut','obstgarten'],sweet:4,sil:4,bold:1},
+  a_khamrah:{n:'Khamrah',fam:['gourmand','amber','holzig'],mood:['honig','basar','cremig'],sweet:5,sil:5,bold:3},
+  a_wsss:{n:'Wood Sage & Sea Salt',fam:['gruen','aquatisch','moschus'],mood:['salzhaut','ozean'],sweet:1,sil:2,bold:2}
 };
 
 /* ═══ 3 — Engine ═══════════════════════════════════════════ */
@@ -1258,20 +1482,27 @@ Q.forEach(q=>{
   (q.o||[]).forEach(o=>LBL[o[0]]=o[1]);
   (q.groups||[]).forEach(g=>g.o.forEach(o=>LBL[g.key+':'+o[0]]=o[1]));
 });
-const MOODLBL = {zitrusgarten:'Zitrusgarten',kamin:'Kaminfeuer & Whisky',bibliothek:'alte Bibliothek',feige:'Feigenbaum im Schatten',bluete:'Blütenbaum',weihrauch:'Weihrauch in Stein',ozean:'kalte Gischt',waesche:'frische Wäsche',salzhaut:'salzige Haut',basar:'Gewürzbasar',honig:'Honig & Tabak',iris:'puderige Iris',asphalt:'Regen auf heißem Stein',kraeuter:'zerriebene Kräuter'};
+const MOODLBL = {zitrusgarten:'Zitrusgarten',kamin:'Kaminfeuer & Whisky',bibliothek:'alte Bibliothek',feige:'Feigenbaum im Schatten',bluete:'Blütenbaum',weihrauch:'Weihrauch in Stein',ozean:'kalte Gischt',waesche:'frische Wäsche',cremig:'Sonnencreme auf warmer Haut',waldboden:'Waldboden nach dem Regen',obstgarten:'Obstgarten im Spätsommer',nachtblueten:'Nachtblüten',salzhaut:'salzige Haut',basar:'Gewürzbasar',honig:'Honig & Tabak',iris:'puderige Iris',asphalt:'Regen auf heißem Stein',kraeuter:'zerriebene Kräuter'};
 const FAMLBL = {zitrus:'Zitrisch',gruen:'Grün',aromatisch:'Aromatisch',floral:'Floral',holzig:'Holzig',weihrauch:'Weihrauch',amber:'Amber',gourmand:'Gourmand',leder:'Leder',chypre:'Chypre',aquatisch:'Aquatisch',moschus:'Moschus'};
 const FAMCOL = {zitrus:'#F2C230',gruen:'#57A93F',aromatisch:'#86B14B',floral:'#E85D9B',holzig:'#A9713F',weihrauch:'#6D7B8C',amber:'#F09A2B',gourmand:'#D2603C',leder:'#7A5230',chypre:'#3FA98C',aquatisch:'#2F8BC9',moschus:'#B9A6C9'};
 const SILV = {skin:1,dezent:2,praesent:3.5,raumfuellend:5};
 const BOLDV = {crowdpleaser:1.4,ausgewogen:2.4,eigenwillig:3.5,polarisierend:4.7};
 const SWEETV = {trocken:.5,dezent:2,deutlich:3.5,dekadent:5};
-const SPLITCOL = {fam:'#F09A2B',mood:'#7B5AD9',occ:'#F4643C',sil:'#2F8BC9',bold:'#D83A45',sweet:'#E85D9B',anchor:'#17A2A2',lg:'#B5651D'};
-const SPLITLBL = {fam:'Duftfamilien',mood:'Bilder',occ:'Anlass & Saison',sil:'Präsenz',bold:'Wagemut',sweet:'Süße',anchor:'Ankerduft',lg:'Haltbarkeit'};
+const SPLITCOL = {fam:'#F09A2B',mood:'#7B5AD9',occ:'#F4643C',sil:'#2F8BC9',bold:'#D83A45',sweet:'#E85D9B',notes:'#3FA98C',anchor:'#17A2A2',lg:'#B5651D'};
+const SPLITLBL = {fam:'Duftfamilien',mood:'Bilder',occ:'Anlass & Saison',sil:'Präsenz',bold:'Wagemut',sweet:'Süße',notes:'Lieblingsnoten',anchor:'Ankerduft',lg:'Haltbarkeit'};
 
 const state = {step:-1, a:{}, fb:{}};
 const inter = (a,b)=>a.filter(x=>b.includes(x));
 
 /* Harmonisches Mittel aus Abdeckung (wie viel deiner Wahl trifft der Duft)
    und Reinheit (wie viel des Dufts ist deine Wahl). 0 wenn nichts trifft. */
+/* Schwerpunkt: Die vom Nutzer als wichtigste benannte Dimension zaehlt
+   anderthalbfach. Ohne Angabe bleibt alles gleichgewichtig. */
+function focusW(a){
+  const W = {fam:1, mood:1, occ:1, sil:1, sweet:1};
+  if(a.focus && W[a.focus] !== undefined) W[a.focus] = 1.5;
+  return W;
+}
 function f1(hits, chosen, own){
   if(!hits) return 0;
   const recall = hits/chosen, precision = hits/Math.max(1,own);
@@ -1295,13 +1526,24 @@ function score(f,a,anc,ctx){
   /* Zweiseitiges Maß: zählt nicht nur, wie viel von deiner Wahl der Duft
      abdeckt, sondern auch, wie sehr der Duft genau das IST. Sonst verliert
      ein reiner Zitrusduft gegen einen, der Zitrus nur nebenbei mitführt. */
-  p.fam   = 22 * f1(famHit.length, a.fam.length, f.fam.length);
-  p.mood  = 16 * f1(moodHit.length, a.mood.length, Math.min(f.mood.length,4));
-  p.occ   = occHit.length/a.occ.length * 12 + (seasOk ? 8 : 0);
-  p.sil   = Math.max(0, 10 - Math.abs(f.sil - sT)*4);
+  const W = focusW(a);
+  p.fam   = 22 * W.fam * f1(famHit.length, a.fam.length, f.fam.length);
+  p.mood  = 16 * W.mood * f1(moodHit.length, a.mood.length, Math.min(f.mood.length,4));
+  /* Auch Anlass zweiseitig: Ein Duft, der fuer alles ausgelobt ist, soll
+     nicht automatisch jeden Anlass gewinnen. */
+  p.occ   = W.occ * (12 * f1(occHit.length, a.occ.length, Math.min(f.occ.length,3)) + (seasOk ? 8 : 0));
+  p.sil   = W.sil * Math.max(0, 10 - Math.abs(f.sil - sT)*4);
   /* Milder Abzug: schlichte Bauart ist kein Makel, nur eine Abweichung. */
   p.bold  = Math.max(0, 10 - Math.abs(f.bold - bT)*2.7);
-  p.sweet = Math.max(0, 9 - Math.abs(f.sweet - wT)*3);
+  p.sweet = W.sweet * Math.max(0, 9 - Math.abs(f.sweet - wT)*3);
+  /* Notenebene: die konkreteste Angabe, die jemand machen kann. */
+  p.notes = 0;
+  if(a.notes && a.notes.length){
+    const low = String(f.notes).toLowerCase();
+    let treffer = 0;
+    a.notes.forEach(function(n){ if(low.indexOf(n.toLowerCase()) >= 0) treffer++; });
+    p.notes = treffer/a.notes.length * 16;
+  }
   p.anchor = 0;
   if(anc){
     const af = inter(anc.fam,f.fam).length/anc.fam.length;
@@ -1314,11 +1556,11 @@ function score(f,a,anc,ctx){
        : a.longevity==='ewig'    ? Math.max(0, 6 - Math.abs(2.6 - lg)*1.6)
        : 4;
   let other = 0;
-  other += vibeHit.length/a.vibe.length * 8;
-  other += effHit.length/a.eff.length * 8;
+  other += 8 * f1(vibeHit.length, a.vibe.length, Math.min(f.vibe.length,3));
+  other += 8 * f1(effHit.length, a.eff.length, Math.min(f.eff.length,2));
   other += a.gender==='egal' ? 4 : (f.g===a.gender ? 6 : (f.g==='u' ? 5 : -9));
   const bud = +a.budget;
-  other += f.p<=bud ? 6 : Math.max(-8, 6-(f.p-bud)*5);
+  other += f.p<=bud ? 6 : -3;          /* Ausschluss passiert in rank(), nicht hier */
   if(a.exp==='einsteiger'){ other += f.bold>=4.5 ? -7 : (f.bold<=3 ? 3 : 0); }
   if(a.exp==='sammler'){ other += f.bold>=4 ? 5 : 0; other += (f.p<=1 && f.bold<=2) ? -5 : 0; }
   if(ctx){
@@ -1329,12 +1571,14 @@ function score(f,a,anc,ctx){
     if(ctx.likeFam.length) other += inter(ctx.likeFam,f.fam).length/ctx.likeFam.length * 9;
     if(ctx.disFam.length)  other -= inter(ctx.disFam,f.fam).length/ctx.disFam.length * 11;
   }
-  const s = p.fam+p.mood+p.occ+p.sil+p.bold+p.sweet+p.anchor+p.lg+other;
+  const s = p.fam+p.mood+p.occ+p.sil+p.bold+p.sweet+p.notes+p.anchor+p.lg+other;
   return {f, s, parts:p, other, famHit, moodHit, occHit, vibeHit, effHit, seasOk, sT, bT, wT};
 }
 
 function maxScore(a,anc){
-  let m = 22+16+20+10+10+9+6+8+8+6+6;    /* fam mood occ+seas sil bold sweet lg vibe eff gender budget */
+  const W = focusW(a);
+  let m = 22*W.fam + 16*W.mood + 20*W.occ + 10*W.sil + 10 + 9*W.sweet + 6 + 8 + 8 + 6 + 6;
+  if(a.notes && a.notes.length) m += 16;
   if(anc) m += 12;
   if(a.exp==='einsteiger') m += 3;
   if(a.exp==='sammler') m += 5;
@@ -1352,8 +1596,15 @@ function rank(a){
   const disNames = Object.entries(state.fb||{}).filter(e=>e[1]<0).map(e=>e[0]);
   const ctx = {negFam, negMood, likeFam:fb.likeFam, disFam:fb.disFam};
   const skip = new Set([...ancNames, ...negNames, ...disNames]);
-  const blocked = f => inter(a.nogo,f.tags).length>0 || skip.has(f.n);
+  /* Budget ist eine harte Grenze, kein Abzug — sonst landen teure Düfte
+     trotzdem in der Liste. Nur wenn dadurch zu wenig übrig bleibt, wird
+     um ein Preisband gelockert. */
+  const bud = +a.budget;
+  const ueberBudget = f => bud < 4 && f.p > bud;
+  const grund = f => inter(a.nogo,f.tags).length>0 || skip.has(f.n);
+  const blocked = f => grund(f) || ueberBudget(f);
   let pool = F.filter(f=>!blocked(f));
+  if(pool.length < 25) pool = F.filter(f=>!grund(f) && (bud>=4 || f.p <= bud+1));
   if(pool.length < 15) pool = F.filter(f=>!skip.has(f.n));
   const MAX = maxScore(a,anc);
   return {list: pool.map(f=>score(f,a,anc,ctx)).sort((x,y)=>y.s-x.s), MAX, anc};
@@ -1430,7 +1681,7 @@ function radarFromAnswers(a){
   const hf = k=>a.fam.includes(k)?1:0, hm = k=>a.mood.includes(k)?1:0;
   return [
     Math.min(1,(hf('zitrus')+hf('aquatisch')+hm('zitrusgarten')+hm('ozean')+hm('salzhaut')+hm('asphalt'))/2.5),
-    Math.min(1,(hf('gruen')+hf('aromatisch')+hm('kraeuter')+hm('feige'))/2.5),
+    Math.min(1,(hf('gruen')+hf('aromatisch')+hm('kraeuter')+hm('feige')+hm('waldboden'))/2.5),
     Math.min(1,(hf('amber')+hf('leder')+hf('holzig')+hm('honig')+hm('kamin')+hm('basar'))/3),
     SWEETV[a.sweet]/5,
     Math.min(1,(hf('weihrauch')+hm('weihrauch')+hm('kamin'))/2),
@@ -1441,7 +1692,7 @@ function radarFromFragrance(f){
   const hf = k=>f.fam.includes(k)?1:0, hm = k=>f.mood.includes(k)?1:0;
   return [
     Math.min(1,(hf('zitrus')+hf('aquatisch')+hm('zitrusgarten')+hm('ozean')+hm('salzhaut')+hm('asphalt'))/2.5),
-    Math.min(1,(hf('gruen')+hf('aromatisch')+hm('kraeuter')+hm('feige'))/2.5),
+    Math.min(1,(hf('gruen')+hf('aromatisch')+hm('kraeuter')+hm('feige')+hm('waldboden'))/2.5),
     Math.min(1,(hf('amber')+hf('leder')+hf('holzig')+hm('honig')+hm('kamin')+hm('basar'))/3),
     f.sweet/5,
     Math.min(1,(hf('weihrauch')+hm('weihrauch')+hm('kamin'))/2),
@@ -1563,6 +1814,7 @@ function renderStep(){
     <p class="sub">${esc(q.sub)}</p>
     ${q.id==='fam' && state.a._famAuto ? `<p class="note">Aus deinen Szenen <b>vorbelegt</b> — ${esc(state.a.fam.map(k=>FAMLBL[k]).join(', '))}. Ändere frei, was nicht stimmt.</p>` : ''}
     <div id="conflicts"></div>
+    ${q.searchable?'<input class="qsearch" id="qsearch" type="search" placeholder="Duft suchen, z. B. Santal …" autocomplete="off">':''}
     ${body}
     <div class="nav">
       <button class="ghost" id="back" ${state.step===0?'hidden':''}>← Zurück</button>
@@ -1571,7 +1823,10 @@ function renderStep(){
     </div>
   </div>`;
   stage.querySelectorAll('.opt').forEach(btn=>{
-    btn.onclick = ()=>pick(btn);
+    btn.onclick = ()=>{
+      pick(btn);
+      try{ if(navigator.vibrate) navigator.vibrate(8); }catch(e){}
+    };
     btn.onpointermove = e=>{
       const r = btn.getBoundingClientRect();
       btn.style.setProperty('--mx', (e.clientX-r.left)+'px');
@@ -1580,6 +1835,13 @@ function renderStep(){
   });
   const back = document.getElementById('back');
   if(back) back.onclick = ()=>{state.step--;renderStep();};
+  const qs = document.getElementById('qsearch');
+  if(qs) qs.oninput = ()=>{
+    const t = qs.value.trim().toLowerCase();
+    stage.querySelectorAll('.opt').forEach(b=>{
+      b.hidden = t.length>0 && b.textContent.toLowerCase().indexOf(t) === -1;
+    });
+  };
   document.getElementById('next').onclick = advance;
   syncNext();
 }
@@ -1627,6 +1889,12 @@ function syncNext(){
   } else if(q.kind==='group'){
     hint.innerHTML = `<span class="hintline">${q.groups.every(g=>state.a[g.key]) ? 'bereit' : 'beide Angaben nötig'}</span>`;
   } else hint.innerHTML = '';
+  /* Optionale Fragen: Der Knopf sagt ausdrücklich, dass man weiterdarf. */
+  if(q.optional && !(state.a[q.id]||[]).length){
+    btn.textContent = state.step===Q.length-1 ? 'Profil erstellen' : 'Überspringen';
+  } else {
+    btn.textContent = state.step===Q.length-1 ? 'Profil erstellen' : 'Weiter';
+  }
   renderConflicts();
 }
 
@@ -1653,6 +1921,8 @@ const MOOD2FAM = {
   zitrusgarten:['zitrus'], kamin:['holzig','leder'], bibliothek:['leder','holzig'],
   feige:['gruen'], bluete:['floral'], weihrauch:['weihrauch'], ozean:['aquatisch'],
   waesche:['moschus'], salzhaut:['moschus','zitrus'], basar:['amber'],
+  cremig:['gourmand','amber'], waldboden:['chypre','gruen'],
+  obstgarten:['floral','gourmand'], nachtblueten:['floral'],
   honig:['gourmand','amber'], iris:['floral'], asphalt:['holzig','zitrus'],
   kraeuter:['aromatisch','gruen']
 };
@@ -1818,10 +2088,52 @@ function passRadar(x,cx,cy,R,you,them,labelR){
   x.textAlign = 'left'; x.textBaseline = 'alphabetic';
 }
 
+/* Beratungstext: was eine Verkäuferin aus dem Profil ableiten soll. */
+function beraterText(a,anc){
+  const s = [];
+  const occ = a.occ.map(k=>LBL[k]);
+  const sea = a.season.includes('ganzjahr') ? 'ganzjährig' : 'vor allem im ' + listDe(a.season.map(k=>LBL[k]));
+  s.push('Gesucht wird ein Duft für ' + listDe(occ) + ', getragen ' + sea + '.');
+  s.push('Die Grundrichtung ist ' + listDe(a.fam.map(k=>FAMLBL[k]))
+    + '; in Bildern beschrieben: ' + listDe(a.mood.map(k=>MOODLBL[k])) + '.');
+  const silTxt = {skin:'soll kaum über die eigene Haut hinausgehen',dezent:'soll auf Armlänge wahrnehmbar bleiben',praesent:'darf im Raum spürbar sein',raumfuellend:'darf den Raum füllen'}[a.sil];
+  const swTxt = {trocken:'völlig ohne Süße',dezent:'mit höchstens einer Ahnung Süße',deutlich:'mit deutlicher, tragender Süße',dekadent:'ausdrücklich sehr süß'}[a.sweet];
+  s.push('Der Duft ' + silTxt + ' und ' + swTxt + '.');
+  if(a.longevity==='schnell') s.push('Wichtig: Auf dieser Haut hält Duft kaum — bitte Eau de Parfum oder Extrait zeigen, keine Eau de Toilette, und eher harzige oder ambrierte Basen.');
+  else if(a.longevity==='ewig') s.push('Auf dieser Haut hält Duft sehr lange — leichtere Konzentrationen genügen, schwere Basen können schnell zu viel werden.');
+  if(a.nogo.length) s.push('Nicht zeigen: ' + listDe(a.nogo.map(k=>LBL[k].toLowerCase())) + '. Das sind harte Ausschlüsse, keine Vorlieben.');
+  if(a.notes && a.notes.length) s.push('Ausdrücklich gewünschte Noten: ' + listDe(a.notes) + '. Diese bitte in der Komposition suchen.');
+  if(a.focus) s.push('Am wichtigsten ist dieser Person ' + {fam:'die Duftrichtung',sil:'die Präsenz',occ:'die Passung zum Anlass',sweet:'die Süße'}[a.focus] + ' — daran zuerst ausrichten.');
+  if(anc) s.push('Als Referenz dient ' + listDe(anc.names) + '.');
+  if(a.anchorneg && a.anchorneg.length) s.push('Ausdrücklich abgelehnt wurde ' + listDe(a.anchorneg.map(k=>ANCHORS[k]?ANCHORS[k].n:k)) + '.');
+  const exp = {einsteiger:'Wenig Erfahrung mit Nischendüften — mit Abfüllungen oder kleinen Größen arbeiten und nicht mehr als drei Düfte pro Termin zeigen.',
+               fortgeschritten:'Kennt die eigene Richtung und will sie schärfen — Vergleiche innerhalb einer Familie sind hilfreicher als Kontraste.',
+               sammler:'Erfahrene Sammlung vorhanden — Naheliegendes ist vermutlich bekannt, eher Ungewöhnliches zeigen.'}[a.exp];
+  if(exp) s.push(exp);
+  return s;
+}
+
+/* Notenkompass: welche Noten treffen, welche gar nicht. */
+function notenKompass(a, top){
+  const zaehl = {};
+  top.slice(0,10).forEach(function(r){
+    String(r.f.notes).split(',').forEach(function(n){
+      n = n.trim().replace(/-Akkord$/,'').replace(/^weiße[rn]? /,'').trim();
+      if(n.length>2) zaehl[n] = (zaehl[n]||0)+1;
+    });
+  });
+  const treffer = Object.keys(zaehl).sort(function(x,y){return zaehl[y]-zaehl[x]}).slice(0,14);
+  const meiden = (a.nogo||[]).map(function(k){return LBL[k]});
+  /* Bewusst nur die ausdrücklichen No-Gos: Wer einen Duft ablehnt, lehnt
+     nicht alle seine Duftfamilien ab - das wäre eine falsche Ansage
+     an die Beratung. Die abgelehnten Düfte stehen im Steckbrief. */
+  return {treffer:treffer, meiden:meiden};
+}
+
 function buildPass(name,blurb,a,anc,top,MAX){
   const W = 1080, M = 80, CW = W - 2*M;
   const PAPER='#FDF6F0', INK='#33262C', MID='#6E5C5C', DIM='#9A8781',
-        CORAL='#F4643C', TEAL='#17A2A2', LINE='#EBDCCF';
+        CORAL='#F4643C', TEAL='#17A2A2', GRUEN='#3FA98C', LINE='#EBDCCF';
   const FS = w => `600 ${w}px "Fraunces",Georgia,serif`;
   const DS = (w,s) => `${w} ${s}px "DM Sans",system-ui,sans-serif`;
   const MO = s => `500 ${s}px "DM Mono",monospace`;
@@ -1835,25 +2147,35 @@ function buildPass(name,blurb,a,anc,top,MAX){
   const cap = s => String(s).charAt(0).toUpperCase() + String(s).slice(1);
   const noTags = s => String(s).replace(/<[^>]+>/g,'');
 
-  /* ── 1. Inhalte und Zeilenumbrüche einmalig bestimmen ── */
+  /* ── Inhalte ── */
   const nameL  = passLines(m, name, CW, FS(70));
   const blurbL = passLines(m, blurb, CW, DS(400,26));
+  const beratL = beraterText(a,anc).map(t=>passLines(m, t, CW, DS(400,22)));
+  const komp = notenKompass(a, top);
+  const HALB = (CW-60)/2;
+  const treffL = passLines(m, komp.treffer.join(' · '), HALB, DS(500,21));
+  const meidL  = passLines(m, komp.meiden.length ? komp.meiden.join(' · ') : 'Keine Ausschlüsse angegeben.', HALB, DS(500,21));
 
-  const RAD_R = 142, RAD_LBL = 178, RAD_CX = M + RAD_R + 100;  /* so bleiben auch die linken Achsentitel im Satzspiegel */
-  const IX = M + 470, IW = W - M - IX;                          /* Deutungsspalte rechts */
-
+  const RAD_R = 142, RAD_LBL = 178, RAD_CX = M + RAD_R + 100;
+  const IX = M + 470, IW = W - M - IX;
   const rar = rarity(a), sens = sensitivity(a, top), blind = blindSpots(a, top), tens = tensions(a);
   const ins = [];
-  ins.push(['Wie eng deine Ecke ist',
-    `${rar.pct} % der Auswahl treffen dieses Muster — ${rar.n} von ${F.length} Düften.`]);
-  if(sens.length) ins.push(['Größter Hebel',
-    `${cap(sens[0].label)}: eine andere Antwort dort tauscht ${sens[0].churn} % der Empfehlungen aus.`]);
-  if(blind.length) ins.push(['Blinder Fleck',
-    `${blind[0].fam} nie angekreuzt, prägt aber ${blind[0].n} der 10 Treffer.`]);
+  ins.push(['Wie eng diese Ecke ist', rar.pct + ' % der Auswahl treffen dieses Muster — ' + rar.n + ' von ' + F.length + ' Düften.']);
+  if(sens.length) ins.push(['Größter Hebel', cap(sens[0].label) + ': eine andere Antwort dort tauscht ' + sens[0].churn + ' % der Empfehlungen aus.']);
+  if(blind.length) ins.push(['Blinder Fleck', blind[0].fam + ' nie angekreuzt, prägt aber ' + blind[0].n + ' der 10 Treffer.']);
   if(tens.length && ins.length < 4) ins.push([tens[0][0], noTags(tens[0][1])]);
   const insL = ins.map(t=>({ head:t[0], lines:passLines(m, t[1], IW, DS(400,20)) }));
+  const capL = passLines(m, 'Fläche: dieses Profil · Linie: ' + top[0].f.n, RAD_R*2 + 40, DS(400,17));
 
-  const capL = passLines(m, 'Fläche: dein Profil · Linie: ' + top[0].f.n, RAD_R*2 + 40, DS(400,17));
+  const famZ = {}; top.slice(0,10).forEach(r=>r.f.fam.forEach(k=>famZ[k]=(famZ[k]||0)+1));
+  const famGes = Object.keys(famZ).reduce((s,k)=>s+famZ[k],0) || 1;
+  const famS = Object.keys(famZ).sort((x,y)=>famZ[y]-famZ[x]);
+
+  const rollen = [];
+  const belegt = {};
+  a.occ.forEach(function(o){
+    for(let i=0;i<top.length;i++){ if(top[i].f.occ.indexOf(o)>=0 && !belegt[top[i].f.n]){ belegt[top[i].f.n]=1; rollen.push([LBL[o], top[i].f]); break; } }
+  });
 
   const rows = dossierRows(a,anc);
   const half = Math.ceil(rows.length/2);
@@ -1861,69 +2183,83 @@ function buildPass(name,blurb,a,anc,top,MAX){
   const colsF = [rows.slice(0,half), rows.slice(half)].map(col=>
     col.map(r=>({ head:r[0], muted:r[1]==='—', lines:passLines(m, r[1], COLW, DS(500,21)) })));
   const fieldH = f => 30 + (f.lines.length-1)*28 + 24;
-  const colH = colsF.map(col=>col.reduce((sum,f)=>sum + fieldH(f), 0));
-
+  const colH = colsF.map(col=>col.reduce((s,f)=>s+fieldH(f),0));
   const picks = top.slice(0,5);
   const mets = meters(a);
 
-  /* ── 2. Alle Y-Werte genau einmal ausrechnen ── */
+  /* ── Y-Werte, genau einmal ── */
   const yStrip = 84, stripH = 18;
   const yHead  = yStrip + stripH + 54;
   const yName  = yHead + 84;
   const yBlurb = yName + (nameL.length-1)*78 + 62;
-  let yy       = yBlurb + (blurbL.length-1)*38;
+  let yy = yBlurb + (blurbL.length-1)*38;
 
-  const yRule1 = yy + 46;
-  const yLbl1  = yRule1 + 46;
-  const yMet   = yLbl1 + 42;                 /* Kennwerte: Label-Grundlinie */
-  const METH   = 100;
-  const yBand  = yMet + METH;                /* Radar und Deutung nebeneinander */
-  const yRadC  = yBand + RAD_LBL + 16;       /* Radar-Mittelpunkt */
-  const yCap   = yRadC + RAD_LBL + 40;
+  const yR0 = yy + 44, yL0 = yR0 + 46, yBerat = yL0 + 40;
+  let bh = 0; beratL.forEach(l=>{ bh += l.length*31 + 12; });
+  yy = yBerat + bh;
+
+  const yR1 = yy + 26, yL1 = yR1 + 46, yMet = yL1 + 42;
+  const METH = 100;
+  const yBand = yMet + METH;
+  const yRadC = yBand + RAD_LBL + 16;
+  const yCap  = yRadC + RAD_LBL + 40;
   const radBot = yCap + (capL.length-1)*24 + 14;
-  let insBot   = yBand + 34;
+  let insBot = yBand + 34;
   insL.forEach(o=>{ insBot += 24 + o.lines.length*28 + 22; });
   yy = Math.max(radBot, insBot);
 
-  const yRule2 = yy + 40;
-  const yLbl2  = yRule2 + 46;
-  const yDos   = yLbl2 + 44;
+  const yR2 = yy + 34, yL2 = yR2 + 46, yKomp = yL2 + 44;
+  const kompH = 30 + Math.max(treffL.length, meidL.length)*29 + 20;
+  yy = yKomp + kompH;
+
+  const yR3 = yy + 20, yL3 = yR3 + 46, yFam = yL3 + 34;
+  const famH = 22 + 18 + 26;
+  yy = yFam + famH;
+
+  const yR4 = yy + 26, yL4 = yR4 + 46, yDos = yL4 + 44;
   yy = yDos + Math.max(colH[0], colH[1]);
 
-  const yRule3 = yy + 18;
-  const yLbl3  = yRule3 + 46;
-  const yPick  = yLbl3 + 48;
-  const PICKH  = 86;
+  const yR5 = yy + 18, yL5 = yR5 + 46, yPick = yL5 + 48;
+  const PICKH = 86;
   yy = yPick + (picks.length-1)*PICKH + 34;
 
-  const H = yy + 84;
+  let yRol = 0, yL6 = 0, yR6 = 0;
+  if(rollen.length > 1){
+    yR6 = yy + 20; yL6 = yR6 + 46; yRol = yL6 + 40;
+    yy = yRol + (rollen.length-1)*54 + 24;
+  }
+  const H = yy + 180;   /* Platz fuer Hinweiskasten (H-136 bis H-74) und Fusszeile */
 
-  /* ── 3. Zeichnen ── */
+  /* ── Zeichnen ── */
   const cv = document.createElement('canvas');
   cv.width = W; cv.height = H;
   const x = cv.getContext('2d');
-  x.textAlign = 'left'; x.textBaseline = 'alphabetic';
+  x.textAlign='left'; x.textBaseline='alphabetic';
   x.fillStyle = PAPER; x.fillRect(0,0,W,H);
 
   const acc = Q.map(q=>q.acc), sw = CW/acc.length;
   acc.forEach((col,i)=>{ x.fillStyle = col; x.fillRect(M + i*sw, yStrip, sw-5, stripH); });
 
-  let stamp = '';
+  let stamp='';
   try{ stamp = new Date().toLocaleDateString('de-DE',{day:'numeric',month:'long',year:'numeric'}); }catch(e){}
   x.fillStyle = DIM; x.font = DS(700,21);
   x.fillText('D U F T P A S S', M, yHead);
-  x.textAlign = 'right'; x.font = DS(400,19);
-  x.fillText(stamp, W-M, yHead);
-  x.textAlign = 'left';
+  x.textAlign='right'; x.font = DS(400,19); x.fillText(stamp, W-M, yHead); x.textAlign='left';
 
   x.fillStyle = INK; x.font = FS(70); putLines(x, nameL, M, yName, 78);
   x.fillStyle = MID; x.font = DS(400,26); putLines(x, blurbL, M, yBlurb, 38);
 
-  const rule = yv => { x.strokeStyle = LINE; x.lineWidth = 2; x.beginPath(); x.moveTo(M,yv); x.lineTo(W-M,yv); x.stroke(); };
-  const label = (t,yv) => { x.fillStyle = CORAL; x.font = DS(700,19); x.fillText(t, M, yv); };
+  const rule = yv => { x.strokeStyle=LINE; x.lineWidth=2; x.beginPath(); x.moveTo(M,yv); x.lineTo(W-M,yv); x.stroke(); };
+  const label = (t,yv,col) => { x.fillStyle = col||CORAL; x.font = DS(700,19); x.fillText(t, M, yv); };
 
-  rule(yRule1);
-  label('PROFIL IN ZAHLEN', yLbl1);
+  rule(yR0);
+  label('FÜR DIE BERATUNG', yL0);
+  let by = yBerat;
+  x.font = DS(400,22);
+  beratL.forEach(l=>{ x.fillStyle = INK; putLines(x, l, M, by, 31); by += l.length*31 + 12; });
+
+  rule(yR1);
+  label('PROFIL IN ZAHLEN', yL1);
   const mw = (CW - 3*18)/4;
   mets.forEach((mt,i)=>{
     const mx = M + i*(mw+18);
@@ -1932,12 +2268,9 @@ function buildPass(name,blurb,a,anc,top,MAX){
     x.fillStyle = LINE; x.fillRect(mx, yMet+52, mw-14, 7);
     x.fillStyle = CORAL; x.fillRect(mx, yMet+52, (mw-14)*(mt[2]/100), 7);
   });
-
   passRadar(x, RAD_CX, yRadC, RAD_R, radarFromAnswers(a), radarFromFragrance(top[0].f), RAD_LBL);
-  x.fillStyle = DIM; x.font = DS(400,17); x.textAlign = 'center';
-  putLines(x, capL, RAD_CX, yCap, 24);
-  x.textAlign = 'left';
-
+  x.fillStyle = DIM; x.font = DS(400,17); x.textAlign='center';
+  putLines(x, capL, RAD_CX, yCap, 24); x.textAlign='left';
   let iy = yBand + 34;
   insL.forEach(o=>{
     x.fillStyle = TEAL; x.font = DS(700,16); x.fillText(String(o.head).toUpperCase(), IX, iy);
@@ -1945,11 +2278,35 @@ function buildPass(name,blurb,a,anc,top,MAX){
     iy += 24 + o.lines.length*28 + 22;
   });
 
-  rule(yRule2);
-  label('DEIN STECKBRIEF · ALLE ' + Q.length + ' ANTWORTEN', yLbl2);
+  rule(yR2);
+  label('NOTENKOMPASS', yL2);
+  x.fillStyle = GRUEN; x.font = DS(700,16); x.fillText('DIESE NOTEN TREFFEN', M, yKomp);
+  x.fillStyle = INK; x.font = DS(500,21); putLines(x, treffL, M, yKomp+30, 29);
+  x.fillStyle = CORAL; x.font = DS(700,16); x.fillText('DIESE NOTEN MEIDEN', M+HALB+60, yKomp);
+  x.fillStyle = komp.meiden.length ? INK : DIM; x.font = DS(500,21);
+  putLines(x, meidL, M+HALB+60, yKomp+30, 29);
+
+  rule(yR3);
+  label('WORAUS DIE AUSWAHL BESTEHT', yL3);
+  let fx = M;
+  famS.forEach(k=>{
+    const w = CW * (famZ[k]/famGes);
+    x.fillStyle = FAMCOL[k]; x.fillRect(fx, yFam, Math.max(2,w-3), 18);
+    fx += w;
+  });
+  let lx = M;
+  x.font = DS(500,17);
+  famS.slice(0,6).forEach(k=>{
+    const t = FAMLBL[k] + ' ' + Math.round(famZ[k]/famGes*100) + '%';
+    x.fillStyle = FAMCOL[k]; x.fillRect(lx, yFam+34, 11, 11);
+    x.fillStyle = MID; x.fillText(t, lx+17, yFam+44);
+    lx += m.measureText(t).width + 46;
+  });
+
+  rule(yR4);
+  label('STECKBRIEF · ALLE ' + Q.length + ' ANTWORTEN', yL4);
   colsF.forEach((col,ci)=>{
-    let cy = yDos;
-    const cx0 = M + ci*(COLW + GAP);
+    let cy = yDos; const cx0 = M + ci*(COLW+GAP);
     col.forEach(f=>{
       x.fillStyle = DIM; x.font = DS(700,16); x.fillText(String(f.head).toUpperCase(), cx0, cy);
       x.fillStyle = f.muted ? DIM : INK; x.font = DS(500,21);
@@ -1958,20 +2315,38 @@ function buildPass(name,blurb,a,anc,top,MAX){
     });
   });
 
-  rule(yRule3);
-  label('PASST DAZU · TOP ' + picks.length + ' AUS ' + F.length + ' DÜFTEN', yLbl3);
+  rule(yR5);
+  label('PASST DAZU · TOP ' + picks.length + ' AUS ' + F.length + ' DÜFTEN', yL5);
   const nameMax = W - M - 130 - (M + 64);
   picks.forEach((r,i)=>{
     const ty = yPick + i*PICKH;
     x.fillStyle = CORAL; x.font = MO(24); x.fillText(String(i+1).padStart(2,'0'), M, ty);
     x.fillStyle = INK;   x.font = FS(32); x.fillText(fit(r.f.n, nameMax, FS(32)), M+64, ty);
-    x.fillStyle = DIM;   x.font = DS(500,18); x.fillText(fit(String(r.f.h).toUpperCase(), nameMax, DS(500,18)), M+64, ty+26);
-    x.fillStyle = CORAL; x.font = MO(27); x.textAlign = 'right';
-    x.fillText(pctOf(r.s,MAX)+'%', W-M, ty); x.textAlign = 'left';
+    x.fillStyle = DIM;   x.font = DS(500,18);
+    x.fillText(fit(String(r.f.h).toUpperCase() + '  ·  ' + r.f.notes, nameMax, DS(500,18)), M+64, ty+26);
+    x.fillStyle = CORAL; x.font = MO(27); x.textAlign='right';
+    x.fillText(pctOf(r.s,MAX)+'%', W-M, ty); x.textAlign='left';
   });
 
+  if(rollen.length > 1){
+    rule(yR6);
+    label('JE ANLASS', yL6);
+    rollen.forEach((rl,i)=>{
+      const ry = yRol + i*54;
+      x.fillStyle = TEAL; x.font = DS(700,17); x.fillText(String(rl[0]).toUpperCase(), M, ry);
+      x.fillStyle = INK;  x.font = FS(26);
+      x.fillText(fit(rl[1].n + '  ·  ' + rl[1].h, CW, FS(26)), M, ry+30);
+    });
+  }
+
   x.fillStyle = DIM; x.font = DS(400,18);
-  x.fillText('Sillage · Duftprofil aus ' + Q.length + ' Fragen · kuratierte Auswahl von ' + F.length + ' Düften, kein Marktüberblick', M, H-42);
+  x.fillStyle = INK; x.fillRect(M, H-136, CW, 62);
+  x.fillStyle = '#F6ECE4'; x.font = DS(700,17);
+  x.fillText('BITTE VOR DEM KAUF AUF DER HAUT TESTEN', M+22, H-108);
+  x.fillStyle = '#D8C7BE'; x.font = DS(400,17);
+  x.fillText('Diese Karte ist eine begründete Vorauswahl aus ' + F.length + ' Düften, kein Marktüberblick und kein Urteil.', M+22, H-86);
+  x.fillStyle = DIM; x.font = DS(400,18);
+  x.fillText('Sillage · Duftprofil aus ' + Q.length + ' Fragen · erstellt am ' + stamp, M, H-42);
   return cv.toDataURL('image/png');
 }
 async function renderPass(name,blurb,a,anc,top,MAX){
@@ -2065,11 +2440,64 @@ function tensions(a){
   return t.slice(0,3);
 }
 
+/* ── Duell-Runde ────────────────────────────────────────────
+   Was jemand bei einer direkten Wahl tut, ist belastbarer als
+   jede Selbstauskunft. Fünf Paare aus dem Mittelfeld der Liste,
+   jede Wahl wirkt wie ein Gefällt-mir plus ein Nichts-für-mich. */
+function duellPaare(list){
+  const kandidaten = diversify(list, 16, 2);
+  const paare = [];
+  for(let i = 0; i + 1 < kandidaten.length && paare.length < 5; i += 3){
+    const a = kandidaten[i], b = kandidaten[i+1];
+    if(!a || !b) break;
+    if(a.f.fam.join() === b.f.fam.join()) continue;   /* zu ähnlich, bringt nichts */
+    paare.push([a.f, b.f]);
+  }
+  return paare;
+}
+function renderDuell(list){
+  const box = document.getElementById('duell');
+  if(!box) return;
+  state.duell = state.duell || {runde:0, paare:duellPaare(list)};
+  const paare = state.duell.paare;
+  const i = state.duell.runde;
+  if(!paare.length || i >= paare.length){
+    box.innerHTML = '<div class="duell"><div class="duellkopf"><b>Feinschliff abgeschlossen</b>'
+      + '<span>' + i + ' von ' + paare.length + '</span></div>'
+      + '<p class="hintline">Deine Entscheidungen sind in die Liste eingerechnet.</p></div>';
+    return;
+  }
+  const par = paare[i];
+  const karte = (f,seite) => '<button class="duellwahl" type="button" data-seite="' + seite + '">'
+    + '<span>' + esc(f.h) + '</span><b>' + esc(f.n) + '</b><small>' + esc(f.notes) + '</small></button>';
+  box.innerHTML = '<div class="duell">'
+    + '<div class="duellkopf"><b>Welchen würdest du eher tragen?</b><span>' + (i+1) + ' / ' + paare.length + '</span></div>'
+    + '<div class="duellpaar">' + karte(par[0],'a') + '<span class="vs">oder</span>' + karte(par[1],'b') + '</div>'
+    + '<button class="duellskip" type="button" data-seite="skip">Kenne ich beide nicht — überspringen</button>'
+    + '</div>';
+  box.querySelectorAll('[data-seite]').forEach(function(btn){
+    btn.onclick = function(){
+      const s = btn.dataset.seite;
+      if(s !== 'skip'){
+        const gewaehlt = s === 'a' ? par[0] : par[1];
+        const verworfen = s === 'a' ? par[1] : par[0];
+        state.fb = state.fb || {};
+        state.fb[gewaehlt.n] = 1;
+        state.fb[verworfen.n] = -1;
+        saveState();
+      }
+      state.duell.runde++;
+      if(state.duell.runde >= paare.length){ state.duell = null; renderResult(); }
+      else renderDuell(list);
+    };
+  });
+}
+
 function renderResult(){
   state.step = Q.length;
   paintChrome();
   const a = state.a;
-  a.nogo = a.nogo||[]; a.anchor = a.anchor||[]; a.anchorneg = a.anchorneg||[];
+  a.nogo = a.nogo||[]; a.anchor = a.anchor||[]; a.anchorneg = a.anchorneg||[]; a.notes = a.notes||[];
   state.fb = state.fb||{};
   const fbCount = Object.keys(state.fb).length;
   const rk = rank(a), list = rk.list, MAX = rk.MAX, anc = rk.anc;
@@ -2106,7 +2534,7 @@ function renderResult(){
   const rows = chart.concat(wildsFinal);
 
   stage.innerHTML = `
-  <div class="fade">
+  <div class="fade reveal">
     <p class="verdict-eyebrow">Dein Duftprofil</p>
     <h1 class="archetype">${esc(name)}</h1>
     <div class="strip" title="Die Farben deiner Antworten">${Q.map(q=>`<i style="background:${q.acc}"></i>`).join('')}</div>
@@ -2199,6 +2627,10 @@ function renderResult(){
           </div>
         </li>`;}).join('')}
     </ul>
+    <div class="sec-head"><h2>Feinschliff</h2><hr><span>zwei Minuten, deutlich besseres Ergebnis</span></div>
+    <p class="caveat short">Bei einer direkten Wahl zwischen zwei Düften entscheidet der Bauch — und der ist verlässlicher als jede Selbsteinschätzung. Fünf Paare genügen, um die Liste spürbar zu schärfen.</p>
+    <div id="duell"></div>
+
     <div class="recalc" id="recalcbar"${fbCount?'':' hidden'}>
       <button type="button" id="recalc">Auswahl mit meinem Feedback neu rechnen</button>
     </div>
@@ -2219,6 +2651,18 @@ function renderResult(){
           <p class="rp">${pctOf(w.r.s,MAX)}% Übereinstimmung</p>
         </div>`).join('')}
     </div>` : ''}
+
+    <div class="nextstep">
+      <h3>Der wichtigste Schritt kommt jetzt</h3>
+      <p>Diese Liste ist <b>eine Auswahl, kein Marktüberblick</b>. Sie läuft gegen ${F.length} kuratierte Düfte aus ${HOUSES} Häusern — der Markt ist fünfstellig. Was hier steht, passt zu deinem Profil. Was fehlt, kann genauso gut passen.</p>
+      <p>Und das Entscheidende: <b>Kein Duft lässt sich am Bildschirm beurteilen.</b> Dieselbe Komposition riecht auf zwei Menschen unterschiedlich, weil Hautchemie, Temperatur und Tageszeit mitspielen. Was du hier bekommst, ist eine begründete Vorauswahl — kein Urteil.</p>
+      <ol>
+        <li>Duftpass unten speichern und in eine Parfümerie deines Vertrauens mitnehmen.</li>
+        <li>Die Treffer dort auf der Haut testen, nicht auf dem Papierstreifen — und jeweils nur zwei bis drei pro Besuch.</li>
+        <li>Das Profil der Beraterin zeigen. Es sagt in dreissig Sekunden, was sonst zwanzig Minuten Fragen kostet — und sie kennt Düfte, die hier gar nicht drinstehen.</li>
+        <li>Vor dem Flakonkauf eine Abfüllung nehmen und den Duft einen ganzen Tag tragen.</li>
+      </ol>
+    </div>
 
     <div class="sec-head"><h2>Dein Duftpass</h2><hr><span>das komplette Ergebnis auf einer Karte</span></div>
     <div class="passwrap">
@@ -2257,6 +2701,7 @@ function renderResult(){
   document.querySelectorAll('.fb button').forEach(b=>{
     b.onclick = ()=> setFb(b.dataset.n, b.classList.contains('yes') ? 1 : -1);
   });
+  renderDuell(list);
   const rc = document.getElementById('recalc');
   if(rc) rc.onclick = ()=>renderResult();
   renderPass(name, blurb, a, anc, chart, MAX);
@@ -2279,11 +2724,21 @@ function renderResult(){
   };
   saveState();
   document.getElementById('again').onclick = ()=>{
-    state.step=-1; state.a={}; state.fb={};
+    state.step=-1; state.a={}; state.fb={}; state.duell=null;
     try{ localStorage.removeItem(STORE); }catch(e){}
     wardrobeUsed.clear(); renderIntro(); window.scrollTo(0,0);
   };
   wardrobeUsed.clear();
+  /* Der Flakon sprüht einmal, wenn das Ergebnis erscheint. */
+  try{
+    const mh = document.querySelector('.masthead');
+    if(mh && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      const puff = document.createElement('span');
+      puff.className = 'flaskpuff';
+      mh.appendChild(puff);
+      setTimeout(function(){ puff.remove(); }, 950);
+    }
+  }catch(e){}
   window.scrollTo({top:0,behavior:'smooth'});
 }
 const wardrobeUsed = new Set();
@@ -2308,6 +2763,8 @@ function dossierRows(a,anc){
     ['Budget', BUD[a.budget]],
     ['Haltbarkeit', LBL[a.longevity]||'—'],
     ['Abneigungen', (a.anchorneg&&a.anchorneg.length) ? a.anchorneg.map(k=>ANCHORS[k].n).join(', ') : '—'],
+    ['Lieblingsnoten', (a.notes&&a.notes.length) ? a.notes.join(', ') : '—'],
+    ['Schwerpunkt', a.focus ? {fam:'Duftrichtung',sil:'Präsenz',occ:'Anlass',sweet:'Süße'}[a.focus] : '—'],
     ['Erfahrung', LBL[a.exp]]
   ];
 }
@@ -2328,7 +2785,7 @@ function meters(a){
 }
 
 function splitHTML(r,MAX){
-  const keys = ['fam','mood','occ','sil','bold','sweet','anchor','lg'];
+  const keys = ['fam','mood','occ','sil','bold','sweet','notes','anchor','lg'];
   const seg = keys.filter(k=>r.parts[k] > .4);
   const bars = seg.map(k=>`<i style="width:${(r.parts[k]/MAX*100).toFixed(1)}%;background:${SPLITCOL[k]}"></i>`).join('');
   const key = seg.map(k=>`<li><em style="background:${SPLITCOL[k]}"></em>${SPLITLBL[k]}</li>`).join('');
