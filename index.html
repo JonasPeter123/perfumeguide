@@ -430,6 +430,60 @@ details.fold .dossier{box-shadow:none;padding:0;margin:0 0 1rem}
 .flaskpuff{position:absolute;left:14px;top:2px;width:20px;height:20px;border-radius:50%;background:var(--acc);pointer-events:none;animation:puffOut .9s ease-out forwards}
 .masthead{position:relative}
 
+/* ── Feinschliff: was eine Seite teuer aussehen laesst ── */
+
+/* Papierkorn ueber der gesamten Flaeche. Nimmt flachen Farbfeldern
+   das Digitale, ohne dass man es bewusst wahrnimmt. */
+body::after{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+.wrap{position:relative;z-index:1}
+
+/* Kopfzeile bleibt oben stehen und legt sich mit Milchglas ueber den Inhalt */
+.masthead{position:sticky;top:0;z-index:20;backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);background:linear-gradient(180deg,rgba(253,246,240,.94),rgba(253,246,240,.72));margin:0 -.6rem;padding-left:.6rem;padding-right:.6rem;transition:box-shadow .3s}
+.masthead.gescrollt{box-shadow:0 10px 26px -22px rgba(51,38,44,.7)}
+.rail{position:sticky;top:74px;z-index:19;padding:.4rem 0;background:linear-gradient(180deg,rgba(253,246,240,.92),rgba(253,246,240,0))}
+
+/* Kapitelanzeige */
+.kapitel{display:flex;align-items:center;gap:.7rem;margin:0 0 1rem;flex-wrap:wrap}
+.kapname{font-family:"Fraunces",Georgia,serif;font-size:1.02rem;font-weight:600;color:var(--ink)}
+.kapdots{display:flex;gap:4px}
+.kapdots i{width:6px;height:6px;border-radius:50%;background:var(--line-2);display:block;transition:background .35s,transform .35s}
+.kapdots i.on{background:var(--acc);transform:scale(1.2)}
+.kapzahl{font-family:"DM Mono",monospace;font-size:.74rem;color:var(--ink-dim);margin-left:auto}
+
+/* Freiwillig-Leiste, immer oberhalb der Antworten */
+.skipbar{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;background:var(--paper-2);border-radius:99px;padding:.5rem .55rem .5rem 1.1rem;margin:0 0 1.3rem;max-width:640px}
+.skipbar span{font-size:.87rem;color:var(--ink-mid)}
+.skipbar button{all:unset;cursor:pointer;font-size:.83rem;font-weight:700;color:var(--ink);background:var(--card);border-radius:99px;padding:.42rem 1rem;box-shadow:0 1px 2px rgba(51,38,44,.07);transition:background .2s,color .2s,transform .18s}
+.skipbar button:hover{background:var(--acc);color:#fff;transform:translateY(-1px)}
+.skipbar button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.skipbar button:last-child{margin-left:auto}
+
+/* Antwortkarten laufen gestaffelt ein */
+@keyframes optIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.opts .opt{animation:optIn .42s cubic-bezier(.2,.7,.3,1) both}
+.opts .opt:nth-child(1){animation-delay:.02s}.opts .opt:nth-child(2){animation-delay:.05s}
+.opts .opt:nth-child(3){animation-delay:.08s}.opts .opt:nth-child(4){animation-delay:.11s}
+.opts .opt:nth-child(5){animation-delay:.14s}.opts .opt:nth-child(6){animation-delay:.17s}
+.opts .opt:nth-child(7){animation-delay:.20s}.opts .opt:nth-child(8){animation-delay:.23s}
+.opts .opt:nth-child(n+9){animation-delay:.26s}
+
+/* Lichtstreif ueber dem Hauptknopf */
+.cta{position:relative;overflow:hidden}
+.cta::after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;transform:skewX(-18deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.45),transparent);transition:left .6s ease}
+.cta:hover::after{left:130%}
+
+/* Feinere Fokusringe */
+:focus-visible{outline-offset:3px}
+
+/* Der Flakon bekommt eine bewegte Fluessigkeitsoberflaeche */
+@keyframes wogen{0%{transform:translateX(0)}50%{transform:translateX(-6px)}100%{transform:translateX(0)}}
+.flask .welle{fill:var(--acc);transition:fill .85s ease;animation:wogen 4.5s ease-in-out infinite}
+
 @media (max-width:560px){
   .pick{grid-template-columns:auto 1fr}
   .score{grid-column:2;text-align:left;display:flex;gap:.5rem;align-items:baseline;margin-top:.8rem}
@@ -473,7 +527,10 @@ details.fold .dossier{box-shadow:none;padding:0;margin:0 0 1rem}
       <path class="glass" d="M18.5 12v4.6c0 1.6-.9 2.7-2.3 3.7C12.4 23 10 26.6 10 31.4V55a5 5 0 0 0 5 5h16a5 5 0 0 0 5-5V31.4c0-4.8-2.4-8.4-6.2-11.1-1.4-1-2.3-2.1-2.3-3.7V12z"></path>
       <clipPath id="flaskClip"><path d="M18.5 12v4.6c0 1.6-.9 2.7-2.3 3.7C12.4 23 10 26.6 10 31.4V55a5 5 0 0 0 5 5h16a5 5 0 0 0 5-5V31.4c0-4.8-2.4-8.4-6.2-11.1-1.4-1-2.3-2.1-2.3-3.7V12z"></path></clipPath>
       <g clip-path="url(#flaskClip)">
-        <rect class="fluid" id="fluid" x="8" y="14" width="30" height="46" style="transform:scaleY(0)"></rect>
+        <g id="fluidwrap" style="transform:scaleY(0);transform-origin:center bottom;transition:transform .85s cubic-bezier(.32,.85,.3,1)">
+          <rect class="fluid" id="fluid" x="8" y="16" width="30" height="44"></rect>
+          <path class="welle" d="M-4 17 q 7 -4 14 0 t 14 0 t 14 0 t 14 0 v 6 h -56 z"></path>
+        </g>
         <ellipse class="shine" cx="16" cy="34" rx="2.6" ry="9"></ellipse>
       </g>
     </svg>
@@ -522,7 +579,7 @@ window.addEventListener('load', function(){
 <script>
 /* ═══ 1 — Fragebogen ═══════════════════════════════════════ */
 const Q = [
-{ id:'occ', kind:'multi', min:1, max:3, cols:true, acc:'#F4643C',
+{ id:'occ', kind:'multi', min:1, max:3, cols:true, acc:'#F4643C', kap:1,
   eyebrow:'Anlass', title:'Wofür suchst du <em>einen Duft</em>?',
   sub:'Ein Duft fürs Büro löst eine andere Aufgabe als einer für den Abend. Bis zu drei.',
   o:[
@@ -532,7 +589,7 @@ const Q = [
     ['freizeit','Freizeit & Reisen','Leicht, unkompliziert, hitzefest.'],
     ['signature','Ein Signature für alles','Ein Duft, der dich überall begleitet.']
   ]},
-{ id:'season', kind:'multi', min:1, max:3, cols:true, acc:'#3FA98C',
+{ id:'season', kind:'multi', min:1, max:3, cols:true, acc:'#3FA98C', kap:1,
   eyebrow:'Jahreszeit', title:'Wann wird er <em>getragen</em>?',
   sub:'Hitze verstärkt Süße und Amber, Kälte schluckt Zitrus. Das verschiebt die Auswahl erheblich.',
   o:[
@@ -542,7 +599,7 @@ const Q = [
     ['winter','Winter','Dicht, warm, tragfähig.'],
     ['ganzjahr','Ganzjährig','Soll das ganze Jahr funktionieren.']
   ]},
-{ id:'fam', kind:'multi', min:1, max:4, cols:true, acc:'#F09A2B',
+{ id:'fam', kind:'multi', min:1, max:4, cols:true, acc:'#F09A2B', kap:2, pfad:['fortgeschritten','sammler'],
   eyebrow:'Duftfamilien', title:'Was riechst du <em>gerne</em>?',
   sub:'Bis zu vier. Unsicher? Aus deinen Bildern steht schon ein Vorschlag drin - dann einfach auf Weiter. Kein Vorwissen nötig.',
   o:[
@@ -559,7 +616,7 @@ const Q = [
     ['aquatisch','Wässrig & salzig','Meeresluft, Ozon, nasser Stein.'],
     ['moschus','Wie saubere Haut','Weich, nah, kaum greifbar. Fachbegriff: Moschus.']
   ]},
-{ id:'mood', kind:'multi', min:1, max:3, cols:true, acc:'#7B5AD9',
+{ id:'mood', kind:'multi', min:1, max:3, cols:true, acc:'#7B5AD9', kap:2,
   eyebrow:'Bilder', title:'Welche Szene <em>zieht dich an</em>?',
   sub:'Der ehrlichste Teil. Niemand weiß, ob er Labdanum mag — aber jeder weiß, ob er das hier riechen will. Bis zu drei.',
   o:[
@@ -582,7 +639,7 @@ const Q = [
     ['asphalt','Regen auf heißem Stein','Mineralisch, metallisch, Petrichor.'],
     ['kraeuter','Zerriebene Kräuter im Garten','Bitter-grün, Erde, Sonne, Thymian.']
   ]},
-{ id:'sweet', kind:'single', cols:true, acc:'#E85D9B',
+{ id:'sweet', kind:'single', cols:true, acc:'#E85D9B', kap:2,
   eyebrow:'Süße', title:'Wie süß darf er <em>werden</em>?',
   sub:'Die Achse, an der die meisten Düfte scheitern. Sie entscheidet öfter über Gefallen oder Nichtgefallen als die Duftfamilie.',
   o:[
@@ -591,7 +648,7 @@ const Q = [
     ['deutlich','Deutlich süß','Vanille und Honig dürfen tragen.'],
     ['dekadent','Dekadent','Sirup, Karamell, Likör. Voll rein.']
   ]},
-{ id:'nogo', kind:'multi', min:0, max:5, cols:true, optional:true, acc:'#6D7B8C',
+{ id:'nogo', kind:'multi', min:0, max:5, cols:true, optional:true, acc:'#6D7B8C', kap:2,
   eyebrow:'Ausschlüsse', title:'Was geht <em>gar nicht</em>?',
   sub:'Wichtiger als jede Vorliebe. Ausgeschlossene Noten fliegen vollständig aus der Auswahl. Nichts anzukreuzen ist eine gültige Antwort.',
   o:[
@@ -606,7 +663,7 @@ const Q = [
     ['aldehyde','Aldehydisch','Der seifig-metallische N°5-Effekt.'],
     ['aquatisch','Aquatisch','Calone, Meeresbrise, Duschgel-Frische.']
   ]},
-{ id:'sil', kind:'single', cols:true, acc:'#2F8BC9',
+{ id:'sil', kind:'single', cols:true, acc:'#2F8BC9', kap:2,
   eyebrow:'Präsenz', title:'Wie viel Raum darf er <em>nehmen</em>?',
   sub:'Sillage ist die Spur, die du hinterlässt. Der häufigste Fehlkauf entsteht hier, nicht bei den Noten.',
   o:[
@@ -615,7 +672,7 @@ const Q = [
     ['praesent','Präsent','Man merkt, dass du den Raum betreten hast.'],
     ['raumfuellend','Raumfüllend','Er geht durch die Tür, bevor du es tust.']
   ]},
-{ id:'vibe', kind:'multi', min:1, max:3, cols:true, acc:'#57A93F',
+{ id:'vibe', kind:'multi', min:1, max:3, cols:true, acc:'#57A93F', kap:2,
   eyebrow:'Typ', title:'Wie würdest du <em>dich</em> beschreiben?',
   sub:'Nicht wie du sein möchtest — wie du an einem normalen Dienstag bist. Bis zu drei.',
   o:[
@@ -628,7 +685,7 @@ const Q = [
     ['sinnlich','Sinnlich & warm','Nähe, Haut, Genuss.'],
     ['rebellisch','Rebellisch','Reibung ist erwünscht.']
   ]},
-{ id:'eff', kind:'multi', min:1, max:2, cols:true, acc:'#E0A21B',
+{ id:'eff', kind:'multi', min:1, max:2, cols:true, acc:'#E0A21B', kap:2,
   eyebrow:'Wirkung', title:'Was soll er <em>für dich tun</em>?',
   sub:'Ein Duft ist ein Werkzeug. Bis zu zwei Aufgaben.',
   o:[
@@ -639,7 +696,7 @@ const Q = [
     ['statement','Ein Statement setzen','Erinnert werden. Auch polarisierend.'],
     ['kopfkino','Kopfkino auslösen','Für dich selbst. Ein Duft wie ein Ort.']
   ]},
-{ id:'bold', kind:'single', cols:true, acc:'#D83A45',
+{ id:'bold', kind:'single', cols:true, acc:'#D83A45', kap:2,
   eyebrow:'Wagemut', title:'Wie <em>eigenwillig</em> darf er sein?',
   sub:'Der Regler, der über Nische entscheidet. Unten liegt, was alle mögen — oben, was Leute im Aufzug fragen lässt, was das ist.',
   o:[
@@ -648,9 +705,9 @@ const Q = [
     ['eigenwillig','Eigenwillig','Darf ungewohnt sein. Nicht jeder muss ihn mögen.'],
     ['polarisierend','Polarisierend','Reibung ist der Punkt. Gerne schwierig.']
   ]},
-{ id:'anchor', kind:'multi', min:0, max:3, cols:true, optional:true, searchable:true, acc:'#17A2A2',
+{ id:'anchor', kind:'multi', min:0, max:5, cols:true, optional:true, searchable:true, acc:'#17A2A2', kap:3,
   eyebrow:'Ankerdüfte', title:'Kennst du einen davon — und <em>mochtest ihn</em>?',
-  sub:'Der stärkste Hebel im ganzen Fragebogen — ein bekannter Duft, der dir gefallen hat, verrät mehr als drei Duftfamilien. Bis zu drei. Kennst du keinen davon: einfach überspringen, das Ergebnis funktioniert auch ohne.',
+  sub:'Der stärkste Hebel im ganzen Fragebogen — ein bekannter Duft, der dir gefallen hat, verrät mehr als drei Duftfamilien. Bis zu fünf. Kennst du keinen davon: einfach überspringen, das Ergebnis funktioniert auch ohne.',
   o:[
     ['a_sauvage','Dior Sauvage','Frisch-würzig, Ambroxan, überall.'],
     ['a_bdc','Bleu de Chanel','Holzig-zitrisch, glatt, unangreifbar.'],
@@ -688,7 +745,7 @@ const Q = [
     ['a_khamrah','Lattafa Khamrah','Dattel, Zimt, Praline.'],
     ['a_wsss','Jo Malone Wood Sage & Sea Salt','Meersalz, Salbei, leicht.']
   ]},
-{ id:'exp', kind:'single', cols:true, acc:'#8A6A46',
+{ id:'exp', kind:'single', cols:true, acc:'#8A6A46', kap:1,
   eyebrow:'Erfahrung', title:'Wo stehst du <em>gerade</em>?',
   sub:'Damit die Empfehlungen zur Lernkurve passen — schwierige Düfte brauchen eine trainierte Nase, sonst landen sie ungenutzt im Regal.',
   o:[
@@ -696,7 +753,7 @@ const Q = [
     ['fortgeschritten','Fortgeschritten','Ich kenne meine Richtung, will sie schärfen.'],
     ['sammler','Sammler','Zweistellige Sammlung. Zeig mir, was ich noch nicht habe.']
   ]},
-{ id:'frame', kind:'group', acc:'#F4643C',
+{ id:'frame', kind:'group', acc:'#F4643C', kap:3,
   eyebrow:'Rahmen', title:'Zum Schluss der <em>Rahmen</em>.',
   sub:'Zwei praktische Einschränkungen, damit die Empfehlungen realistisch bleiben.',
   groups:[
@@ -723,7 +780,7 @@ const Q = [
 
 /* ── Zwei ergänzende Fragen ──────────────────────────────── */
 Q.push(
-{ id:'longevity', kind:'single', cols:true, acc:'#B5651D',
+{ id:'longevity', kind:'single', cols:true, acc:'#B5651D', kap:2,
   eyebrow:'Haltbarkeit', title:'Wie lange hält Duft auf <em>deiner Haut</em>?',
   sub:'Hautchemie ist real. Manche Haut frisst Zitrus und Moschus in zwei Stunden, andere trägt einen Amber durch den ganzen Tag. Wer weiß, dass bei ihm nichts hält, braucht schwerere Basen.',
   o:[
@@ -732,15 +789,15 @@ Q.push(
     ['ewig','Ewig','Am nächsten Morgen ist der Pullover noch parfümiert.'],
     ['unklar','Weiß ich nicht','Habe nie darauf geachtet.']
   ]},
-{ id:'anchorneg', kind:'multi', min:0, max:3, cols:true, optional:true, searchable:true, acc:'#8E4585',
+{ id:'anchorneg', kind:'multi', min:0, max:3, cols:true, optional:true, searchable:true, acc:'#8E4585', kap:3, pfad:['fortgeschritten','sammler'],
   eyebrow:'Abneigungen', title:'Und welchen fandst du <em>schrecklich</em>?',
   sub:'Diagnostisch stärker als jede Zustimmung — Ablehnung schneidet mehr Suchraum weg. Bis zu drei. Kennst du keinen davon oder fällt dir nichts ein: einfach überspringen, das ist völlig in Ordnung.',
   o:[] }
 );
 Q.push(
-{ id:'notes', kind:'multi', min:0, max:5, cols:true, optional:true, searchable:true, acc:'#3FA98C',
+{ id:'notes', kind:'multi', min:0, max:8, cols:true, optional:true, searchable:true, acc:'#3FA98C', kap:3, pfad:['fortgeschritten','sammler'],
   eyebrow:'Lieblingsnoten', title:'Gibt es Noten, die du <em>besonders liebst</em>?',
-  sub:'Die konkreteste Angabe im ganzen Fragebogen — genauer als jede Duftfamilie. Bis zu fünf. Wenn dir nichts einfällt: überspringen, das Ergebnis funktioniert auch ohne.',
+  sub:'Die konkreteste Angabe im ganzen Fragebogen — genauer als jede Duftfamilie. Bis zu acht. Wenn dir nichts einfällt: überspringen, das Ergebnis funktioniert auch ohne.',
   o:[
     ['Vanille','Vanille','Warm, süß, cremig.'],
     ['Sandelholz','Sandelholz','Milchig-weiches Holz, sehr beruhigend.'],
@@ -780,7 +837,8 @@ Q.find(q=>q.id==='anchorneg').o = Q.find(q=>q.id==='anchor').o.slice();
 
 /* Reihenfolge: erst die Bilder — die versteht jeder — dann die Duftfamilien
    mit ihrem Fachvokabular, vorbelegt aus genau diesen Bildern. */
-const ORDER = ['occ','season','mood','fam','notes','sweet','nogo','sil','longevity','vibe','eff','bold','anchor','anchorneg','exp','frame'];
+const ORDER = ['exp','occ','season','mood','fam','sweet','nogo','sil','longevity','vibe','eff','bold','notes','anchor','anchorneg','frame'];
+const KAPITEL = {1:'Einstieg', 2:'Dein Geschmack', 3:'Feinschliff & Rahmen'};
 Q.sort((x,y)=>ORDER.indexOf(x.id)-ORDER.indexOf(y.id));
 const NUMWORD = {13:'Dreizehn',14:'Vierzehn',15:'Fünfzehn',16:'Sechzehn',17:'Siebzehn'};
 
@@ -1492,6 +1550,22 @@ const SPLITCOL = {fam:'#F09A2B',mood:'#7B5AD9',occ:'#F4643C',sil:'#2F8BC9',bold:
 const SPLITLBL = {fam:'Duftfamilien',mood:'Bilder',occ:'Anlass & Saison',sil:'Präsenz',bold:'Wagemut',sweet:'Süße',notes:'Lieblingsnoten',anchor:'Ankerduft',lg:'Haltbarkeit'};
 
 const state = {step:-1, a:{}, fb:{}};
+
+/* Aktive Fragen: Einsteiger bekommen einen kuerzeren Weg. Die Duftfamilien
+   entfallen dort, weil sie ohnehin aus den Bildern abgeleitet werden; die
+   Notenfrage und die Abneigungen setzen Vorwissen voraus. */
+function AQ(){
+  const exp = state.a.exp || 'fortgeschritten';
+  return Q.filter(function(q){ return !q.pfad || q.pfad.indexOf(exp) >= 0; });
+}
+function kapitelInfo(){
+  const A = AQ(), akt = A[state.step];
+  if(!akt) return null;
+  const nr = akt.kap || 1;
+  const inKap = A.filter(function(q){ return (q.kap||1) === nr; });
+  const pos = inKap.indexOf(akt) + 1;
+  return {nr:nr, name:KAPITEL[nr], pos:pos, von:inKap.length};
+}
 const inter = (a,b)=>a.filter(x=>b.includes(x));
 
 /* Harmonisches Mittel aus Abdeckung (wie viel deiner Wahl trifft der Duft)
@@ -1724,7 +1798,7 @@ const rail = document.getElementById('rail');
 const fluid = document.getElementById('fluid');
 const stepno = document.getElementById('stepno');
 const mastnote = document.getElementById('mastnote');
-rail.innerHTML = Q.map(()=>'<i></i>').join('');
+
 
 function hexA(hex,alpha){
   const n = parseInt(hex.slice(1),16);
@@ -1735,21 +1809,24 @@ function setAccent(hex){
   document.documentElement.style.setProperty('--acc-soft',hexA(hex,.13));
 }
 function paintChrome(){
+  const A = AQ();
+  if(rail.children.length !== A.length) rail.innerHTML = A.map(function(){return '<i></i>'}).join('');
   [...rail.children].forEach((el,i)=>{
-    const done = state.step>=Q.length || i<=state.step;
+    const done = state.step>=AQ().length || i<=state.step;
     el.className = i===state.step ? 'now' : '';
     el.style.background = done ? Q[i].acc : '';
   });
-  const prog = state.step<0 ? 0 : Math.min(1,(state.step)/Q.length);
-  fluid.style.transform = `scaleY(${state.step>=Q.length ? 1 : prog})`;
-  if(state.step>=0 && state.step<Q.length){
-    setAccent(Q[state.step].acc);
-    stepno.innerHTML = `<b>${String(state.step+1).padStart(2,'0')}</b><span style="opacity:.4">/${Q.length}</span>`;
-    mastnote.textContent = Q[state.step].eyebrow;
+  const prog = state.step<0 ? 0 : Math.min(1,(state.step)/AQ().length);
+  const fw = document.getElementById('fluidwrap');
+  if(fw) fw.style.transform = 'scaleY(' + (state.step>=AQ().length ? 1 : prog) + ')';
+  if(state.step>=0 && state.step<AQ().length){
+    setAccent(AQ()[state.step].acc);
+    stepno.innerHTML = `<b>${String(state.step+1).padStart(2,'0')}</b><span style="opacity:.4">/${AQ().length}</span>`;
+    mastnote.textContent = AQ()[state.step].eyebrow;
   } else {
     setAccent('#F4643C');
     stepno.textContent = '';
-    mastnote.textContent = state.step>=Q.length ? 'Dein Ergebnis' : 'Duftprofil · Nische & Klassiker';
+    mastnote.textContent = state.step>=AQ().length ? 'Dein Ergebnis' : 'Duftprofil · Nische & Klassiker';
   }
 }
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
@@ -1760,10 +1837,10 @@ function renderIntro(){
   stage.innerHTML = `
   <div class="fade">
     <p class="eyebrow">${F.length} Düfte · ${HOUSES} Häuser</p>
-    <h1 class="lede">${NUMWORD[Q.length]||Q.length} Fragen, und du weißt,<br><em>wonach</em> du eigentlich suchst.</h1>
+    <h1 class="lede">Ein paar Fragen, und du weißt,<br><em>wonach</em> du eigentlich suchst.</h1>
     <p class="sub">Kein Duft-Horoskop. Am Ende steht ein <em style="font-style:normal;color:var(--ink)">Duftprofil zum Mitnehmen</em> — Steckbrief, Radar, Archetyp — mit dem du in jeder Parfümerie und auf Parfumo gezielt weitersuchen kannst. Dazu eine Top&nbsp;10 aus der kuratierten Auswahl als Startpunkt.</p>
     <div class="dims">
-      ${Q.map((q,i)=>`<div style="--dc:${q.acc}"><span>${String(i+1).padStart(2,'0')}</span>${esc(q.eyebrow)}</div>`).join('')}
+      ${AQ().map((q,i)=>`<div style="--dc:${q.acc}"><span>${String(i+1).padStart(2,'0')}</span>${esc(q.eyebrow)}</div>`).join('')}
     </div>
     ${resumeCard()}
     <ul class="houses">
@@ -1771,7 +1848,7 @@ function renderIntro(){
       <li class="more">und ${HOUSES-shown.length} weitere</li>
     </ul>
     <div class="nav">
-      <span class="hintline">ca. 4 Minuten · Tasten 1–9, Enter und Rücktaste funktionieren</span>
+      <span class="hintline">16 Fragen, davon 4 freiwillig · etwa 8 Minuten, für Einsteiger deutlich kürzer</span>
       <button class="cta" id="go">Beginnen</button>
     </div>
   </div>`;
@@ -1785,11 +1862,11 @@ function renderIntro(){
 
 function renderStep(){
   /* Familienfrage aus den zuvor gewählten Bildern vorbelegen */
-  if(Q[state.step].id==='fam' && !state.a.fam){
+  if(AQ()[state.step].id==='fam' && !state.a.fam){
     state.a.fam = suggestFam(state.a.mood||[]);
     state.a._famAuto = true;
   }
-  const q = Q[state.step];
+  const q = AQ()[state.step];
   paintChrome();
   let body='';
   if(q.kind==='group'){
@@ -1809,17 +1886,30 @@ function renderStep(){
   }
   stage.innerHTML = `
   <div class="fade">
-    <p class="eyebrow">${esc(q.eyebrow)}</p>
+    ${(function(){
+      const k = kapitelInfo();
+      if(!k) return '';
+      return '<div class="kapitel"><span class="kapname">' + esc(k.name) + '</span>'
+        + '<span class="kapdots">' + Array.from({length:k.von}).map(function(_,i){
+            return '<i class="' + (i < k.pos ? 'on' : '') + '"></i>'; }).join('') + '</span>'
+        + '<span class="kapzahl">' + k.pos + ' von ' + k.von + '</span></div>';
+    })()}
+    <p class="eyebrow">${esc(q.eyebrow)}${q.optional?' · freiwillig':''}</p>
     <h1 class="q">${q.title}</h1>
     <p class="sub">${esc(q.sub)}</p>
     ${q.id==='fam' && state.a._famAuto ? `<p class="note">Aus deinen Szenen <b>vorbelegt</b> — ${esc(state.a.fam.map(k=>FAMLBL[k]).join(', '))}. Ändere frei, was nicht stimmt.</p>` : ''}
+    ${q.optional ? `<div class="skipbar">
+      <span>Diese Frage ist freiwillig.</span>
+      <button type="button" id="skiptop">Überspringen</button>
+      ${(q.kap===3) ? `<button type="button" id="skipall">Direkt zum Ergebnis</button>` : ''}
+    </div>` : ''}
     <div id="conflicts"></div>
     ${q.searchable?'<input class="qsearch" id="qsearch" type="search" placeholder="Duft suchen, z. B. Santal …" autocomplete="off">':''}
     ${body}
     <div class="nav">
       <button class="ghost" id="back" ${state.step===0?'hidden':''}>← Zurück</button>
       <span id="hint"></span>
-      <button class="cta" id="next">${state.step===Q.length-1?'Profil erstellen':'Weiter'}</button>
+      <button class="cta" id="next">${state.step===AQ().length-1?'Profil erstellen':'Weiter'}</button>
     </div>
   </div>`;
   stage.querySelectorAll('.opt').forEach(btn=>{
@@ -1842,6 +1932,15 @@ function renderStep(){
       b.hidden = t.length>0 && b.textContent.toLowerCase().indexOf(t) === -1;
     });
   };
+  const st = document.getElementById('skiptop');
+  if(st) st.onclick = ()=>{ state.a[q.id] = []; advance(); };
+  const sa = document.getElementById('skipall');
+  if(sa) sa.onclick = ()=>{
+    AQ().forEach(function(qq){ if(qq.optional && !state.a[qq.id]) state.a[qq.id] = []; });
+    const fr = AQ().filter(function(qq){ return qq.kind==='group'; })[0];
+    if(fr) fr.groups.forEach(function(g){ if(!state.a[g.key]) state.a[g.key] = g.o[0][0]; });
+    renderResult();
+  };
   document.getElementById('next').onclick = advance;
   syncNext();
 }
@@ -1855,7 +1954,7 @@ function optHTML(o,i,on,key){
 }
 
 function pick(btn){
-  const q = Q[state.step], key = btn.dataset.key, v = btn.dataset.v;
+  const q = AQ()[state.step], key = btn.dataset.key, v = btn.dataset.v;
   if(q.kind==='single' || q.kind==='group'){
     state.a[key] = v;
     stage.querySelectorAll(`.opt[data-key="${key}"]`).forEach(b=>b.setAttribute('aria-pressed', b===btn));
@@ -1870,14 +1969,14 @@ function pick(btn){
 }
 
 function ready(){
-  const q = Q[state.step];
+  const q = AQ()[state.step];
   if(q.kind==='single') return !!state.a[q.id];
   if(q.kind==='group') return q.groups.every(g=>!!state.a[g.key]);
   return (state.a[q.id]||[]).length >= q.min;
 }
 
 function syncNext(){
-  const q = Q[state.step], btn = document.getElementById('next'), hint = document.getElementById('hint');
+  const q = AQ()[state.step], btn = document.getElementById('next'), hint = document.getElementById('hint');
   btn.disabled = !ready();
   if(q.kind==='multi'){
     const n = (state.a[q.id]||[]).length;
@@ -1891,22 +1990,22 @@ function syncNext(){
   } else hint.innerHTML = '';
   /* Optionale Fragen: Der Knopf sagt ausdrücklich, dass man weiterdarf. */
   if(q.optional && !(state.a[q.id]||[]).length){
-    btn.textContent = state.step===Q.length-1 ? 'Profil erstellen' : 'Überspringen';
+    btn.textContent = state.step===AQ().length-1 ? 'Profil erstellen' : 'Überspringen';
   } else {
-    btn.textContent = state.step===Q.length-1 ? 'Profil erstellen' : 'Weiter';
+    btn.textContent = state.step===AQ().length-1 ? 'Profil erstellen' : 'Weiter';
   }
   renderConflicts();
 }
 
 function advance(){
   if(!ready()) return;
-  if(state.step===Q.length-1) renderResult();
+  if(state.step===AQ().length-1) renderResult();
   else { state.step++; renderStep(); }
 }
 
 document.addEventListener('keydown', e=>{
   if(state.step<0){ if(e.key==='Enter'){ var g = document.getElementById('go'); if(g) g.click(); } return; }
-  if(state.step>=Q.length) return;
+  if(state.step>=AQ().length) return;
   if(e.key==='Enter'){ e.preventDefault(); advance(); return; }
   if(e.key==='Backspace' && state.step>0){ e.preventDefault(); state.step--; renderStep(); return; }
   if(/^[1-9]$/.test(e.key)){
@@ -1959,7 +2058,7 @@ function findConflicts(){
 function renderConflicts(){
   const box = document.getElementById('conflicts');
   if(!box) return;
-  const list = (Q[state.step] && Q[state.step].id==='nogo') ? findConflicts() : [];
+  const list = (AQ()[state.step] && AQ()[state.step].id==='nogo') ? findConflicts() : [];
   if(!list.length){ box.innerHTML=''; return; }
   box.innerHTML = list.map((cf,i)=>`
     <div class="conflict">
@@ -2237,7 +2336,7 @@ function buildPass(name,blurb,a,anc,top,MAX){
   x.textAlign='left'; x.textBaseline='alphabetic';
   x.fillStyle = PAPER; x.fillRect(0,0,W,H);
 
-  const acc = Q.map(q=>q.acc), sw = CW/acc.length;
+  const acc = AQ().map(q=>q.acc), sw = CW/acc.length;
   acc.forEach((col,i)=>{ x.fillStyle = col; x.fillRect(M + i*sw, yStrip, sw-5, stripH); });
 
   let stamp='';
@@ -2304,7 +2403,7 @@ function buildPass(name,blurb,a,anc,top,MAX){
   });
 
   rule(yR4);
-  label('STECKBRIEF · ALLE ' + Q.length + ' ANTWORTEN', yL4);
+  label('STECKBRIEF · ALLE ' + AQ().length + ' ANTWORTEN', yL4);
   colsF.forEach((col,ci)=>{
     let cy = yDos; const cx0 = M + ci*(COLW+GAP);
     col.forEach(f=>{
@@ -2346,7 +2445,7 @@ function buildPass(name,blurb,a,anc,top,MAX){
   x.fillStyle = '#D8C7BE'; x.font = DS(400,17);
   x.fillText('Diese Karte ist eine begründete Vorauswahl aus ' + F.length + ' Düften, kein Marktüberblick und kein Urteil.', M+22, H-86);
   x.fillStyle = DIM; x.font = DS(400,18);
-  x.fillText('Sillage · Duftprofil aus ' + Q.length + ' Fragen · erstellt am ' + stamp, M, H-42);
+  x.fillText('Sillage · Duftprofil aus ' + AQ().length + ' Fragen · erstellt am ' + stamp, M, H-42);
   return cv.toDataURL('image/png');
 }
 async function renderPass(name,blurb,a,anc,top,MAX){
@@ -2494,10 +2593,12 @@ function renderDuell(list){
 }
 
 function renderResult(){
-  state.step = Q.length;
+  state.step = AQ().length;
   paintChrome();
   const a = state.a;
   a.nogo = a.nogo||[]; a.anchor = a.anchor||[]; a.anchorneg = a.anchorneg||[]; a.notes = a.notes||[];
+  /* Einsteiger ueberspringen die Familienfrage - dann aus den Bildern ableiten. */
+  if(!a.fam || !a.fam.length) a.fam = suggestFam(a.mood||[]);
   state.fb = state.fb||{};
   const fbCount = Object.keys(state.fb).length;
   const rk = rank(a), list = rk.list, MAX = rk.MAX, anc = rk.anc;
@@ -2537,7 +2638,7 @@ function renderResult(){
   <div class="fade reveal">
     <p class="verdict-eyebrow">Dein Duftprofil</p>
     <h1 class="archetype">${esc(name)}</h1>
-    <div class="strip" title="Die Farben deiner Antworten">${Q.map(q=>`<i style="background:${q.acc}"></i>`).join('')}</div>
+    <div class="strip" title="Die Farben deiner Antworten">${AQ().map(q=>`<i style="background:${q.acc}"></i>`).join('')}</div>
     <p class="profile-text">${esc(blurb)}</p>
 
     <div class="panel">
@@ -2595,7 +2696,7 @@ function renderResult(){
     </div>
 
     <details class="fold">
-      <summary>Steckbrief <span>— alle ${Q.length} Antworten im Klartext</span></summary>
+      <summary>Steckbrief <span>— alle ${AQ().length} Antworten im Klartext</span></summary>
       <div class="inner">
         <p class="profile-text">${profileText(a,anc)}</p>
         <dl class="dossier">${dossier(a,anc)}</dl>
@@ -2667,7 +2768,7 @@ function renderResult(){
     <div class="sec-head"><h2>Dein Duftpass</h2><hr><span>das komplette Ergebnis auf einer Karte</span></div>
     <div class="passwrap">
       <img id="passimg" alt="Duftpass ${esc(name)}">
-      <p>Alle ${Q.length} Antworten, Archetyp, Kennwerte und Empfehlungen auf einem Bild — zum Vorzeigen in der Parfümerie. Rechtsklick oder langes Antippen speichert es. Einen Download startet die Seite bewusst nicht selbst, der wird in eingebetteten Ansichten blockiert.</p>
+      <p>Alle ${AQ().length} Antworten, Archetyp, Kennwerte und Empfehlungen auf einem Bild — zum Vorzeigen in der Parfümerie. Rechtsklick oder langes Antippen speichert es. Einen Download startet die Seite bewusst nicht selbst, der wird in eingebetteten Ansichten blockiert.</p>
       <button class="ghost" id="passcopy">Bild in die Zwischenablage</button>
     </div>
 
@@ -2726,7 +2827,30 @@ function renderResult(){
   document.getElementById('again').onclick = ()=>{
     state.step=-1; state.a={}; state.fb={}; state.duell=null;
     try{ localStorage.removeItem(STORE); }catch(e){}
-    wardrobeUsed.clear(); renderIntro(); window.scrollTo(0,0);
+    wardrobeUsed.clear(); /* Kopfzeile bekommt beim Scrollen einen Schatten. */
+window.addEventListener('scroll', function(){
+  const mh = document.querySelector('.masthead');
+  if(mh) mh.classList.toggle('gescrollt', window.scrollY > 12);
+}, {passive:true});
+
+/* Prozentwerte im Ergebnis zaehlen hoch statt einfach dazustehen. */
+function zaehleHoch(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('.chart .pc, .score b').forEach(function(el){
+    const ziel = parseInt(el.textContent, 10);
+    if(isNaN(ziel)) return;
+    let n = Math.max(0, ziel - 18), t0 = null;
+    function tick(t){
+      if(!t0) t0 = t;
+      const f = Math.min(1, (t - t0) / 700);
+      el.textContent = Math.round(n + (ziel - n) * f) + '%';
+      if(f < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+renderIntro(); window.scrollTo(0,0);
   };
   wardrobeUsed.clear();
   /* Der Flakon sprüht einmal, wenn das Ergebnis erscheint. */
@@ -2739,6 +2863,7 @@ function renderResult(){
       setTimeout(function(){ puff.remove(); }, 950);
     }
   }catch(e){}
+  setTimeout(zaehleHoch, 400);
   window.scrollTo({top:0,behavior:'smooth'});
 }
 const wardrobeUsed = new Set();
@@ -2825,7 +2950,30 @@ window.addEventListener('error', e=>{
   const st = document.getElementById('stage');
   if(st && !st.textContent.trim()) fatal((e.message||'Unbekannter Fehler') + ' · Zeile ' + (e.lineno||'?'));
 });
-try{ renderIntro(); }
+try{ /* Kopfzeile bekommt beim Scrollen einen Schatten. */
+window.addEventListener('scroll', function(){
+  const mh = document.querySelector('.masthead');
+  if(mh) mh.classList.toggle('gescrollt', window.scrollY > 12);
+}, {passive:true});
+
+/* Prozentwerte im Ergebnis zaehlen hoch statt einfach dazustehen. */
+function zaehleHoch(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('.chart .pc, .score b').forEach(function(el){
+    const ziel = parseInt(el.textContent, 10);
+    if(isNaN(ziel)) return;
+    let n = Math.max(0, ziel - 18), t0 = null;
+    function tick(t){
+      if(!t0) t0 = t;
+      const f = Math.min(1, (t - t0) / 700);
+      el.textContent = Math.round(n + (ziel - n) * f) + '%';
+      if(f < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+renderIntro(); }
 catch(err){ fatal((err && err.message) ? err.message : err); }
 </script>
 
