@@ -9,24 +9,30 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap">
 <style>
 /* ═══════════════════════════════════════════════════════════
-   Sillage — helles Papier, Pflaumentinte, bunte Duftorgel
+   Sillage — gebrochenes Elfenbein, eine Akzentfarbe, Ruhe
+
+   Farbdisziplin: EINE Akzentfarbe (Terrakotta) traegt alles
+   Handelnde — Knoepfe, Marken, aktive Zustaende. Salbei ist
+   ausschliesslich Datenfarbe (Radar, Karte, Wildcards).
+   Altgold erscheint nur auf dunklem Grund. Alles andere ist
+   Papier, Linie und Tinte. Keine weiteren Farben hinzufuegen.
    ═══════════════════════════════════════════════════════════ */
 :root{
-  --paper:#FDF6F0;          /* warmes Papier */
-  --paper-2:#F7EDE4;        /* zweite Ebene */
-  --card:#FFFFFF;
-  --ink:#33262C;            /* tiefe Pflaumentinte statt Schwarz */
-  --ink-mid:#6E5C5C;
-  --ink-dim:#9A8781;
-  --line:#EBDCCF;
-  --line-2:#DCC8B8;
-  --coral:#F4643C;          /* Hausfarbe */
-  --teal:#17A2A2;
-  --sun:#FFC24B;
-  --acc:#F4643C;            /* wechselt pro Schritt */
-  --acc-soft:rgba(244,100,60,.12);
-  --shadow:0 1px 2px rgba(51,38,44,.05), 0 10px 26px -14px rgba(51,38,44,.30);
-  --shadow-lift:0 2px 4px rgba(51,38,44,.06), 0 20px 40px -18px rgba(51,38,44,.34);
+  --paper:#F5F2EA;          /* gebrochenes Elfenbein */
+  --paper-2:#EBE6DA;        /* zweite Ebene */
+  --card:#FFFDF8;
+  --ink:#2C2823;            /* warmes Tiefbraun statt Schwarz */
+  --ink-mid:#635C51;
+  --ink-dim:#948C7F;
+  --line:#E2DBCC;
+  --line-2:#CDC4B1;
+  --coral:#9E4430;          /* Hausfarbe: gebranntes Terrakotta */
+  --teal:#3D6E67;           /* Salbei — nur fuer Daten */
+  --sun:#B08A3E;            /* Altgold — nur auf dunklem Grund */
+  --acc:#9E4430;            /* wechselt pro Schritt, bleibt im Erdton */
+  --acc-soft:rgba(158,68,48,.10);
+  --shadow:0 1px 2px rgba(44,40,35,.05), 0 10px 26px -14px rgba(44,40,35,.26);
+  --shadow-lift:0 2px 4px rgba(44,40,35,.06), 0 20px 40px -18px rgba(44,40,35,.30);
   --r:16px; --r-s:10px;
 }
 *{box-sizing:border-box}
@@ -43,14 +49,14 @@ body::before{
   background:
     radial-gradient(38vw 32vh at 84% 4%,  var(--acc-soft), transparent 68%),
     radial-gradient(34vw 30vh at 4% 76%,  var(--acc-soft), transparent 68%),
-    radial-gradient(30vw 26vh at 60% 100%, rgba(255,194,75,.13), transparent 70%);
+    radial-gradient(30vw 26vh at 60% 100%, rgba(61,110,103,.07), transparent 70%);
   transition:background 1s ease;
 }
 .wrap{max-width:900px;margin:0 auto;padding:0 clamp(1.1rem,4vw,2.6rem) 5rem}
 
 /* ── Kopf ─────────────────────────────────── */
 .masthead{display:flex;align-items:center;gap:.95rem;padding:clamp(1.2rem,3.5vw,2.1rem) 0 1rem}
-.flask{flex:none;width:46px;height:64px;overflow:visible;filter:drop-shadow(0 6px 12px rgba(51,38,44,.13))}
+.flask{flex:none;width:46px;height:64px;overflow:visible;filter:drop-shadow(0 6px 12px rgba(44,40,35,.12))}
 .flask .glass{fill:#fff;stroke:var(--line-2);stroke-width:1.4}
 .flask .cap{fill:var(--ink);rx:2}
 .flask .collar{fill:var(--line-2)}
@@ -148,7 +154,7 @@ h1.q em{font-style:normal;color:var(--acc);transition:color .85s ease}
 .cta{
   all:unset;cursor:pointer;margin-left:auto;padding:.85rem 2.1rem;
   background:var(--acc);color:#fff;font-size:.93rem;font-weight:700;letter-spacing:-.005em;
-  border-radius:99px;box-shadow:0 6px 18px -6px rgba(51,38,44,.4);
+  border-radius:99px;box-shadow:0 6px 18px -6px rgba(44,40,35,.34);
   transition:transform .18s cubic-bezier(.34,1.5,.64,1),filter .2s,opacity .2s,background .85s ease;
 }
 .cta:hover{transform:translateY(-2px) scale(1.02);filter:saturate(1.1)}
@@ -166,9 +172,9 @@ h1.q em{font-style:normal;color:var(--acc);transition:color .85s ease}
 .dims{display:grid;grid-template-columns:repeat(auto-fill,minmax(146px,1fr));gap:.4rem;margin:2rem 0 1.5rem}
 .dims div{
   font-size:.83rem;color:var(--ink-mid);display:flex;gap:.5rem;align-items:baseline;
-  background:var(--card);border-radius:var(--r-s);padding:.5rem .7rem;box-shadow:0 1px 2px rgba(51,38,44,.04);
+  background:var(--card);border-radius:var(--r-s);padding:.5rem .7rem;box-shadow:0 1px 2px rgba(44,40,35,.04);
 }
-.dims span{font-family:"DM Mono",monospace;font-size:.7rem;color:#fff;background:var(--dc,#F4643C);border-radius:4px;padding:.05rem .28rem;flex:none}
+.dims span{font-family:"DM Mono",monospace;font-size:.7rem;color:#fff;background:var(--acc);border-radius:4px;padding:.05rem .28rem;flex:none}
 .houses{display:flex;flex-wrap:wrap;gap:.4rem;margin:0 0 2rem;padding:0;list-style:none}
 .houses li{font-size:.79rem;color:var(--ink-mid);background:var(--paper-2);padding:.28rem .7rem;border-radius:99px}
 .houses li.more{background:transparent;color:var(--coral);font-weight:700}
@@ -184,7 +190,7 @@ h1.q em{font-style:normal;color:var(--acc);transition:color .85s ease}
 .radar{width:100%;height:auto;display:block}
 .radar .grid{fill:none;stroke:var(--line);stroke-width:1}
 .radar .spoke{stroke:var(--line);stroke-width:1}
-.radar .you{fill:rgba(244,100,60,.20);stroke:var(--coral);stroke-width:2;stroke-linejoin:round}
+.radar .you{fill:rgba(158,68,48,.16);stroke:var(--coral);stroke-width:2;stroke-linejoin:round}
 .radar .them{fill:none;stroke:var(--teal);stroke-width:1.6;stroke-dasharray:4 3;stroke-linejoin:round}
 .radar text{fill:var(--ink-dim);font-family:"DM Sans",sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
 .radar-key{display:flex;gap:1.1rem;font-size:.78rem;color:var(--ink-mid);margin:.8rem 0 0;flex-wrap:wrap}
@@ -257,7 +263,7 @@ h1.q em{font-style:normal;color:var(--acc);transition:color .85s ease}
 .chart .det{padding:0 1.3rem 1.2rem 3.6rem;font-size:.9rem;color:var(--ink-mid)}
 .chart .det[hidden]{display:none}
 .chart .det .nt{display:block;color:var(--ink);margin-bottom:.65rem}
-.chart li.lead{background:linear-gradient(180deg,rgba(255,194,75,.10),transparent 70%)}
+.chart li.lead{background:linear-gradient(180deg,rgba(158,68,48,.06),transparent 70%)}
 .chart li.lead .nm b{font-family:"Fraunces","Georgia",serif;font-size:1.22rem;font-weight:600}
 .chart li.lead .n{color:var(--coral);font-size:1.05rem;font-weight:500}
 
@@ -267,12 +273,12 @@ h1.q em{font-style:normal;color:var(--acc);transition:color .85s ease}
 .famkey li{display:flex;align-items:center;gap:.4rem}
 .famkey em{width:11px;height:11px;border-radius:4px;display:inline-block;font-style:normal}
 
-.search-box{background:var(--ink);color:#F6ECE4;border-radius:var(--r);padding:1.7rem;margin:2.8rem 0 2.2rem}
+.search-box{background:var(--ink);color:#F2EDE3;border-radius:var(--r);padding:1.7rem;margin:2.8rem 0 2.2rem}
 .search-box h3{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--sun);margin:0 0 1rem;font-weight:700}
-.search-box p{font-size:.94rem;color:#D8C7BE;margin:0 0 1rem;max-width:62ch}
+.search-box p{font-size:.94rem;color:#C6BEB0;margin:0 0 1rem;max-width:62ch}
 .chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:0 0 1.2rem;padding:0;list-style:none}
-.chips li{font-size:.82rem;background:rgba(255,255,255,.09);padding:.28rem .72rem;border-radius:99px;color:#F6ECE4}
-.search-box ol{margin:0;padding-left:1.15rem;color:#D8C7BE;font-size:.93rem}
+.chips li{font-size:.82rem;background:rgba(255,255,255,.09);padding:.28rem .72rem;border-radius:99px;color:#F2EDE3}
+.search-box ol{margin:0;padding-left:1.15rem;color:#C6BEB0;font-size:.93rem}
 .search-box ol li{margin-bottom:.5rem;padding-left:.25rem}
 .search-box ol li::marker{color:var(--sun);font-weight:700}
 .search-box em{color:var(--sun);font-style:normal}
@@ -285,10 +291,10 @@ h1.q em{font-style:normal;color:var(--acc);transition:color .85s ease}
 .note b{color:var(--ink);font-weight:700}
 
 /* Widerspruch zwischen No-Go und früherer Antwort */
-.conflict{background:#FFF3E6;border:1.5px solid #F0B27A;border-radius:var(--r);padding:1rem 1.15rem;margin:0 0 1.3rem}
-.conflict p{margin:0 0 .7rem;font-size:.93rem;color:#7A4A16;line-height:1.5}
-.conflict button{all:unset;cursor:pointer;font-size:.82rem;font-weight:700;background:#fff;color:#7A4A16;border:1.5px solid #F0B27A;border-radius:99px;padding:.34rem .9rem;margin:0 .4rem .4rem 0}
-.conflict button:hover{background:#F0B27A;color:#fff}
+.conflict{background:#F3EDDF;border:1.5px solid #CBB88A;border-radius:var(--r);padding:1rem 1.15rem;margin:0 0 1.3rem}
+.conflict p{margin:0 0 .7rem;font-size:.93rem;color:#63512A;line-height:1.5}
+.conflict button{all:unset;cursor:pointer;font-size:.82rem;font-weight:700;background:#fff;color:#63512A;border:1.5px solid #CBB88A;border-radius:99px;padding:.34rem .9rem;margin:0 .4rem .4rem 0}
+.conflict button:hover{background:#CBB88A;color:#fff}
 .conflict button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 
 /* Die gesammelte Farbpalette als Signatur */
@@ -304,11 +310,11 @@ h1.q em{font-style:normal;color:var(--acc);transition:color .85s ease}
 .fb button{all:unset;cursor:pointer;font-size:.82rem;font-weight:500;background:var(--paper-2);color:var(--ink-mid);border-radius:99px;padding:.3rem .85rem;transition:background .2s,color .2s}
 .fb button:hover{background:var(--line)}
 .fb button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
-.fb button.yes[aria-pressed="true"]{background:#2E9E6B;color:#fff}
-.fb button.no[aria-pressed="true"]{background:#D83A45;color:#fff}
+.fb button.yes[aria-pressed="true"]{background:var(--teal);color:#fff}
+.fb button.no[aria-pressed="true"]{background:var(--ink);color:#fff}
 .recalc{position:sticky;bottom:1.1rem;z-index:5;display:flex;justify-content:center;margin:1.3rem 0 0}
 .recalc[hidden]{display:none}
-.recalc button{all:unset;cursor:pointer;background:var(--ink);color:#fff;font-weight:700;font-size:.9rem;padding:.8rem 1.7rem;border-radius:99px;box-shadow:0 12px 30px -10px rgba(51,38,44,.65);transition:background .2s,transform .18s}
+.recalc button{all:unset;cursor:pointer;background:var(--ink);color:#fff;font-weight:700;font-size:.9rem;padding:.8rem 1.7rem;border-radius:99px;box-shadow:0 12px 30px -10px rgba(44,40,35,.55);transition:background .2s,transform .18s}
 .recalc button:hover{background:var(--coral);transform:translateY(-2px)}
 .recalc button:focus-visible{outline:3px solid var(--coral);outline-offset:3px}
 
@@ -344,8 +350,10 @@ details.fold>summary:focus-visible{outline:3px solid var(--acc);outline-offset:3
 details.fold>summary span{color:var(--ink-dim);font-weight:400;font-size:.87rem}
 details.fold .inner{padding:0 0 1.3rem}
 details.fold .dossier{box-shadow:none;padding:0;margin:0 0 1rem}
+details.fold .chart{box-shadow:none;border:1px solid var(--line);border-radius:var(--r-s)}
+details.fold+details.fold{margin-top:-.6rem}
 
-.chart li.wildrow{background:linear-gradient(180deg,rgba(23,162,162,.09),transparent 70%)}
+.chart li.wildrow{background:linear-gradient(180deg,rgba(61,110,103,.08),transparent 70%)}
 .chart li.wildrow .n{color:var(--teal);font-family:"DM Sans",sans-serif;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
 .famline{margin:1.4rem 0 0}
 .caveat.short{padding:.85rem 1.1rem;font-size:.9rem;margin-bottom:1rem}
@@ -363,35 +371,19 @@ details.fold .dossier{box-shadow:none;padding:0;margin:0 0 1rem}
 .searchinfo{font-size:.83rem;color:var(--ink-dim);margin:-.6rem 0 1rem}
 
 /* Der wichtigste Schritt nach dem Ergebnis */
-.nextstep{background:var(--ink);color:#F6ECE4;border-radius:var(--r);padding:1.6rem 1.7rem;margin:2.4rem 0 0}
+.nextstep{background:var(--ink);color:#F2EDE3;border-radius:var(--r);padding:1.6rem 1.7rem;margin:2.4rem 0 0}
 .nextstep h3{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:1.4rem;margin:0 0 .7rem;color:#fff;letter-spacing:-.015em}
-.nextstep p{margin:0 0 .8rem;font-size:.96rem;color:#D8C7BE;max-width:62ch;line-height:1.6}
+.nextstep p{margin:0 0 .8rem;font-size:.96rem;color:#C6BEB0;max-width:62ch;line-height:1.6}
 .nextstep p:last-child{margin-bottom:0}
 .nextstep b{color:var(--sun)}
-.nextstep ol{margin:.2rem 0 0;padding-left:1.15rem;color:#D8C7BE;font-size:.94rem}
+.nextstep ol{margin:.2rem 0 0;padding-left:1.15rem;color:#C6BEB0;font-size:.94rem}
 .nextstep ol li{margin-bottom:.5rem}
 .nextstep ol li::marker{color:var(--sun);font-weight:700}
 
-/* Duell-Runde */
-.duell{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:1.5rem;margin:0 0 1.6rem}
-.duellkopf{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin:0 0 1rem;flex-wrap:wrap}
-.duellkopf b{font-family:"Fraunces",Georgia,serif;font-size:1.15rem;font-weight:600}
-.duellkopf span{font-family:"DM Mono",monospace;font-size:.8rem;color:var(--ink-dim)}
-.duellpaar{display:grid;grid-template-columns:1fr auto 1fr;gap:.8rem;align-items:stretch}
-@media(max-width:560px){.duellpaar{grid-template-columns:1fr;gap:.6rem}}
-.duellpaar .vs{align-self:center;font-family:"Fraunces",Georgia,serif;font-size:.95rem;color:var(--ink-dim)}
-.duellwahl{all:unset;box-sizing:border-box;cursor:pointer;padding:1rem 1.1rem;border-radius:var(--r-s);border:1.5px solid var(--line);background:var(--paper);transition:border-color .2s,transform .18s,background .2s}
-.duellwahl:hover{border-color:var(--acc);transform:translateY(-2px);background:#fff}
-.duellwahl:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
-.duellwahl b{display:block;font-family:"Fraunces",Georgia,serif;font-size:1.1rem;font-weight:600;line-height:1.2;margin-bottom:.2rem}
-.duellwahl span{display:block;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);font-weight:700;margin-bottom:.4rem}
-.duellwahl small{display:block;font-size:.83rem;color:var(--ink-mid);line-height:1.45}
-.duellskip{all:unset;cursor:pointer;font-size:.82rem;color:var(--ink-dim);border-bottom:1.5px solid var(--line-2);margin-top:.9rem;display:inline-block}
-.duellskip:hover{color:var(--coral);border-color:var(--coral)}
-.duellskip:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
-
 /* Farbwelten der Szenen: jede Karte traegt ihre eigene Stimmung,
-   rein aus Verlaeufen - kein einziges geladenes Bild. */
+   rein aus Verlaeufen - kein einziges geladenes Bild.
+   Bewusst entsaettigt und auf ein gemeinsames Helligkeitsband
+   gebracht: Die Kacheln sollen sich unterscheiden, nicht streiten. */
 .opt[data-v]{position:relative}
 .opt[data-key="mood"]::before{
   content:"";position:absolute;left:0;top:0;bottom:0;width:6px;border-radius:var(--r) 0 0 var(--r);
@@ -399,24 +391,32 @@ details.fold .dossier{box-shadow:none;padding:0;margin:0 0 1rem}
 }
 .opt[data-key="mood"]{padding-left:1.5rem;background-image:var(--szenebg,none);background-size:cover}
 .opt[data-key="mood"][aria-pressed="true"]{background-image:var(--szenebg,none)}
-.opt[data-v="zitrusgarten"]{--szene:linear-gradient(#F2C230,#8FBF3F);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(242,194,48,.20),transparent 62%)}
-.opt[data-v="kamin"]{--szene:linear-gradient(#B5651D,#5A2E12);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(181,101,29,.22),transparent 62%)}
-.opt[data-v="bibliothek"]{--szene:linear-gradient(#8A6242,#4A3423);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(138,98,66,.20),transparent 62%)}
-.opt[data-v="feige"]{--szene:linear-gradient(#7FA06A,#3E6B46);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(127,160,106,.22),transparent 62%)}
-.opt[data-v="bluete"]{--szene:linear-gradient(#F5C6D8,#E0518C);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(232,93,155,.16),transparent 62%)}
-.opt[data-v="weihrauch"]{--szene:linear-gradient(#9AA5B1,#4C5560);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(109,123,140,.20),transparent 62%)}
-.opt[data-v="ozean"]{--szene:linear-gradient(#7FC4DE,#1F6E96);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(47,139,201,.20),transparent 62%)}
-.opt[data-v="waesche"]{--szene:linear-gradient(#E8EDF2,#B9C6D2);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(185,198,210,.26),transparent 62%)}
-.opt[data-v="cremig"]{--szene:linear-gradient(#FFE1B0,#F0A85C);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(255,194,75,.26),transparent 62%)}
-.opt[data-v="waldboden"]{--szene:linear-gradient(#6E8B5A,#2F3F2A);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(87,110,70,.24),transparent 62%)}
-.opt[data-v="obstgarten"]{--szene:linear-gradient(#FFB48A,#D2603C);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(210,96,60,.18),transparent 62%)}
-.opt[data-v="nachtblueten"]{--szene:linear-gradient(#C9A7E8,#5B3A8C);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(123,90,217,.18),transparent 62%)}
-.opt[data-v="salzhaut"]{--szene:linear-gradient(#FFD9A8,#E0906A);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(224,144,106,.20),transparent 62%)}
-.opt[data-v="basar"]{--szene:linear-gradient(#E8A33C,#A8541C);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(232,163,60,.22),transparent 62%)}
-.opt[data-v="honig"]{--szene:linear-gradient(#F0C04A,#A86A22);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(240,192,74,.22),transparent 62%)}
-.opt[data-v="iris"]{--szene:linear-gradient(#D9D2E4,#8E82A8);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(142,130,168,.18),transparent 62%)}
-.opt[data-v="asphalt"]{--szene:linear-gradient(#B9BFC4,#5E676E);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(94,103,110,.18),transparent 62%)}
-.opt[data-v="kraeuter"]{--szene:linear-gradient(#B7C97A,#6B8A3A);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(140,170,80,.22),transparent 62%)}
+.opt[data-v="zitrusgarten"]{--szene:linear-gradient(#C9AE55,#8C9A55);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(201,174,85,.11),transparent 62%)}
+.opt[data-v="kamin"]{--szene:linear-gradient(#9C6438,#5A3520);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(156,100,56,.11),transparent 62%)}
+.opt[data-v="bibliothek"]{--szene:linear-gradient(#8A6E52,#4E3B2B);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(138,110,82,.11),transparent 62%)}
+.opt[data-v="feige"]{--szene:linear-gradient(#87996F,#48664C);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(135,153,111,.12),transparent 62%)}
+.opt[data-v="bluete"]{--szene:linear-gradient(#D8B3BE,#B0687F);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(176,104,127,.10),transparent 62%)}
+.opt[data-v="weihrauch"]{--szene:linear-gradient(#9DA3A6,#565D62);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(112,120,126,.10),transparent 62%)}
+.opt[data-v="ozean"]{--szene:linear-gradient(#93B4BE,#3F6B80);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(63,107,128,.11),transparent 62%)}
+.opt[data-v="waesche"]{--szene:linear-gradient(#E4E4DE,#BEC2BE);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(190,194,190,.14),transparent 62%)}
+.opt[data-v="cremig"]{--szene:linear-gradient(#EDD6AE,#D2A469);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(210,164,105,.14),transparent 62%)}
+.opt[data-v="waldboden"]{--szene:linear-gradient(#728063,#37432F);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(114,128,99,.12),transparent 62%)}
+.opt[data-v="obstgarten"]{--szene:linear-gradient(#E0AE8E,#B76F4D);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(183,111,77,.11),transparent 62%)}
+.opt[data-v="nachtblueten"]{--szene:linear-gradient(#B6A6C4,#6A5A80);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(106,90,128,.10),transparent 62%)}
+.opt[data-v="salzhaut"]{--szene:linear-gradient(#EBCBA9,#C79172);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(199,145,114,.12),transparent 62%)}
+.opt[data-v="basar"]{--szene:linear-gradient(#C99A50,#96602F);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(201,154,80,.12),transparent 62%)}
+.opt[data-v="honig"]{--szene:linear-gradient(#D3AE5E,#96702F);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(211,174,94,.12),transparent 62%)}
+.opt[data-v="iris"]{--szene:linear-gradient(#D3CEDA,#94899F);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(148,137,159,.10),transparent 62%)}
+.opt[data-v="asphalt"]{--szene:linear-gradient(#B3B5B3,#65696B);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(101,105,107,.10),transparent 62%)}
+.opt[data-v="kraeuter"]{--szene:linear-gradient(#AEB784,#78894F);--szenebg:radial-gradient(120% 90% at 100% 0%,rgba(120,137,79,.12),transparent 62%)}
+
+/* Duftfamilien tragen dieselbe gedaempfte Kennfarbe wie im Ergebnis —
+   so lernt man beim Beantworten schon die Legende der Auswertung. */
+.opt[data-key="fam"]::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:6px;
+  border-radius:var(--r) 0 0 var(--r);background:var(--famcol,var(--line));
+}
+.opt[data-key="fam"]{padding-left:1.5rem}
 
 /* Ergebnis-Inszenierung */
 @keyframes revealUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
@@ -442,9 +442,9 @@ body::after{
 .wrap{position:relative;z-index:1}
 
 /* Kopfzeile bleibt oben stehen und legt sich mit Milchglas ueber den Inhalt */
-.masthead{position:sticky;top:0;z-index:20;backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);background:linear-gradient(180deg,rgba(253,246,240,.94),rgba(253,246,240,.72));margin:0 -.6rem;padding-left:.6rem;padding-right:.6rem;transition:box-shadow .3s}
-.masthead.gescrollt{box-shadow:0 10px 26px -22px rgba(51,38,44,.7)}
-.rail{position:sticky;top:74px;z-index:19;padding:.4rem 0;background:linear-gradient(180deg,rgba(253,246,240,.92),rgba(253,246,240,0))}
+.masthead{position:sticky;top:0;z-index:20;backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);background:linear-gradient(180deg,rgba(245,242,234,.95),rgba(245,242,234,.75));margin:0 -.6rem;padding-left:.6rem;padding-right:.6rem;transition:box-shadow .3s}
+.masthead.gescrollt{box-shadow:0 10px 26px -22px rgba(44,40,35,.6)}
+.rail{position:sticky;top:74px;z-index:19;padding:.4rem 0;background:linear-gradient(180deg,rgba(245,242,234,.93),rgba(245,242,234,0))}
 
 /* Kapitelanzeige */
 .kapitel{display:flex;align-items:center;gap:.7rem;margin:0 0 1rem;flex-wrap:wrap}
@@ -457,7 +457,7 @@ body::after{
 /* Freiwillig-Leiste, immer oberhalb der Antworten */
 .skipbar{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;background:var(--paper-2);border-radius:99px;padding:.5rem .55rem .5rem 1.1rem;margin:0 0 1.3rem;max-width:640px}
 .skipbar span{font-size:.87rem;color:var(--ink-mid)}
-.skipbar button{all:unset;cursor:pointer;font-size:.83rem;font-weight:700;color:var(--ink);background:var(--card);border-radius:99px;padding:.42rem 1rem;box-shadow:0 1px 2px rgba(51,38,44,.07);transition:background .2s,color .2s,transform .18s}
+.skipbar button{all:unset;cursor:pointer;font-size:.83rem;font-weight:700;color:var(--ink);background:var(--card);border-radius:99px;padding:.42rem 1rem;box-shadow:0 1px 2px rgba(44,40,35,.07);transition:background .2s,color .2s,transform .18s}
 .skipbar button:hover{background:var(--acc);color:#fff;transform:translateY(-1px)}
 .skipbar button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 .skipbar button:last-child{margin-left:auto}
@@ -483,15 +483,6 @@ body::after{
 /* Der Flakon bekommt eine bewegte Fluessigkeitsoberflaeche */
 @keyframes wogen{0%{transform:translateX(0)}50%{transform:translateX(-6px)}100%{transform:translateX(0)}}
 .flask .welle{fill:var(--acc);transition:fill .85s ease;animation:wogen 4.5s ease-in-out infinite}
-
-/* Der Unisex-Vorschlag wird sichtbar hervorgehoben, ohne zu bevormunden. */
-.opt[data-key="gender"][data-v="u"]{border-color:var(--teal);background:linear-gradient(180deg,rgba(23,162,162,.09),rgba(255,255,255,.5))}
-.opt[data-key="gender"][data-v="u"] .otext::after{
-  content:"Für die meisten die beste Wahl";display:inline-block;margin-top:.5rem;
-  font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
-  color:#fff;background:var(--teal);border-radius:99px;padding:.18rem .6rem;
-}
-.opt[data-key="gender"][data-v="u"] .dot::before{background:var(--teal)}
 
 /* Zwischenschritt Pflicht -> Kuer */
 .schnitt{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow-lift);padding:2rem 1.9rem;margin:0 0 1.6rem;border-top:5px solid var(--acc)}
@@ -522,11 +513,22 @@ body::after{
 .orgelflakon b{font-size:.72rem;font-weight:700;color:var(--ink);text-align:center;line-height:1.2}
 .orgelflakon span{font-family:"DM Mono",monospace;font-size:.7rem;color:var(--ink-dim)}
 
-/* Duell-Bilanz */
-.duellbilanz{background:linear-gradient(180deg,rgba(23,162,162,.12),transparent);border-radius:var(--r);padding:1.1rem 1.3rem;margin:0 0 1.4rem;border-left:4px solid var(--teal)}
-.duellbilanz b{font-family:"Fraunces",Georgia,serif;font-size:1.1rem;display:block;margin-bottom:.35rem}
-.duellbilanz p{margin:0;font-size:.93rem;color:var(--ink-mid);line-height:1.55}
-.duellbilanz em{font-style:normal;color:var(--teal);font-weight:700}
+/* Duftpyramide: Kopf, Herz, Basis als drei gestapelte Baender.
+   Genau die Darstellung, die in jeder Parfuemerie an der Wand haengt. */
+.pyrbox{display:grid;grid-template-columns:minmax(0,220px) 1fr;gap:1.6rem;align-items:center;
+  background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:1.5rem 1.6rem;margin:0 0 1.6rem}
+.pyr{width:100%;height:auto;display:block}
+.pyr .band{stroke:var(--card);stroke-width:2}
+.pyr .lbl{fill:#fff;font-family:"DM Sans",sans-serif;font-size:9px;font-weight:700;letter-spacing:.12em}
+.pyrtext h4{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--coral);margin:0 0 .5rem;font-weight:700}
+.pyrtext p{margin:0 0 .8rem;font-size:.97rem;color:var(--ink-mid);line-height:1.55}
+.pyrtext p:last-child{margin-bottom:0}
+.pyrtext .sag{font-family:"Fraunces",Georgia,serif;font-size:1.14rem;color:var(--ink);line-height:1.4}
+.pyrtext .sag b{color:var(--coral);font-weight:600}
+.notenzeile{display:flex;flex-wrap:wrap;gap:.35rem;margin:.2rem 0 .9rem;padding:0;list-style:none}
+.notenzeile li{font-size:.83rem;color:var(--ink);background:var(--paper-2);padding:.22rem .7rem;border-radius:99px;font-weight:500}
+.notenzeile li i{font-style:normal;color:var(--ink-dim);font-size:.72rem;margin-left:.35rem}
+.notenzeile.weg li{color:var(--ink-mid);background:transparent;border:1px solid var(--line-2);text-decoration:line-through;text-decoration-color:var(--line-2)}
 
 /* Klappkarte */
 .passpaar{display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start}
@@ -566,6 +568,109 @@ body::after{
   .fade{animation:none}
   *{transition-duration:.01ms !important;animation-duration:.01ms !important}
   html{scroll-behavior:auto}
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Handy und kleines Tablet — eigener Durchgang, rein additiv.
+   Alles hier steht in Media Queries; die Ansicht am Rechner
+   bleibt Zeile fuer Zeile unveraendert.
+   ══════════════════════════════════════════════════════════════ */
+@keyframes riseSoft{from{opacity:0}to{opacity:1}}
+@media (max-width:760px){
+  body{font-size:16px}
+  .wrap{padding-bottom:1.5rem}
+  /* Die Einlaufanimation arbeitet hier ohne transform. Ein transform auf
+     einem Vorfahren macht diesen zum Bezugsrahmen fuer position:fixed -
+     die untere Leiste haenge sonst mitten auf der Seite statt am Rand. */
+  .fade{animation:riseSoft .45s ease both}
+
+  /* Kopf: schmaler, damit die erste Antwort ueber der Falz steht */
+  .masthead{padding:.6rem 0 .5rem;gap:.65rem}
+  .flask{width:32px;height:45px}
+  .mark{font-size:1.14rem}
+  .mast-note{display:none}
+  .stepno{font-size:.76rem}
+  .stepno b{font-size:1.1rem}
+  .rail{top:52px;margin:0 0 1rem;padding:.3rem 0}
+  .rail i{height:5px}
+  .kapitel{margin:0 0 .7rem;gap:.5rem}
+  .kapname{font-size:.94rem}
+  .kapzahl{font-size:.7rem}
+
+  /* Frage: kompakter Satz, eine Spalte, groessere Tippflaechen */
+  .eyebrow{margin-bottom:.6rem;font-size:.64rem;padding:.26rem .6rem}
+  h1.q{font-size:clamp(1.62rem,6.6vw,2.15rem);margin-bottom:.5rem}
+  .sub{font-size:.95rem;margin-bottom:1.15rem;line-height:1.5}
+  .note{margin:-.5rem 0 1.1rem}
+  .skipbar{padding:.45rem .5rem .45rem .95rem;margin-bottom:1rem;font-size:.9rem}
+  .skipbar span{font-size:.82rem}
+  .opts{gap:.55rem;margin-bottom:1.2rem}
+  .opts.two{grid-template-columns:1fr}
+  .opt{padding:.9rem 1rem;min-height:56px;align-items:center}
+  .opt b{font-size:1rem}
+  .opt small{font-size:.84rem;margin-top:.15rem}
+  .qsearch{max-width:none;padding:.75rem 1.1rem}
+
+  /* Weiter-Leiste steht fest am unteren Rand: kein Suchen nach dem Knopf */
+  .navfix{
+    position:fixed;left:0;right:0;bottom:0;z-index:30;margin:0;
+    display:flex;align-items:center;gap:.7rem;
+    padding:.6rem clamp(1.1rem,4vw,2.6rem);
+    padding-bottom:calc(.6rem + env(safe-area-inset-bottom,0px));
+    background:linear-gradient(180deg,rgba(245,242,234,.82),rgba(245,242,234,.99) 42%);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border-top:1px solid var(--line);
+  }
+  .navfix .cta{margin-left:auto;padding:.8rem 1.7rem;flex:none}
+  .navfix #hint{font-size:.78rem;color:var(--ink-dim);line-height:1.25;min-width:0}
+  .navfix .ghost{font-size:.8rem;flex:none}
+  .hatnav{padding-bottom:5.5rem}
+
+  /* Ergebnis: Abschnitte enger, Karten schmaler, nichts quetschen */
+  .archetype{font-size:clamp(2rem,8.5vw,2.6rem)}
+  .profile-text{font-size:1rem}
+  .stripnote{font-size:.78rem}
+  .sec-head{margin:2rem 0 .9rem;gap:.5rem}
+  .sec-head h2{font-size:1.35rem}
+  .sec-head hr{display:none}
+  .sec-head span{font-size:.75rem;flex-basis:100%}
+  .panel{padding:1.2rem}
+  .pyrbox{grid-template-columns:1fr;gap:1rem;padding:1.2rem}
+  .pyr{max-width:210px;margin:0 auto}
+  .insights{grid-template-columns:1fr;gap:.7rem}
+  .insight{padding:1.05rem 1.15rem}
+  .insight .big{font-size:1.8rem}
+  .pick{padding:1.15rem 1.15rem}
+  .wardrobe{grid-template-columns:1fr}
+  .nextstep,.search-box{padding:1.25rem 1.2rem}
+  .nextstep h3{font-size:1.22rem}
+  .orgel{gap:.5rem}
+  .orgelflakon{width:46px}
+  .orgelflakon svg{width:34px;height:48px}
+  .orgelflakon b{font-size:.64rem}
+  .orgelflakon span{font-size:.64rem}
+  .famkey{font-size:.78rem;gap:.3rem .7rem}
+  details.fold{padding:0 1.1rem}
+  .passwrap{padding:1rem}
+  .passwrap img{max-width:none}
+  .disclaimer{font-size:.78rem}
+}
+
+/* Sehr schmal: die letzten Reserven */
+@media (max-width:380px){
+  h1.q{font-size:1.5rem}
+  .opt{padding:.85rem .9rem}
+  .opt small{font-size:.8rem}
+  .navfix .cta{padding:.75rem 1.3rem;font-size:.88rem}
+  .navfix #hint{display:none}
+}
+
+/* Der Duftpass ist 1080 px breit gerendert. Auf dem Handy sind zwei
+   Miniaturen nebeneinander unlesbar - dort steht er einspaltig und
+   in voller Breite, damit man ihn wirklich anschauen kann. */
+@media (max-width:760px){
+  .passpaar{grid-template-columns:1fr;gap:1.4rem}
+  .passpaar figcaption{font-size:.7rem}
 }
 </style>
 </head>
@@ -630,7 +735,7 @@ window.addEventListener('load', function(){
 <script>
 /* ═══ 1 — Fragebogen ═══════════════════════════════════════ */
 const Q = [
-{ id:'occ', kind:'multi', min:1, max:3, cols:true, acc:'#F4643C', kap:1,
+{ id:'occ', kind:'multi', min:1, max:3, cols:true, acc:'#9E4430', kap:1,
   eyebrow:'Anlass', title:'Wofür suchst du <em>einen Duft</em>?',
   sub:'Ein Duft fürs Büro löst eine andere Aufgabe als einer für den Abend. Bis zu drei.',
   o:[
@@ -640,7 +745,7 @@ const Q = [
     ['freizeit','Freizeit & Reisen','Leicht, unkompliziert, hitzefest.'],
     ['signature','Ein Signature für alles','Ein Duft, der dich überall begleitet.']
   ]},
-{ id:'season', kind:'multi', min:1, max:3, cols:true, acc:'#3FA98C', kap:1,
+{ id:'season', kind:'multi', min:1, max:3, cols:true, acc:'#4A7A6B', kap:1,
   eyebrow:'Jahreszeit', title:'Wann wird er <em>getragen</em>?',
   sub:'Hitze verstärkt Süße und Amber, Kälte schluckt Zitrus. Das verschiebt die Auswahl erheblich.',
   o:[
@@ -650,9 +755,9 @@ const Q = [
     ['winter','Winter','Dicht, warm, tragfähig.'],
     ['ganzjahr','Ganzjährig','Soll das ganze Jahr funktionieren.']
   ]},
-{ id:'fam', kind:'multi', min:1, max:4, cols:true, acc:'#F09A2B', kap:2, pfad:['fortgeschritten','sammler'],
+{ id:'fam', kind:'multi', min:1, max:4, cols:true, acc:'#B07A3C', kap:2, pfad:['fortgeschritten','sammler'],
   eyebrow:'Duftfamilien', title:'Was riechst du <em>gerne</em>?',
-  sub:'Bis zu vier. Unsicher? Aus deinen Bildern steht schon ein Vorschlag drin - dann einfach auf Weiter. Kein Vorwissen nötig.',
+  sub:'Bis zu vier — aber <b>weniger ist präziser</b>. Kreuze nur an, was wirklich zutrifft; die erste Wahl wiegt am schwersten. Unsicher? Aus deinen Bildern steht schon ein Vorschlag drin, dann einfach auf Weiter.',
   o:[
     ['zitrus','Zitrisch & spritzig','Wie eine aufgeschnittene Zitrone: hell, sauber, wach.'],
     ['gruen','Grün & pflanzlich','Zerriebene Blätter, frisch gemähtes Gras, Tomatenstaude.'],
@@ -667,9 +772,9 @@ const Q = [
     ['aquatisch','Wässrig & salzig','Meeresluft, Ozon, nasser Stein.'],
     ['moschus','Wie saubere Haut','Weich, nah, kaum greifbar. Fachbegriff: Moschus.']
   ]},
-{ id:'mood', kind:'multi', min:1, max:3, cols:true, acc:'#7B5AD9', kap:2,
+{ id:'mood', kind:'multi', min:1, max:3, cols:true, acc:'#6E5A86', kap:2,
   eyebrow:'Bilder', title:'Welche Szene <em>zieht dich an</em>?',
-  sub:'Der ehrlichste Teil. Niemand weiß, ob er Labdanum mag — aber jeder weiß, ob er das hier riechen will. Bis zu drei.',
+  sub:'Der ehrlichste Teil. Niemand weiß, ob er Labdanum mag — aber jeder weiß, ob er das hier riechen will. Bis zu drei, <b>und lieber eine zu wenig als eine zu viel</b>: Die erste Wahl wiegt am schwersten.',
   o:[
     ['zitrusgarten','Zitrusgarten an der Amalfiküste','Aufgeschnittene Zitrone, Bergamotte, Orangenschale, Hitze.'],
     ['kamin','Kaminfeuer & Whisky','Rauch, verkohltes Holz, Wärme im Glas.'],
@@ -690,7 +795,7 @@ const Q = [
     ['asphalt','Regen auf heißem Stein','Mineralisch, metallisch, Petrichor.'],
     ['kraeuter','Zerriebene Kräuter im Garten','Bitter-grün, Erde, Sonne, Thymian.']
   ]},
-{ id:'sweet', kind:'single', cols:true, acc:'#E85D9B', kap:2,
+{ id:'sweet', kind:'single', cols:true, acc:'#A75A63', kap:2,
   eyebrow:'Süße', title:'Wie süß darf er <em>werden</em>?',
   sub:'Die Achse, an der die meisten Düfte scheitern. Sie entscheidet öfter über Gefallen oder Nichtgefallen als die Duftfamilie.',
   o:[
@@ -699,7 +804,7 @@ const Q = [
     ['deutlich','Deutlich süß','Vanille und Honig dürfen tragen.'],
     ['dekadent','Dekadent','Sirup, Karamell, Likör. Voll rein.']
   ]},
-{ id:'nogo', kind:'multi', min:0, max:5, cols:true, optional:true, acc:'#6D7B8C', kap:2,
+{ id:'nogo', kind:'multi', min:0, max:5, cols:true, optional:true, acc:'#6E7671', kap:2,
   eyebrow:'Ausschlüsse', title:'Was geht <em>gar nicht</em>?',
   sub:'Wichtiger als jede Vorliebe. Ausgeschlossene Noten fliegen vollständig aus der Auswahl. Nichts anzukreuzen ist eine gültige Antwort.',
   o:[
@@ -714,7 +819,7 @@ const Q = [
     ['aldehyde','Aldehydisch','Der seifig-metallische N°5-Effekt.'],
     ['aquatisch','Aquatisch','Calone, Meeresbrise, Duschgel-Frische.']
   ]},
-{ id:'sil', kind:'single', cols:true, acc:'#2F8BC9', kap:2,
+{ id:'sil', kind:'single', cols:true, acc:'#46708C', kap:2,
   eyebrow:'Präsenz', title:'Wie viel Raum darf er <em>nehmen</em>?',
   sub:'Sillage ist die Spur, die du hinterlässt. Der häufigste Fehlkauf entsteht hier, nicht bei den Noten.',
   o:[
@@ -723,7 +828,7 @@ const Q = [
     ['praesent','Präsent','Man merkt, dass du den Raum betreten hast.'],
     ['raumfuellend','Raumfüllend','Er geht durch die Tür, bevor du es tust.']
   ]},
-{ id:'vibe', kind:'multi', min:1, max:3, cols:true, acc:'#57A93F', kap:2,
+{ id:'vibe', kind:'multi', min:1, max:3, cols:true, acc:'#6B8757', kap:2,
   eyebrow:'Typ', title:'Wie würdest du <em>dich</em> beschreiben?',
   sub:'Nicht wie du sein möchtest — wie du an einem normalen Dienstag bist. Bis zu drei.',
   o:[
@@ -736,7 +841,7 @@ const Q = [
     ['sinnlich','Sinnlich & warm','Nähe, Haut, Genuss.'],
     ['rebellisch','Rebellisch','Reibung ist erwünscht.']
   ]},
-{ id:'eff', kind:'multi', min:1, max:2, cols:true, acc:'#E0A21B', kap:2,
+{ id:'eff', kind:'multi', min:1, max:2, cols:true, acc:'#A98338', kap:2,
   eyebrow:'Wirkung', title:'Was soll er <em>für dich tun</em>?',
   sub:'Ein Duft ist ein Werkzeug. Bis zu zwei Aufgaben.',
   o:[
@@ -747,7 +852,7 @@ const Q = [
     ['statement','Ein Statement setzen','Erinnert werden. Auch polarisierend.'],
     ['kopfkino','Kopfkino auslösen','Für dich selbst. Ein Duft wie ein Ort.']
   ]},
-{ id:'bold', kind:'single', cols:true, acc:'#D83A45', kap:2,
+{ id:'bold', kind:'single', cols:true, acc:'#93382F', kap:2,
   eyebrow:'Wagemut', title:'Wie <em>eigenwillig</em> darf er sein?',
   sub:'Der Regler, der über Nische entscheidet. Unten liegt, was alle mögen — oben, was Leute im Aufzug fragen lässt, was das ist.',
   o:[
@@ -756,7 +861,7 @@ const Q = [
     ['eigenwillig','Eigenwillig','Darf ungewohnt sein. Nicht jeder muss ihn mögen.'],
     ['polarisierend','Polarisierend','Reibung ist der Punkt. Gerne schwierig.']
   ]},
-{ id:'anchor', kind:'multi', min:0, max:5, cols:true, optional:true, searchable:true, acc:'#17A2A2', kap:3,
+{ id:'anchor', kind:'multi', min:0, max:5, cols:true, optional:true, searchable:true, acc:'#3D6E67', kap:3,
   eyebrow:'Ankerdüfte', title:'Kennst du einen davon — und <em>mochtest ihn</em>?',
   sub:'Der stärkste Hebel im ganzen Fragebogen — ein bekannter Duft, der dir gefallen hat, verrät mehr als drei Duftfamilien. Bis zu fünf. Kennst du keinen davon: einfach überspringen, das Ergebnis funktioniert auch ohne.',
   o:[
@@ -796,7 +901,7 @@ const Q = [
     ['a_khamrah','Lattafa Khamrah','Dattel, Zimt, Praline.'],
     ['a_wsss','Jo Malone Wood Sage & Sea Salt','Meersalz, Salbei, leicht.']
   ]},
-{ id:'exp', kind:'single', cols:true, acc:'#8A6A46', kap:1,
+{ id:'exp', kind:'single', cols:true, acc:'#7A6248', kap:1,
   eyebrow:'Erfahrung', title:'Wo stehst du <em>gerade</em>?',
   sub:'Damit die Empfehlungen zur Lernkurve passen — schwierige Düfte brauchen eine trainierte Nase, sonst landen sie ungenutzt im Regal.',
   o:[
@@ -804,7 +909,7 @@ const Q = [
     ['fortgeschritten','Fortgeschritten','Ich kenne meine Richtung, will sie schärfen.'],
     ['sammler','Sammler','Zweistellige Sammlung. Zeig mir, was ich noch nicht habe.']
   ]},
-{ id:'frame', kind:'group', acc:'#F4643C', kap:3,
+{ id:'frame', kind:'group', acc:'#9E4430', kap:3,
   eyebrow:'Rahmen', title:'Zum Schluss der <em>Rahmen</em>.',
   sub:'Zwei letzte Angaben, damit die Empfehlungen realistisch bleiben.',
   groups:[
@@ -825,7 +930,7 @@ const Q = [
 
 /* ── Zwei ergänzende Fragen ──────────────────────────────── */
 Q.push(
-{ id:'longevity', kind:'single', cols:true, acc:'#B5651D', kap:2,
+{ id:'longevity', kind:'single', cols:true, acc:'#96603A', kap:2,
   eyebrow:'Haltbarkeit', title:'Wie lange hält Duft auf <em>deiner Haut</em>?',
   sub:'Hautchemie ist real. Manche Haut frisst Zitrus und Moschus in zwei Stunden, andere trägt einen Amber durch den ganzen Tag. Wer weiß, dass bei ihm nichts hält, braucht schwerere Basen.',
   o:[
@@ -834,13 +939,13 @@ Q.push(
     ['ewig','Ewig','Am nächsten Morgen ist der Pullover noch parfümiert.'],
     ['unklar','Weiß ich nicht','Habe nie darauf geachtet.']
   ]},
-{ id:'anchorneg', kind:'multi', min:0, max:3, cols:true, optional:true, searchable:true, acc:'#8E4585', kap:3, pfad:['fortgeschritten','sammler'],
+{ id:'anchorneg', kind:'multi', min:0, max:3, cols:true, optional:true, searchable:true, acc:'#7D5470', kap:3, pfad:['fortgeschritten','sammler'],
   eyebrow:'Abneigungen', title:'Und welchen fandst du <em>schrecklich</em>?',
   sub:'Diagnostisch stärker als jede Zustimmung — Ablehnung schneidet mehr Suchraum weg. Bis zu drei. Kennst du keinen davon oder fällt dir nichts ein: einfach überspringen, das ist völlig in Ordnung.',
   o:[] }
 );
 Q.push(
-{ id:'notes', kind:'multi', min:0, max:8, cols:true, optional:true, searchable:true, acc:'#3FA98C', kap:3, pfad:['fortgeschritten','sammler'],
+{ id:'notes', kind:'multi', min:0, max:8, cols:true, optional:true, searchable:true, acc:'#557C6A', kap:3, pfad:['fortgeschritten','sammler'],
   eyebrow:'Lieblingsnoten', title:'Gibt es Noten, die du <em>besonders liebst</em>?',
   sub:'Die konkreteste Angabe im ganzen Fragebogen — genauer als jede Duftfamilie. Bis zu acht. Wenn dir nichts einfällt: überspringen, das Ergebnis funktioniert auch ohne.',
   o:[
@@ -878,7 +983,7 @@ Q.push(
 );
 
 Q.push(
-{ id:'schnitt', kind:'info', kap:3, acc:'#17A2A2',
+{ id:'schnitt', kind:'info', kap:3, acc:'#3D6E67',
   eyebrow:'Zwischenstand', title:'Das war der <em>Pflichtteil</em>.',
   sub:'Dein Profil steht bereits. Die nächsten Fragen sind freiwillig und machen die Empfehlung deutlich schärfer — du kannst aber auch direkt zum Ergebnis springen.' }
 );
@@ -1643,11 +1748,11 @@ Q.forEach(q=>{
 });
 const MOODLBL = {zitrusgarten:'Zitrusgarten',kamin:'Kaminfeuer & Whisky',bibliothek:'alte Bibliothek',feige:'Feigenbaum im Schatten',bluete:'Blütenbaum',weihrauch:'Weihrauch in Stein',ozean:'kalte Gischt',waesche:'frische Wäsche',cremig:'Sonnencreme auf warmer Haut',waldboden:'Waldboden nach dem Regen',obstgarten:'Obstgarten im Spätsommer',nachtblueten:'Nachtblüten',salzhaut:'salzige Haut',basar:'Gewürzbasar',honig:'Honig & Tabak',iris:'puderige Iris',asphalt:'Regen auf heißem Stein',kraeuter:'zerriebene Kräuter'};
 const FAMLBL = {zitrus:'Zitrisch',gruen:'Grün',aromatisch:'Aromatisch',floral:'Floral',holzig:'Holzig',weihrauch:'Weihrauch',amber:'Amber',gourmand:'Gourmand',leder:'Leder',chypre:'Chypre',aquatisch:'Aquatisch',moschus:'Moschus'};
-const FAMCOL = {zitrus:'#F2C230',gruen:'#57A93F',aromatisch:'#86B14B',floral:'#E85D9B',holzig:'#A9713F',weihrauch:'#6D7B8C',amber:'#F09A2B',gourmand:'#D2603C',leder:'#7A5230',chypre:'#3FA98C',aquatisch:'#2F8BC9',moschus:'#B9A6C9'};
+const FAMCOL = {zitrus:'#C9A94E',gruen:'#6B8757',aromatisch:'#8C9A5B',floral:'#B0687F',holzig:'#96703F',weihrauch:'#6E7671',amber:'#B07A3C',gourmand:'#A2593C',leder:'#6E5236',chypre:'#4A7A6B',aquatisch:'#46708C',moschus:'#A79BAE'};
 const SILV = {skin:1,dezent:2,praesent:3.5,raumfuellend:5};
 const BOLDV = {crowdpleaser:1.4,ausgewogen:2.4,eigenwillig:3.5,polarisierend:4.7};
 const SWEETV = {trocken:.5,dezent:2,deutlich:3.5,dekadent:5};
-const SPLITCOL = {fam:'#F09A2B',mood:'#7B5AD9',occ:'#F4643C',sil:'#2F8BC9',bold:'#D83A45',sweet:'#E85D9B',notes:'#3FA98C',anchor:'#17A2A2',lg:'#B5651D'};
+const SPLITCOL = {fam:'#B07A3C',mood:'#6E5A86',occ:'#9E4430',sil:'#46708C',bold:'#93382F',sweet:'#A75A63',notes:'#557C6A',anchor:'#3D6E67',lg:'#96603A'};
 const SPLITLBL = {fam:'Duftfamilien',mood:'Bilder',occ:'Anlass & Saison',sil:'Präsenz',bold:'Wagemut',sweet:'Süße',notes:'Lieblingsnoten',anchor:'Ankerduft',lg:'Haltbarkeit'};
 
 const state = {step:-1, a:{}, fb:{}};
@@ -1680,6 +1785,23 @@ function focusW(a){
   if(a.focus && W[a.focus] !== undefined) W[a.focus] = 1.5;
   return W;
 }
+/* Reihenfolge zaehlt: Was zuerst angeklickt wurde, wiegt schwerer. So macht
+   eine vierte Auswahl das Ergebnis nicht mehr unscharf, sondern ergaenzt es
+   nur noch leicht. Gemessen: Bei vier Familien enthielt vorher kein einziger
+   Treffer mehr alle vier. */
+function posGewicht(i){ return [1, 0.85, 0.62, 0.42][i] || 0.32; }
+function f1pos(gewaehlt, eigen){
+  let tref = 0, gesamt = 0, roh = 0;
+  gewaehlt.forEach(function(k,i){
+    const w = posGewicht(i); gesamt += w;
+    if(eigen.indexOf(k) >= 0){ tref += w; roh++; }
+  });
+  if(!roh) return 0;
+  const recall = tref/gesamt;
+  const nenner = Math.max(1, Math.min(eigen.length, gewaehlt.length + 1));
+  const precision = roh/nenner;
+  return 2*recall*precision/(recall+precision);
+}
 function f1(hits, chosen, own){
   if(!hits) return 0;
   const recall = hits/chosen, precision = hits/Math.max(1,own);
@@ -1704,8 +1826,8 @@ function score(f,a,anc,ctx){
      abdeckt, sondern auch, wie sehr der Duft genau das IST. Sonst verliert
      ein reiner Zitrusduft gegen einen, der Zitrus nur nebenbei mitführt. */
   const W = focusW(a);
-  p.fam   = 22 * W.fam * f1(famHit.length, a.fam.length, f.fam.length);
-  p.mood  = 16 * W.mood * f1(moodHit.length, a.mood.length, Math.min(f.mood.length,4));
+  p.fam   = 22 * W.fam * f1pos(a.fam, f.fam);
+  p.mood  = 16 * W.mood * f1pos(a.mood, f.mood);
   /* Auch Anlass zweiseitig: Ein Duft, der fuer alles ausgelobt ist, soll
      nicht automatisch jeden Anlass gewinnen. */
   p.occ   = W.occ * (12 * f1(occHit.length, a.occ.length, Math.min(f.occ.length,3)) + (seasOk ? 8 : 0));
@@ -1948,7 +2070,7 @@ function paintChrome(){
     stepno.innerHTML = `<b>${String(state.step+1).padStart(2,'0')}</b><span style="opacity:.4">/${AQ().length}</span>`;
     mastnote.textContent = AQ()[state.step].eyebrow;
   } else {
-    setAccent('#F4643C');
+    setAccent('#9E4430');
     stepno.textContent = '';
     mastnote.textContent = state.step>=AQ().length ? 'Dein Ergebnis' : 'Duftprofil · Nische & Klassiker';
   }
@@ -1976,6 +2098,7 @@ function renderIntro(){
       <button class="cta" id="go">Beginnen</button>
     </div>
   </div>`;
+  hatNav(false);
   document.getElementById('go').onclick = ()=>{state.step=0;renderStep();};
   const rs = document.getElementById('resume');
   if(rs) rs.onclick = ()=>{
@@ -2044,9 +2167,9 @@ function renderStep(){
       ${(q.kap===3) ? `<button type="button" id="skipall">Direkt zum Ergebnis</button>` : ''}
     </div>` : ''}
     <div id="conflicts"></div>
-    ${q.searchable?'<input class="qsearch" id="qsearch" type="search" placeholder="Duft suchen, z. B. Santal …" autocomplete="off">':''}
+    ${q.searchable?`<input class="qsearch" id="qsearch" type="search" placeholder="${q.id==='notes'?'Note suchen, z. B. Vanille oder Leder …':'Duft suchen, z. B. Santal …'}" autocomplete="off">`:''}
     ${body}
-    <div class="nav">
+    <div class="nav navfix">
       <button class="ghost" id="back" ${state.step===0?'hidden':''}>← Zurück</button>
       <span id="hint"></span>
       ${q.kind==='info' ? `<button class="ghost" id="direkt">Direkt zum Ergebnis</button>` : ''}
@@ -2091,10 +2214,20 @@ function renderStep(){
   };
   document.getElementById('next').onclick = advance;
   syncNext();
+  /* Nur waehrend der Fragen steht die Weiter-Leiste am unteren Rand fest;
+     der Platzhalter verhindert, dass sie die letzte Kachel verdeckt. */
+  hatNav(true);
+}
+function hatNav(an){
+  const w = document.querySelector('.wrap');
+  if(w) w.classList[an ? 'add' : 'remove']('hatnav');
 }
 
 function optHTML(o,i,on,key){
-  return `<button class="opt" type="button" aria-pressed="${on}" data-key="${key}" data-v="${o[0]}">
+  /* Die Familienkachel traegt ihre Kennfarbe als schmale Kante -
+     dieselbe, die spaeter in Duftorgel und Auswertung wieder auftaucht. */
+  const fc = (key==='fam' && FAMCOL[o[0]]) ? ` style="--famcol:${FAMCOL[o[0]]}"` : '';
+  return `<button class="opt" type="button"${fc} aria-pressed="${on}" data-key="${key}" data-v="${o[0]}">
     <span class="dot"><span class="spray"><i></i><i></i><i></i><i></i></span></span>
     <span class="otext"><b>${esc(o[1])}</b><small>${esc(o[2])}</small></span>
     ${i<9?`<span class="kbd">${i+1}</span>`:''}
@@ -2331,7 +2464,7 @@ function putLines(x,arr,x0,y,lh){ arr.forEach((l,i)=>x.fillText(l, x0, y + i*lh)
 
 function passRadar(x,cx,cy,R,you,them,labelR){
   const N = 6, pt = (i,r)=>{ const ang = -Math.PI/2 + i*2*Math.PI/N; return [cx+Math.cos(ang)*R*r, cy+Math.sin(ang)*R*r]; };
-  x.strokeStyle = '#EBDCCF'; x.lineWidth = 2;
+  x.strokeStyle = '#E2DBCC'; x.lineWidth = 2;
   [.34,.67,1].forEach(rr=>{ x.beginPath(); for(let i=0;i<N;i++){ const p=pt(i,rr); i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]); } x.closePath(); x.stroke(); });
   for(let i=0;i<N;i++){ const p=pt(i,1); x.beginPath(); x.moveTo(cx,cy); x.lineTo(p[0],p[1]); x.stroke(); }
   const poly = (v,fill,stroke,dash)=>{
@@ -2341,9 +2474,9 @@ function passRadar(x,cx,cy,R,you,them,labelR){
     if(fill){ x.fillStyle = fill; x.fill(); }
     x.strokeStyle = stroke; x.lineWidth = 4; x.stroke(); x.setLineDash([]);
   };
-  poly(them, null, '#17A2A2', [9,7]);
-  poly(you, 'rgba(244,100,60,.22)', '#F4643C');
-  x.fillStyle = '#9A8781'; x.font = '700 18px "DM Sans",system-ui,sans-serif';
+  poly(them, null, '#3D6E67', [9,7]);
+  poly(you, 'rgba(158,68,48,.20)', '#9E4430');
+  x.fillStyle = '#948C7F'; x.font = '700 18px "DM Sans",system-ui,sans-serif';
   AXES.forEach((t,i)=>{
     const ang = -Math.PI/2 + i*2*Math.PI/N;
     const lx = cx + Math.cos(ang)*labelR, ly = cy + Math.sin(ang)*labelR;
@@ -2379,30 +2512,167 @@ function beraterText(a,anc){
   return s;
 }
 
-/* Notenkompass: welche Noten treffen, welche gar nicht. */
-function notenKompass(a, top){
-  const zaehl = {};
-  top.slice(0,10).forEach(function(r){
+/* ── Kernnoten und Duftpyramide ───────────────────────────────
+   Die Frage, die sich am schwersten selbst beantworten laesst, ist
+   "welche Noten suche ich eigentlich". Beantwortbar ist sie trotzdem:
+   Was die eigenen Treffer gemeinsam haben, ist die Antwort. Gewichtet
+   nach Platzierung, damit Platz 1 mehr zaehlt als Platz 10.
+
+   Die Zuordnung Kopf / Herz / Basis ist Standardwissen der Parfumerie
+   (fluechtige Zitrus- und Kraeuternoten zuerst, Blueten und Gewuerze in
+   der Mitte, Hoelzer, Harze und Moschus zuletzt) - kein Messwert und
+   keine Herstellerangabe. Was nicht eindeutig ist, laeuft als Herznote. */
+const NOTENLAGE = [
+  [/zitr|bergamot|limette|grapefruit|mandarin|orange|neroli|petitgrain|yuzu|aldehyd|minze|basilikum|lavendel|salbei|eukalyptus|anis|ingwer|kardamom|apfel|birne|melone|gurke|rhabarber|cassis|johannisbeer|meersalz|ozon|marine|calone|pfeffer|wacholder|estragon|beifuss/i, 'kopf'],
+  [/moschus|musk|ambr|amber|sandel|zeder|vetiver|patchoul|patschul|eichenmoos|weihrauch|myrrhe|labdanum|benzoe|tonka|vanille|cashmeran|kaschmir|leder|oud|agarholz|tabak|castoreum|birkenteer|guajak|kokos|karamell|zucker|honig|styrax|opoponax|balsam|zimt|papyrus|iso e|holz|harz|wildleder|veloursleder/i, 'basis']
+];
+function notenLage(n){
+  for(let i=0;i<NOTENLAGE.length;i++){ if(NOTENLAGE[i][0].test(n)) return NOTENLAGE[i][1]; }
+  return 'herz';
+}
+const LAGELBL = {kopf:'Kopf', herz:'Herz', basis:'Basis'};
+function kernNoten(a, top){
+  const w = {}, roh = {};
+  top.slice(0,10).forEach(function(r,i){
+    const g = Math.max(0.3, 1 - i*0.07);
     String(r.f.notes).split(',').forEach(function(n){
       n = n.trim().replace(/-Akkord$/,'').replace(/^weiße[rn]? /,'').trim();
-      if(n.length>2) zaehl[n] = (zaehl[n]||0)+1;
+      if(n.length < 3) return;
+      const k = n.toLowerCase();
+      w[k] = (w[k]||0) + g;
+      if(!roh[k]) roh[k] = n;
     });
   });
-  const treffer = Object.keys(zaehl).sort(function(x,y){return zaehl[y]-zaehl[x]}).slice(0,14);
-  const meiden = (a.nogo||[]).map(function(k){return LBL[k]});
-  /* Bewusst nur die ausdrücklichen No-Gos: Wer einen Duft ablehnt, lehnt
-     nicht alle seine Duftfamilien ab - das wäre eine falsche Ansage
-     an die Beratung. Die abgelehnten Düfte stehen im Steckbrief. */
-  return {treffer:treffer, meiden:meiden};
+  /* Ausdruecklich angekreuzte Lieblingsnoten wiegen schwerer als
+     alles, was nur aus den Treffern faellt - sie sind gesagt, nicht abgeleitet. */
+  (a.notes||[]).forEach(function(k){
+    const t = LBL[k]; if(!t) return;
+    const s = String(t).toLowerCase();
+    w[s] = (w[s]||0) + 2.6;
+    if(!roh[s]) roh[s] = t;
+  });
+  const alle = Object.keys(w).sort(function(x,y){ return w[y]-w[x]; });
+  if(!alle.length) return {kern:[], lagen:{kopf:[],herz:[],basis:[]}, meiden:[]};
+  const spitze = w[alle[0]] || 1;
+  const kern = alle.slice(0,7).map(function(k){
+    return {n: roh[k], lage: notenLage(k), pct: Math.round(w[k]/spitze*100)};
+  });
+  const lagen = {kopf:[], herz:[], basis:[]};
+  kern.forEach(function(z){ lagen[z.lage].push(z); });
+  return {kern:kern, lagen:lagen, meiden:(a.nogo||[]).map(function(k){ return LBL[k]; })};
+}
+/* Die drei Baender der Pyramide - einmal berechnet, zweimal genutzt:
+   als SVG auf der Seite und als Canvas auf dem Duftpass. */
+const PYR = [
+  {k:'kopf',  y0:0,   y1:1/3, col:'#C99180'},
+  {k:'herz',  y0:1/3, y1:2/3, col:'#B4674F'},
+  {k:'basis', y0:2/3, y1:1,   col:'#9E4430'}
+];
+/* Abgestumpfte Spitze statt spitzem Dreieck: In eine echte Spitze passt
+   die Beschriftung des Kopfbands nicht hinein, sie liefe weiss auf Papier. */
+function pyrBreite(t){ return 0.34 + 0.66*t; }
+function pyramideSVG(lagen){
+  const W = 220, H = 168, TOP = 8, BOT = 158, HALB = 98;
+  const br = t => pyrBreite(t)*HALB;
+  const bands = PYR.map(function(b){
+    const ya = TOP + (BOT-TOP)*b.y0, yb = TOP + (BOT-TOP)*b.y1;
+    const wa = br(b.y0), wb = br(b.y1);
+    const p = [[110-wa,ya],[110+wa,ya],[110+wb,yb],[110-wb,yb]]
+      .map(function(q){ return q[0].toFixed(1)+','+q[1].toFixed(1); }).join(' ');
+    const n = (lagen[b.k]||[]).length;
+    return '<polygon class="band" points="'+p+'" fill="'+b.col+'"></polygon>'
+      + '<text class="lbl" x="110" y="'+((ya+yb)/2+3.5).toFixed(1)+'" text-anchor="middle">'
+      + LAGELBL[b.k].toUpperCase() + (n?'  ·  '+n:'') + '</text>';
+  }).join('');
+  return '<svg class="pyr" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Duftpyramide: Kopf, Herz, Basis">'
+    + bands + '</svg>';
 }
 
 /* Duftpass als Klappkarte: zwei Seiten im Postkartenformat statt einer
    endlosen Bahn. Beide Seiten bekommen dieselbe Hoehe, damit sie als Paar
    wirken. Layouthoehen werden - wie immer - genau einmal berechnet. */
+/* Duftlandkarte: wo die Empfehlungen liegen — frisch bis warm, leise bis laut.
+   Zeigt auf einen Blick, ob die Auswahl eng beieinander liegt oder streut. */
+function drawKarte(x, x0, y0, w0, h, a, picks){
+  const w = w0;
+  const INK='#2C2823', DIM='#948C7F', LINE='#E2DBCC', CORAL='#9E4430', TEAL='#3D6E67';
+  x.strokeStyle = LINE; x.lineWidth = 2;
+  x.strokeRect(x0, y0, w, h);
+  x.beginPath(); x.moveTo(x0+w/2, y0); x.lineTo(x0+w/2, y0+h);
+  x.moveTo(x0, y0+h/2); x.lineTo(x0+w, y0+h/2); x.stroke();
+  x.fillStyle = DIM; x.font = '700 14px "DM Sans",system-ui,sans-serif';
+  x.textAlign='center'; x.fillText('PRÄSENT', x0+w/2, y0-10);
+  x.fillText('LEISE', x0+w/2, y0+h+20);
+  x.textAlign='right'; x.fillText('FRISCH', x0-8, y0+h/2+5);
+  x.textAlign='left';  x.fillText('WARM', x0+w+8, y0+h/2+5);
+  const pos = f => {
+    const r = radarFromFragrance(f);
+    const warm = r[2], frisch = r[0];
+    const px = x0 + w * Math.max(0.05, Math.min(0.95, 0.5 + (warm - frisch)*0.5));
+    const py = y0 + h * Math.max(0.05, Math.min(0.95, 1 - f.sil/5));
+    return [px, py];
+  };
+  /* Zielpunkt des Profils */
+  const ra = radarFromAnswers(a);
+  const zx = x0 + w * Math.max(0.05, Math.min(0.95, 0.5 + (ra[2] - ra[0])*0.5));
+  const zy = y0 + h * Math.max(0.05, Math.min(0.95, 1 - SILV[a.sil]/5));
+  x.strokeStyle = TEAL; x.lineWidth = 2.5; x.setLineDash([5,4]);
+  x.beginPath(); x.arc(zx, zy, 17, 0, Math.PI*2); x.stroke(); x.setLineDash([]);
+  /* Liegen Empfehlungen fast aufeinander, werden sie leicht auseinandergeschoben,
+     sonst verdecken sich die Ziffern gegenseitig. */
+  const gesetzt = [];
+  picks.slice(0,5).forEach(function(r,i){
+    let pp = pos(r.f);
+    let versuch = 0;
+    while(versuch < 12 && gesetzt.some(function(q){
+      return Math.hypot(q[0]-pp[0], q[1]-pp[1]) < 29; })){
+      const w = versuch * (Math.PI/3), rad = 30 + Math.floor(versuch/6)*16;
+      pp = [Math.max(x0+15, Math.min(x0+w0-15, pos(r.f)[0] + Math.cos(w)*rad)),
+            Math.max(y0+15, Math.min(y0+h-15,  pos(r.f)[1] + Math.sin(w)*rad))];
+      versuch++;
+    }
+    gesetzt.push(pp);
+    x.fillStyle = CORAL; x.beginPath(); x.arc(pp[0], pp[1], 13, 0, Math.PI*2); x.fill();
+    x.fillStyle = '#fff'; x.font = '700 14px "DM Sans",system-ui,sans-serif';
+    x.textAlign='center'; x.textBaseline='middle';
+    x.fillText(String(i+1), pp[0], pp[1]+1);
+    x.textBaseline='alphabetic'; x.textAlign='left';
+  });
+  x.fillStyle = DIM; x.font = '400 13px "DM Sans",system-ui,sans-serif';
+  x.textAlign='center';
+  x.fillText('Punkte 1–5: die Empfehlungen · Ring: dein Zielprofil', x0+w/2, y0+h+42);
+  x.textAlign='left';
+}
+
+/* Duftpyramide auf dem Pass - dieselbe Geometrie wie im SVG auf der Seite.
+   Die Noten selbst stehen darunter in der Kernnotenzeile: In das oberste,
+   schmale Band passt kein Text, ohne dass er abgeschnitten wird. */
+function drawPyramide(x, cx, cy, w, h, lagen){
+  const oben = cy - h/2, halb = w/2;
+  PYR.forEach(function(b){
+    const ya = oben + h*b.y0, yb = oben + h*b.y1;
+    const wa = halb*pyrBreite(b.y0), wb = halb*pyrBreite(b.y1);
+    x.beginPath();
+    x.moveTo(cx-wa, ya); x.lineTo(cx+wa, ya); x.lineTo(cx+wb, yb); x.lineTo(cx-wb, yb);
+    x.closePath();
+    x.fillStyle = b.col; x.fill();
+    x.strokeStyle = '#F5F2EA'; x.lineWidth = 3; x.stroke();
+    const n = (lagen[b.k]||[]).length;
+    x.fillStyle = '#fff'; x.textAlign = 'center'; x.textBaseline = 'middle';
+    x.font = '700 16px "DM Sans",system-ui,sans-serif';
+    x.fillText(LAGELBL[b.k].toUpperCase() + (n ? '  ·  ' + n : ''), cx, (ya+yb)/2 + 1);
+    x.textAlign = 'left'; x.textBaseline = 'alphabetic';
+  });
+  x.fillStyle = '#948C7F'; x.font = '400 14px "DM Sans",system-ui,sans-serif';
+  x.textAlign = 'center';
+  x.fillText('Kopf 0–5 Min · Herz ½–2 Std · Basis 2–8 Std', cx, oben + h + 28);
+  x.textAlign = 'left';
+}
+
 function buildPass(name,blurb,a,anc,top,MAX){
   const W = 1080, M = 76, CW = W - 2*M;
-  const PAPER='#FDF6F0', INK='#33262C', MID='#6E5C5C', DIM='#9A8781',
-        CORAL='#F4643C', TEAL='#17A2A2', GRUEN='#3FA98C', LINE='#EBDCCF';
+  const PAPER='#F5F2EA', INK='#2C2823', MID='#635C51', DIM='#948C7F',
+        CORAL='#9E4430', TEAL='#3D6E67', GRUEN='#4A7A6B', LINE='#E2DBCC';
   const FS = w => `600 ${w}px "Fraunces",Georgia,serif`;
   const DS = (w,s) => `${w} ${s}px "DM Sans",system-ui,sans-serif`;
   const MO = s => `500 ${s}px "DM Mono",monospace`;
@@ -2419,10 +2689,10 @@ function buildPass(name,blurb,a,anc,top,MAX){
   const nameL  = passLines(m, name, CW, FS(62));
   const blurbL = passLines(m, blurb, CW, DS(400,23));
   const beratL = beraterText(a,anc).map(t=>passLines(m, t, CW, DS(400,20)));
-  const komp = notenKompass(a, top);
+  const kn = kernNoten(a, top);
   const HALB = (CW-52)/2;
-  const treffL = passLines(m, komp.treffer.join(' · '), HALB, DS(500,19));
-  const meidL  = passLines(m, komp.meiden.length ? komp.meiden.join(' · ') : 'Keine Ausschlüsse angegeben.', HALB, DS(500,19));
+  const treffL = passLines(m, kn.kern.map(function(z){ return z.n+' ('+LAGELBL[z.lage]+')'; }).join(' · '), HALB, DS(500,19));
+  const meidL  = passLines(m, kn.meiden.length ? kn.meiden.join(' · ') : 'Keine Ausschlüsse angegeben.', HALB, DS(500,19));
   const rows = dossierRows(a,anc);
   const half = Math.ceil(rows.length/2);
   const COLW = (CW-52)/2;
@@ -2435,15 +2705,23 @@ function buildPass(name,blurb,a,anc,top,MAX){
   const famZ = {}; top.slice(0,10).forEach(r=>r.f.fam.forEach(k=>famZ[k]=(famZ[k]||0)+1));
   const famGes = Object.keys(famZ).reduce((s,k)=>s+famZ[k],0)||1;
   const famS = Object.keys(famZ).sort((x,y)=>famZ[y]-famZ[x]);
-  const RAD_R = 132, RAD_LBL = 158;
+  const RAD_R = 118, RAD_LBL = 142;
+  const RAD_CX = M + RAD_R + 52;
+  /* Vorderseite rechts: die Duftpyramide. Rueckseite unten: die Landkarte. */
+  const PYX = M + 2*RAD_R + 150, PYW = Math.min(340, W - M - (M + 2*RAD_R + 150)), PYH = 236;
+  const PYCX = PYX + PYW/2;
+  const KX = M + 118, KW = CW - 236, KH = 230;
+  const GRAFH = Math.max(RAD_LBL, PYH/2 + 22);
 
   /* ── Hoehen beider Seiten ── */
   let y1 = 70 + 16 + 46;                       /* Streifen + Kopfzeile */
   const yName = y1 + 62; y1 = yName + (nameL.length-1)*70 + 46;
   const yBlurb = y1; y1 = yBlurb + (blurbL.length-1)*34 + 40;
-  const yRadC = y1 + RAD_LBL + 8;
-  const yCapt = yRadC + RAD_LBL + 34;
+  const yRadC = y1 + GRAFH + 8;
+  const yCapt = yRadC + GRAFH + 34;
   y1 = yCapt + 26;
+  const yKL1 = y1 + 30, yKN = yKL1 + 34;
+  y1 = yKN + 26 + Math.max(treffL.length, meidL.length)*26 + 16;
   const yMet = y1 + 30; y1 = yMet + 92;
   const yPickL = y1 + 34; const yPick = yPickL + 44;
   y1 = yPick + (picks.length-1)*76 + 30;
@@ -2452,12 +2730,12 @@ function buildPass(name,blurb,a,anc,top,MAX){
   let y2 = 70 + 16 + 46;
   const yB2 = y2 + 40; let bh=0; beratL.forEach(l=>{ bh += l.length*28 + 10; });
   y2 = yB2 + bh + 14;
-  const yKL = y2 + 30, yKomp = yKL + 34;
-  y2 = yKomp + 26 + Math.max(treffL.length, meidL.length)*26 + 16;
+  const yKL = y2 + 30, yKarte = yKL + 30;
+  y2 = yKarte + KH + 66;
   const yDL = y2 + 30, yDos = yDL + 34;
   y2 = yDos + Math.max(colH[0], colH[1]) + 8;
   const yFL = y2 + 26, yFam = yFL + 26;
-  y2 = yFam + 46;
+  y2 = yFam + 104;
   const H2 = y2 + 150;
   const H = Math.max(H1, H2, 1400);
 
@@ -2482,10 +2760,19 @@ function buildPass(name,blurb,a,anc,top,MAX){
   x1.textAlign='right'; x1.font = DS(400,17); x1.fillText(stamp, W-M, 70+16+40); x1.textAlign='left';
   x1.fillStyle = INK; x1.font = FS(62); putLines(x1, nameL, M, yName, 70);
   x1.fillStyle = MID; x1.font = DS(400,23); putLines(x1, blurbL, M, yBlurb, 34);
-  passRadar(x1, W/2, yRadC, RAD_R, radarFromAnswers(a), radarFromFragrance(top[0].f), RAD_LBL);
+  passRadar(x1, RAD_CX, yRadC, RAD_R, radarFromAnswers(a), radarFromFragrance(top[0].f), RAD_LBL);
+  drawPyramide(x1, PYCX, yRadC, PYW, PYH, kn.lagen);
   x1.fillStyle = DIM; x1.font = DS(400,16); x1.textAlign='center';
-  x1.fillText('Fläche: dieses Profil · Linie: ' + fit(top[0].f.n, CW-200, DS(400,16)), W/2, yCapt);
+  x1.fillText('Fläche: dieses Profil · Linie: ' + fit(top[0].f.n, 2*RAD_R+60, DS(400,16)), RAD_CX, yCapt);
   x1.textAlign='left';
+  /* Kernnoten: der Satz, mit dem man in die Parfuemerie gehen kann. */
+  rule(x1, yKL1-22);
+  label(x1, 'DANACH FRAGEN · KERNNOTEN', yKL1);
+  x1.fillStyle=CORAL; x1.font=DS(700,15); x1.fillText('DIESE NOTEN SUCHE ICH', M, yKN);
+  x1.fillStyle=INK; x1.font=DS(500,19); putLines(x1, treffL, M, yKN+26, 26);
+  x1.fillStyle=DIM; x1.font=DS(700,15); x1.fillText('DIESE BITTE NICHT', M+HALB+52, yKN);
+  x1.fillStyle = kn.meiden.length ? INK : DIM; x1.font=DS(500,19);
+  putLines(x1, meidL, M+HALB+52, yKN+26, 26);
   const mw = (CW - 3*16)/4;
   mets.forEach((mt,i)=>{
     const mx = M + i*(mw+16);
@@ -2507,7 +2794,7 @@ function buildPass(name,blurb,a,anc,top,MAX){
     x1.fillText(pctOf(r.s,MAX)+'%', W-M, ty); x1.textAlign='left';
   });
   x1.fillStyle=DIM; x1.font=DS(400,16);
-  x1.fillText('Sillage · Seite 1 von 2 · Rückseite: Beratung, Notenkompass, Steckbrief', M, H-44);
+  x1.fillText('Sillage · Seite 1 von 2 · Rückseite: Beratung, Duftlandkarte, Steckbrief', M, H-44);
 
   /* ── Seite 2: die Beratung ── */
   const s2 = neu(), x2 = s2.x;
@@ -2519,12 +2806,8 @@ function buildPass(name,blurb,a,anc,top,MAX){
   let by = yB2 + 18; x2.font = DS(400,20);
   beratL.forEach(l=>{ x2.fillStyle=INK; putLines(x2, l, M, by, 28); by += l.length*28 + 10; });
   rule(x2, yKL-22);
-  label(x2, 'NOTENKOMPASS', yKL);
-  x2.fillStyle=GRUEN; x2.font=DS(700,15); x2.fillText('DIESE NOTEN TREFFEN', M, yKomp);
-  x2.fillStyle=INK; x2.font=DS(500,19); putLines(x2, treffL, M, yKomp+26, 26);
-  x2.fillStyle=CORAL; x2.font=DS(700,15); x2.fillText('DIESE NOTEN MEIDEN', M+HALB+52, yKomp);
-  x2.fillStyle = komp.meiden.length ? INK : DIM; x2.font=DS(500,19);
-  putLines(x2, meidL, M+HALB+52, yKomp+26, 26);
+  label(x2, 'DUFTLANDKARTE · WO DIE VORSCHLÄGE LIEGEN', yKL);
+  drawKarte(x2, KX, yKarte, KW, KH, a, picks);
   rule(x2, yDL-22);
   label(x2, 'STECKBRIEF · ALLE ' + frageZahl() + ' ANTWORTEN', yDL);
   colsF.forEach((col,ci)=>{
@@ -2538,20 +2821,33 @@ function buildPass(name,blurb,a,anc,top,MAX){
   });
   rule(x2, yFL-20);
   label(x2, 'WORAUS DIE AUSWAHL BESTEHT', yFL);
-  let fx = M;
-  famS.forEach(k=>{ const w = CW*(famZ[k]/famGes); x2.fillStyle=FAMCOL[k]; x2.fillRect(fx, yFam, Math.max(2,w-3), 15); fx += w; });
-  let lx = M; x2.font = DS(500,15);
-  famS.slice(0,6).forEach(k=>{
-    const t = FAMLBL[k]+' '+Math.round(famZ[k]/famGes*100)+'%';
-    x2.fillStyle=FAMCOL[k]; x2.fillRect(lx, yFam+28, 10, 10);
-    x2.fillStyle=MID; x2.fillText(t, lx+15, yFam+37);
-    lx += m.measureText(t).width + 42;
+  /* Duftorgel: gefuellte Flakons statt eines Balkens. */
+  const spitze = famZ[famS[0]]/famGes;
+  famS.slice(0,7).forEach(function(k,i){
+    const anteil = famZ[k]/famGes;
+    const bx = M + i*((CW-20)/7), bw = 40, bh = 56;
+    const fuell = Math.max(8, Math.round((bh-14) * anteil / spitze));
+    x2.fillStyle = INK; x2.fillRect(bx+13, yFam, 14, 7);
+    x2.strokeStyle = '#CDC4B1'; x2.lineWidth = 1.6;
+    x2.beginPath();
+    x2.moveTo(bx+8, yFam+18); x2.lineTo(bx+8, yFam+bh); x2.lineTo(bx+32, yFam+bh); x2.lineTo(bx+32, yFam+18);
+    x2.quadraticCurveTo(bx+32, yFam+12, bx+24, yFam+9);
+    x2.lineTo(bx+16, yFam+9);
+    x2.quadraticCurveTo(bx+8, yFam+12, bx+8, yFam+18);
+    x2.closePath(); x2.fillStyle='#fff'; x2.fill(); x2.stroke();
+    x2.fillStyle = FAMCOL[k];
+    x2.fillRect(bx+9, yFam+bh-fuell, 22, fuell-1);
+    x2.fillStyle = INK; x2.font = DS(700,12); x2.textAlign='center';
+    x2.fillText(fit(FAMLBL[k], 118, DS(700,12)), bx+20, yFam+bh+18);
+    x2.fillStyle = DIM; x2.font = MO(12);
+    x2.fillText(Math.round(anteil*100)+'%', bx+20, yFam+bh+33);
+    x2.textAlign='left';
   });
-  x2.fillStyle=INK; x2.fillRect(M, H-124, CW, 54);
-  x2.fillStyle='#F6ECE4'; x2.font=DS(700,16);
-  x2.fillText('BITTE VOR DEM KAUF AUF DER HAUT TESTEN', M+20, H-98);
-  x2.fillStyle='#D8C7BE'; x2.font=DS(400,15);
-  x2.fillText('Eine begründete Vorauswahl aus ' + F.length + ' Düften — kein Marktüberblick und kein Urteil.', M+20, H-78);
+  x2.fillStyle=INK; x2.fillRect(M, H-128, CW, 62);
+  x2.fillStyle='#F2EDE3'; x2.font=DS(700,16);
+  x2.fillText('BITTE VOR DEM KAUF AUF DER HAUT TESTEN', M+20, H-102);
+  x2.fillStyle='#C6BEB0'; x2.font=DS(400,15);
+  x2.fillText('Eine begründete Vorauswahl aus ' + F.length + ' Düften — kein Marktüberblick und kein Urteil.', M+20, H-80);
   x2.fillStyle=DIM; x2.font=DS(400,16);
   x2.fillText('Sillage · Seite 2 von 2 · erstellt am ' + stamp, M, H-44);
 
@@ -2653,71 +2949,22 @@ function tensions(a){
   return t.slice(0,3);
 }
 
-/* ── Duell-Runde ────────────────────────────────────────────
-   Was jemand bei einer direkten Wahl tut, ist belastbarer als
-   jede Selbstauskunft. Fünf Paare aus dem Mittelfeld der Liste,
-   jede Wahl wirkt wie ein Gefällt-mir plus ein Nichts-für-mich. */
-function duellPaare(list){
-  const kandidaten = diversify(list, 16, 2);
-  const paare = [];
-  for(let i = 0; i + 1 < kandidaten.length && paare.length < 5; i += 3){
-    const a = kandidaten[i], b = kandidaten[i+1];
-    if(!a || !b) break;
-    if(a.f.fam.join() === b.f.fam.join()) continue;   /* zu ähnlich, bringt nichts */
-    paare.push([a.f, b.f]);
-  }
-  return paare;
-}
-function renderDuell(list){
-  const box = document.getElementById('duell');
-  if(!box) return;
-  state.duell = state.duell || {runde:0, paare:duellPaare(list)};
-  const paare = state.duell.paare;
-  const i = state.duell.runde;
-  if(!paare.length || i >= paare.length){
-    box.innerHTML = '<div class="duell"><div class="duellkopf"><b>Feinschliff abgeschlossen</b>'
-      + '<span>' + i + ' von ' + paare.length + '</span></div>'
-      + '<p class="hintline">Deine Entscheidungen sind in die Liste eingerechnet.</p></div>';
-    return;
-  }
-  const par = paare[i];
-  const karte = (f,seite) => '<button class="duellwahl" type="button" data-seite="' + seite + '">'
-    + '<span>' + esc(f.h) + '</span><b>' + esc(f.n) + '</b><small>' + esc(f.notes) + '</small></button>';
-  box.innerHTML = '<div class="duell">'
-    + '<div class="duellkopf"><b>Welchen würdest du eher tragen?</b><span>' + (i+1) + ' / ' + paare.length + '</span></div>'
-    + '<div class="duellpaar">' + karte(par[0],'a') + '<span class="vs">oder</span>' + karte(par[1],'b') + '</div>'
-    + '<button class="duellskip" type="button" data-seite="skip">Kenne ich beide nicht — überspringen</button>'
-    + '</div>';
-  box.querySelectorAll('[data-seite]').forEach(function(btn){
-    btn.onclick = function(){
-      const s = btn.dataset.seite;
-      if(state.duell && !state.duellVorher) state.duellVorher = state.duellBasis || [];
-      if(s !== 'skip'){
-        const gewaehlt = s === 'a' ? par[0] : par[1];
-        const verworfen = s === 'a' ? par[1] : par[0];
-        state.fb = state.fb || {};
-        state.fb[gewaehlt.n] = 1;
-        state.fb[verworfen.n] = -1;
-        saveState();
-      }
-      state.duell.runde++;
-      if(state.duell.runde >= paare.length){ state.duell = null; state.duellFertig = true; renderResult(); }
-      else renderDuell(list);
-    };
-  });
-}
-
-/* Zeremonie: eine kurze Zaesur, bevor das Ergebnis steht. */
+/* Zeremonie: eine kurze Zaesur, bevor das Ergebnis steht.
+   Diese Funktion ist beim Entfernen der Duell-Runde versehentlich mit
+   geloescht worden, waehrend ihre beiden Aufrufe stehen blieben - der
+   Fragebogen endete dann in einer Fehlermeldung statt im Ergebnis.
+   Der reine Funktionstest lief daran vorbei, weil er renderResult()
+   direkt aufgerufen hat. Kuenftig immer einmal echt durchklicken. */
 function renderZeremonie(danach){
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ danach(); return; }
   paintChrome();
   const farben = AQ().map(function(q){ return q.acc; });
   stage.innerHTML = '<div class="zeremonie">'
     + '<svg class="zflakon" viewBox="0 0 46 64" aria-hidden="true">'
-    + '<rect x="16" y="0" width="14" height="8" rx="2.5" fill="#33262C"></rect>'
-    + '<rect x="18" y="8" width="10" height="4" rx="1.5" fill="#DCC8B8"></rect>'
-    + '<path d="M18.5 12v4.6c0 1.6-.9 2.7-2.3 3.7C12.4 23 10 26.6 10 31.4V55a5 5 0 0 0 5 5h16a5 5 0 0 0 5-5V31.4c0-4.8-2.4-8.4-6.2-11.1-1.4-1-2.3-2.1-2.3-3.7V12z" fill="#fff" stroke="#DCC8B8" stroke-width="1.4"></path>'
-    + '<path d="M10 30h26v25a5 5 0 0 1-5 5H15a5 5 0 0 1-5-5z" fill="#F4643C" opacity=".9"></path></svg>'
+    + '<rect x="16" y="0" width="14" height="8" rx="2.5" fill="#2C2823"></rect>'
+    + '<rect x="18" y="8" width="10" height="4" rx="1.5" fill="#CDC4B1"></rect>'
+    + '<path d="M18.5 12v4.6c0 1.6-.9 2.7-2.3 3.7C12.4 23 10 26.6 10 31.4V55a5 5 0 0 0 5 5h16a5 5 0 0 0 5-5V31.4c0-4.8-2.4-8.4-6.2-11.1-1.4-1-2.3-2.1-2.3-3.7V12z" fill="#fff" stroke="#CDC4B1" stroke-width="1.4"></path>'
+    + '<path d="M10 30h26v25a5 5 0 0 1-5 5H15a5 5 0 0 1-5-5z" fill="#9E4430" opacity=".9"></path></svg>'
     + '<div class="zstreifen">' + farben.map(function(f,i){
         return '<i style="background:' + f + ';animation-delay:' + (0.25 + i*0.055) + 's"></i>'; }).join('') + '</div>'
     + '<p>Dein Profil entsteht …</p></div>';
@@ -2765,6 +3012,31 @@ function renderResult(){
     : 'Nimm zwei Treffer parallel und trag sie im Wechsel eine Woche. Der Vergleich zeigt schneller, was du willst, als jedes einzelne Tragen.';
 
   const rows = chart.concat(wildsFinal);
+  const kern = kernNoten(a, chart);
+
+  /* Eine Zeile der Trefferliste. Der Index bleibt global, damit die
+     aufklappbaren Bereiche eindeutige IDs behalten - auch wenn die
+     Liste auf drei Bloecke verteilt ist. */
+  const zeile = function(r, i, wild){
+    return `
+      <li class="${wild?'wildrow':''}">
+        <button class="row" type="button" data-i="${i}" aria-expanded="false">
+          <span class="n">${wild?'Wild':String(i+1).padStart(2,'0')}</span>
+          <span class="nm"><b>${esc(r.f.n)}</b><span>${esc(r.f.h)}</span></span>
+          <span class="tr"><span class="mini"><i style="width:${pctOf(r.s,MAX)}%"></i></span><span class="pc">${pctOf(r.s,MAX)}%</span></span>
+        </button>
+        <div class="det" id="det${i}" hidden>
+          <span class="verdict">${esc(verdictLine(r,a,list))}</span>
+          <span class="nt">${esc(r.f.notes)}</span>
+          <ul class="why">${reasons(r,a).map(z=>`<li>${esc(z)}</li>`).join('')}</ul>
+          ${splitHTML(r,MAX)}
+          <div class="fb"><span>Dein Urteil</span>
+            <button type="button" class="yes" data-n="${esc(r.f.n)}" aria-pressed="${state.fb[r.f.n]===1}">Gefällt mir</button>
+            <button type="button" class="no" data-n="${esc(r.f.n)}" aria-pressed="${state.fb[r.f.n]===-1}">Nichts für mich</button>
+          </div>
+        </div>
+      </li>`;
+  };
 
   stage.innerHTML = `
   <div class="fade reveal">
@@ -2790,9 +3062,22 @@ function renderResult(){
       </div>
     </div>
 
+    <div class="sec-head"><h2>Welche Noten du suchst</h2><hr><span>abgeleitet, nicht abgefragt</span></div>
+    <div class="pyrbox">
+      ${pyramideSVG(kern.lagen)}
+      <div class="pyrtext">
+        <h4>Deine Kernnoten</h4>
+        <p class="sag">Frag in der Parfümerie nach <b>${esc(kern.kern.slice(0,3).map(z=>z.n).join(', '))}</b>.</p>
+        <ul class="notenzeile">${kern.kern.map(z=>`<li>${esc(z.n)}<i>${LAGELBL[z.lage]}</i></li>`).join('')}</ul>
+        ${kern.meiden.length?`<p style="margin-bottom:.35rem">Und was draußen bleiben soll:</p>
+        <ul class="notenzeile weg">${kern.meiden.map(z=>`<li>${esc(z)}</li>`).join('')}</ul>`:''}
+        <p>Diese Noten tauchen in deinen Treffern immer wieder auf — sie sind die kürzeste Beschreibung deines Geschmacks. Die Pyramide zeigt, wann sie auftreten: Kopf in den ersten Minuten, Herz nach einer halben Stunde, Basis über Stunden.</p>
+      </div>
+    </div>
+
     <div class="sec-head"><h2>Was das über dich sagt</h2><hr><span>Deutung, keine Wiederholung</span></div>
     <div class="insights">
-      <div class="insight" style="--ic:#F4643C">
+      <div class="insight">
         <h4>Wie eng deine Ecke ist</h4>
         <span class="big">${rar.pct}&thinsp;%</span>
         <p>${rar.pct<=8
@@ -2803,7 +3088,7 @@ function renderResult(){
       </div>
 
       ${sens.length ? `
-      <div class="insight" style="--ic:#7B5AD9">
+      <div class="insight">
         <h4>Woran dein Ergebnis hängt</h4>
         <span class="big">${sens[0].churn}&thinsp;%</span>
         <p><b>${esc(sens[0].label.charAt(0).toUpperCase()+sens[0].label.slice(1))}</b> ist dein Taktgeber: Eine andere Antwort an dieser Stelle tauscht <b>${sens[0].churn}&thinsp;%</b> deiner Top 10 aus.${
@@ -2811,18 +3096,18 @@ function renderResult(){
       </div>` : ''}
 
       ${blind.length ? `
-      <div class="insight" style="--ic:#17A2A2">
+      <div class="insight">
         <h4>Dein blinder Fleck</h4>
         <p>Du hast <b>${esc(blind.map(z=>z.fam).join(' und '))}</b> nie angekreuzt — aber ${blind[0].n} deiner zehn Treffer führen ${esc(blind[0].fam)} in der Komposition. Offenbar magst du es, ohne es zu benennen. <b>Nimm es beim nächsten Durchgang bewusst dazu</b> und sieh, was passiert.</p>
       </div>` : ''}
 
       ${tens.map(t=>`
-      <div class="insight" style="--ic:#E0A21B">
+      <div class="insight">
         <h4>${esc(t[0])}</h4>
         <p>${t[1]}</p>
       </div>`).join('')}
 
-      <div class="insight" style="--ic:#57A93F">
+      <div class="insight" style="--ic:var(--teal)">
         <h4>Dein nächster Schritt</h4>
         <p>${sens.length
           ? `Bestell Abfüllungen der ersten drei Treffer und variiere beim Testen bewusst <b>${esc(sens[0].label)}</b> — dort entscheidet sich dein Profil. ${esc(expTip)}`
@@ -2839,45 +3124,21 @@ function renderResult(){
       </div>
     </details>
 
-    <div class="sec-head"><h2>Was dazu passt</h2><hr><span>${fbCount?`neu gerechnet mit ${fbCount} Bewertungen`:`Auswahl aus ${F.length} Düften`}</span></div>
-    <p class="caveat short">Gerechnet gegen <b>${F.length} kuratierte Düfte aus ${HOUSES} Häusern</b> — nicht gegen den Markt, der fünfstellig ist. Ein Startpunkt, keine Bestenliste. Die beiden Wildcards am Ende sind bewusst gegen deinen Komfortbereich gesetzt.</p>
+    <div class="sec-head"><h2>Was dazu passt</h2><hr><span>${fbCount?`neu gerechnet mit ${fbCount} Bewertungen`:`fünf Vorschläge aus ${F.length} Düften`}</span></div>
+    <p class="caveat short">Fünf Vorschläge, <b>keine Rangliste</b>. Die Prozentwerte liegen dicht beieinander — welcher davon deiner ist, entscheidet die Haut, nicht die Zahl. Tippen öffnet die Begründung. Gerechnet gegen ${F.length} kuratierte Düfte aus ${HOUSES} Häusern; der Markt ist fünfstellig.</p>
     <ul class="chart" id="chart">
-      ${rows.map((r,i)=>{
-        const wild = i>=chart.length;
-        return `
-        <li class="${wild?'wildrow':(i<3?'lead':'')}">
-          <button class="row" type="button" data-i="${i}" aria-expanded="${i<3}">
-            <span class="n">${wild?'Wild':String(i+1).padStart(2,'0')}</span>
-            <span class="nm"><b>${esc(r.f.n)}</b><span>${esc(r.f.h)}</span></span>
-            <span class="tr"><span class="mini"><i style="width:${pctOf(r.s,MAX)}%"></i></span><span class="pc">${pctOf(r.s,MAX)}%</span></span>
-          </button>
-          <div class="det" id="det${i}"${i<3?'':' hidden'}>
-            ${i<3?`<span class="verdict">${esc(verdictLine(r,a,list))}</span>`:''}
-            <span class="nt">${esc(r.f.notes)}</span>
-            <ul class="why">${reasons(r,a).map(z=>`<li>${esc(z)}</li>`).join('')}</ul>
-            ${splitHTML(r,MAX)}
-            <div class="fb"><span>Dein Urteil</span>
-              <button type="button" class="yes" data-n="${esc(r.f.n)}" aria-pressed="${state.fb[r.f.n]===1}">Gefällt mir</button>
-              <button type="button" class="no" data-n="${esc(r.f.n)}" aria-pressed="${state.fb[r.f.n]===-1}">Nichts für mich</button>
-            </div>
-          </div>
-        </li>`;}).join('')}
+      ${chart.slice(0,5).map((r,i)=>zeile(r,i,false)).join('')}
     </ul>
-    <div class="sec-head"><h2>Feinschliff</h2><hr><span>zwei Minuten, deutlich besseres Ergebnis</span></div>
-    <p class="caveat short">Bei einer direkten Wahl zwischen zwei Düften entscheidet der Bauch — und der ist verlässlicher als jede Selbsteinschätzung. Fünf Paare genügen, um die Liste spürbar zu schärfen.</p>
-    ${(function(){
-      if(!state.duellFertig || !state.duellVorher || !state.duellVorher.length) return '';
-      const jetzt = chart.map(function(r){ return r.f.n; });
-      const neu = jetzt.filter(function(n){ return state.duellVorher.indexOf(n) < 0; });
-      const raus = state.duellVorher.filter(function(n){ return jetzt.indexOf(n) < 0; });
-      if(!neu.length && !raus.length) return '<div class="duellbilanz"><b>Deine Wahl hat bestätigt, was schon da war</b><p>Die Liste bleibt unverändert — ein gutes Zeichen: Dein Profil war bereits stimmig.</p></div>';
-      return '<div class="duellbilanz"><b>Das haben deine Duelle verändert</b><p>'
-        + '<em>' + neu.length + ' neu</em> in der Liste' + (neu.length?': ' + esc(neu.slice(0,3).join(', ')):'')
-        + (raus.length ? ' · <em>' + raus.length + ' gefallen</em>: ' + esc(raus.slice(0,3).join(', ')) : '')
-        + '.</p></div>';
-    })()}
-    <div id="duell"></div>
-
+    ${chart.length>5?`
+    <details class="fold" style="margin-top:1rem">
+      <summary>Fünf weitere Treffer <span>— Platz 6 bis ${chart.length}</span></summary>
+      <div class="inner"><ul class="chart">${chart.slice(5).map((r,i)=>zeile(r,i+5,false)).join('')}</ul></div>
+    </details>`:''}
+    ${wildsFinal.length?`
+    <details class="fold">
+      <summary>${wildsFinal.length===1?'Eine Wildcard':'Zwei Wildcards'} <span>— bewusst gegen deinen Komfortbereich</span></summary>
+      <div class="inner"><ul class="chart">${wildsFinal.map((r,i)=>zeile(r,chart.length+i,true)).join('')}</ul></div>
+    </details>`:''}
     <div class="recalc" id="recalcbar"${fbCount?'':' hidden'}>
       <button type="button" id="recalc">Auswahl mit meinem Feedback neu rechnen</button>
     </div>
@@ -2950,7 +3211,8 @@ function renderResult(){
     <p class="disclaimer">Kuratierte Auswahl von ${F.length} Düften aus ${HOUSES} Häusern, keine Live-Datenbank. Die Prozentwerte sind der Anteil der in deinem Profil erreichbaren Punkte, kein objektives Qualitätsurteil. Duftnoten sind Herstellerangaben in verkürzter Form, Preisbänder sind Richtwerte.</p>
   </div>`;
 
-  document.querySelectorAll('#chart .row').forEach(btn=>{
+  hatNav(false);
+  document.querySelectorAll('.chart .row').forEach(btn=>{
     btn.onclick = ()=>{
       const d = document.getElementById('det'+btn.dataset.i);
       const open = !d.hidden;
@@ -2961,8 +3223,7 @@ function renderResult(){
   document.querySelectorAll('.fb button').forEach(b=>{
     b.onclick = ()=> setFb(b.dataset.n, b.classList.contains('yes') ? 1 : -1);
   });
-  state.duellBasis = chart.map(function(r){ return r.f.n; });
-  renderDuell(list);
+
   const rc = document.getElementById('recalc');
   if(rc) rc.onclick = ()=>renderResult();
   renderPass(name, blurb, a, anc, chart, MAX);
@@ -2985,7 +3246,7 @@ function renderResult(){
   };
   saveState();
   document.getElementById('again').onclick = ()=>{
-    state.step=-1; state.a={}; state.fb={}; state.duell=null; state.duellVorher=null; state.duellFertig=false;
+    state.step=-1; state.a={}; state.fb={}; state.duell=null;
     try{ localStorage.removeItem(STORE); }catch(e){}
     wardrobeUsed.clear(); /* Kopfzeile bekommt beim Scrollen einen Schatten. */
 window.addEventListener('scroll', function(){
@@ -3082,6 +3343,13 @@ function plainText(name,blurb,a,anc,top,wilds,chart,MAX,terms){
   const pad = s => (s + '                ').slice(0,16);
   return [
     'DUFTPROFIL — ' + name, '', blurb, '', strip(profileText(a,anc)), '',
+    ...(function(){
+      const k = kernNoten(a, chart);
+      if(!k.kern.length) return [];
+      return ['KERNNOTEN — danach fragen',
+        '  ' + k.kern.map(z=>z.n+' ('+LAGELBL[z.lage]+')').join(', '),
+        ...(k.meiden.length ? ['  Bitte nicht: ' + k.meiden.join(', ')] : []), ''];
+    })(),
     'STECKBRIEF',
     ...dossierRows(a,anc).map(([k,v])=>'  ' + pad(k) + v),
     '',
