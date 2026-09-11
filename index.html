@@ -515,11 +515,18 @@ body::after{
 
 /* Duftpyramide: Kopf, Herz, Basis als drei gestapelte Baender.
    Genau die Darstellung, die in jeder Parfuemerie an der Wand haengt. */
-.pyrbox{display:grid;grid-template-columns:minmax(0,220px) 1fr;gap:1.6rem;align-items:center;
-  background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:1.5rem 1.6rem;margin:0 0 1.6rem}
-.pyr{width:100%;height:auto;display:block}
-.pyr .band{stroke:var(--card);stroke-width:2}
-.pyr .lbl{fill:#fff;font-family:"DM Sans",sans-serif;font-size:9px;font-weight:700;letter-spacing:.12em}
+.pyrbox{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:1.5rem 1.6rem;margin:0 0 1.6rem}
+/* Band links, zugehoerige Noten rechts - zeilenweise, damit die Zuordnung
+   auf einen Blick stimmt und bei langen Namen nicht verrutscht. */
+.pyrgrid{display:grid;grid-template-columns:172px 1fr;gap:3px 1.4rem;margin:.2rem 0 1.2rem}
+.pband{position:relative;min-height:58px;display:flex;align-items:center;justify-content:center}
+.pband span{color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
+.plist{display:flex;flex-direction:column;justify-content:center;gap:.25rem;padding:.2rem 0;border-bottom:1px solid var(--line)}
+.pyrgrid>.plist:last-child{border-bottom:0}
+.plist ul{display:flex;flex-wrap:wrap;gap:.3rem;margin:0;padding:0;list-style:none}
+.plist li{font-size:.9rem;color:var(--ink);background:var(--paper-2);padding:.16rem .62rem;border-radius:99px;font-weight:500}
+.plist small{font-size:.72rem;color:var(--ink-dim)}
+.plist .leer{margin:0;font-size:.88rem;color:var(--ink-dim);font-style:italic}
 .pyrtext h4{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--coral);margin:0 0 .5rem;font-weight:700}
 .pyrtext p{margin:0 0 .8rem;font-size:.97rem;color:var(--ink-mid);line-height:1.55}
 .pyrtext p:last-child{margin-bottom:0}
@@ -635,8 +642,11 @@ body::after{
   .sec-head hr{display:none}
   .sec-head span{font-size:.75rem;flex-basis:100%}
   .panel{padding:1.2rem}
-  .pyrbox{grid-template-columns:1fr;gap:1rem;padding:1.2rem}
-  .pyr{max-width:210px;margin:0 auto}
+  .pyrbox{padding:1.2rem}
+  .pyrgrid{grid-template-columns:96px 1fr;gap:3px .8rem}
+  .pband{min-height:66px}
+  .pband span{font-size:.62rem;letter-spacing:.08em}
+  .plist li{font-size:.85rem}
   .insights{grid-template-columns:1fr;gap:.7rem}
   .insight{padding:1.05rem 1.15rem}
   .insight .big{font-size:1.8rem}
@@ -757,7 +767,7 @@ const Q = [
   ]},
 { id:'fam', kind:'multi', min:1, max:4, cols:true, acc:'#B07A3C', kap:2, pfad:['fortgeschritten','sammler'],
   eyebrow:'Duftfamilien', title:'Was riechst du <em>gerne</em>?',
-  sub:'Bis zu vier — aber <b>weniger ist präziser</b>. Kreuze nur an, was wirklich zutrifft; die erste Wahl wiegt am schwersten. Unsicher? Aus deinen Bildern steht schon ein Vorschlag drin, dann einfach auf Weiter.',
+  sub:'Bis zu vier — aber weniger ist präziser. Kreuze nur an, was wirklich zutrifft; die erste Wahl wiegt am schwersten. Unsicher? Aus deinen Bildern steht schon ein Vorschlag drin, dann einfach auf Weiter.',
   o:[
     ['zitrus','Zitrisch & spritzig','Wie eine aufgeschnittene Zitrone: hell, sauber, wach.'],
     ['gruen','Grün & pflanzlich','Zerriebene Blätter, frisch gemähtes Gras, Tomatenstaude.'],
@@ -774,7 +784,7 @@ const Q = [
   ]},
 { id:'mood', kind:'multi', min:1, max:3, cols:true, acc:'#6E5A86', kap:2,
   eyebrow:'Bilder', title:'Welche Szene <em>zieht dich an</em>?',
-  sub:'Der ehrlichste Teil. Niemand weiß, ob er Labdanum mag — aber jeder weiß, ob er das hier riechen will. Bis zu drei, <b>und lieber eine zu wenig als eine zu viel</b>: Die erste Wahl wiegt am schwersten.',
+  sub:'Der ehrlichste Teil. Niemand weiß, ob er Labdanum mag — aber jeder weiß, ob er das hier riechen will. Bis zu drei, und lieber eine zu wenig als eine zu viel: Die erste Wahl wiegt am schwersten.',
   o:[
     ['zitrusgarten','Zitrusgarten an der Amalfiküste','Aufgeschnittene Zitrone, Bergamotte, Orangenschale, Hitze.'],
     ['kamin','Kaminfeuer & Whisky','Rauch, verkohltes Holz, Wärme im Glas.'],
@@ -1961,6 +1971,10 @@ function reasons(r,a){
 }
 const pctOf = (s,MAX) => Math.max(46, Math.min(98, Math.round(46 + 52*(s/MAX))));
 
+/* Archetyp. Der Text steht als Ueberschrift direkt ueber den Kennwerten -
+   er darf ihnen nicht widersprechen. Deshalb sind alle Zweige, die Suesse
+   behaupten, nach der Suessestufe getrennt: Wer Leder und staubtrocken
+   waehlt, bekommt keine "Suesse" in die Ueberschrift geschrieben. */
 function archetype(a){
   const has = k=>a.fam.includes(k), m = k=>a.mood.includes(k);
   const b = BOLDV[a.bold], sil = SILV[a.sil], sw = SWEETV[a.sweet];
@@ -1968,12 +1982,17 @@ function archetype(a){
   const smoke = has('weihrauch')||m('weihrauch')||m('kamin');
   const fresh = has('zitrus')||has('aquatisch')||has('gruen');
   const skin = has('moschus')||sil<=2;
+  const suess = sw >= 3;
   if(b>=4 && smoke) return ['Der stille Monolith','Du willst keinen Duft, der gefällt — du willst einen, der steht. Harz, Rauch, Stein: Material statt Parfümerie.'];
   if(b>=4) return ['Der Grenzgänger','Ein Duft ist für dich keine Zutat, sondern eine Position. Reibung gehört dazu — Konsens wäre das Scheitern.'];
   if(sw>=4.5) return ['Der Zuckerbäcker','Vanille, Karamell, Likör, und zwar ohne Entschuldigung. Wer Süße so bewusst wählt, meint sie auch.'];
   if(smoke && skin) return ['Der Asketen-Ästhet','Weihrauch und Holz, aber nah am Körper. Ernst ohne Lautstärke — die schwierigste Kategorie, und die eleganteste.'];
-  if(warm && a.eff.includes('verfuehrung')) return ['Der warme Hedonist','Honig, Tabak, Vanille, Haut. Du benutzt Duft körperlich, nicht dekorativ — und das darf man merken.'];
-  if(warm) return ['Die gepolsterte Wärme','Amber, Harz und Süße, aber getragen, nicht serviert. Ein Duft wie ein guter Mantel: man sieht ihn kaum, man merkt ihn sofort.'];
+  if(warm && a.eff.includes('verfuehrung')) return suess
+    ? ['Der warme Hedonist','Honig, Tabak, Vanille, Haut. Du benutzt Duft körperlich, nicht dekorativ — und das darf man merken.']
+    : ['Der warme Hedonist','Tabak, Leder, Harz, Haut — Wärme, die ohne Zucker auskommt. Du benutzt Duft körperlich, nicht dekorativ, und das darf man merken.'];
+  if(warm) return suess
+    ? ['Die gepolsterte Wärme','Amber, Harz und Süße, aber getragen, nicht serviert. Ein Duft wie ein guter Mantel: man sieht ihn kaum, man merkt ihn sofort.']
+    : ['Die trockene Wärme','Amber, Harz und Holz, und zwar ohne Zucker. Ein Duft wie ein guter Mantel: man sieht ihn kaum, man merkt ihn sofort.'];
   if(skin && !fresh) return ['Zweite Haut','Kein Duft, der ankündigt — einer, der wirkt, als hättest du einfach gut geschlafen. Moschus, Holz, Wärme, sonst nichts.'];
   if(fresh && sil<=2.5) return ['Die klare Linie','Sauber, hell, präzise. Deine Vorstellung von Luxus ist Reduktion, nicht Fülle.'];
   if(fresh) return ['Der helle Auftritt','Zitrus und Grün, aber mit Rückgrat. Frisch heißt bei dir nicht harmlos.'];
@@ -2523,8 +2542,8 @@ function beraterText(a,anc){
    der Mitte, Hoelzer, Harze und Moschus zuletzt) - kein Messwert und
    keine Herstellerangabe. Was nicht eindeutig ist, laeuft als Herznote. */
 const NOTENLAGE = [
-  [/zitr|bergamot|limette|grapefruit|mandarin|orange|neroli|petitgrain|yuzu|aldehyd|minze|basilikum|lavendel|salbei|eukalyptus|anis|ingwer|kardamom|apfel|birne|melone|gurke|rhabarber|cassis|johannisbeer|meersalz|ozon|marine|calone|pfeffer|wacholder|estragon|beifuss/i, 'kopf'],
-  [/moschus|musk|ambr|amber|sandel|zeder|vetiver|patchoul|patschul|eichenmoos|weihrauch|myrrhe|labdanum|benzoe|tonka|vanille|cashmeran|kaschmir|leder|oud|agarholz|tabak|castoreum|birkenteer|guajak|kokos|karamell|zucker|honig|styrax|opoponax|balsam|zimt|papyrus|iso e|holz|harz|wildleder|veloursleder/i, 'basis']
+  [/zitr|bergamot|limette|grapefruit|mandarin|orange|neroli|petitgrain|yuzu|aldehyd|minze|basilikum|lavendel|salbei|eukalyptus|anis|ingwer|kardamom|apfel|birne|melone|gurke|rhabarber|cassis|johannisbeer|meersalz|meeres|algen|seetang|ozon|marine|calone|pfeffer|wacholder|estragon|beifuss/i, 'kopf'],
+  [/moschus|musk|ambr|amber|sandel|zeder|vetiver|patchoul|patschul|moos|weihrauch|myrrhe|labdanum|benzoe|tonka|vanille|cashmeran|kaschmir|leder|oud|agarholz|tabak|castoreum|birkenteer|guajak|kokos|karamell|zucker|honig|styrax|opoponax|balsam|zimt|papyrus|iso e|holz|harz|wildleder|veloursleder/i, 'basis']
 ];
 function notenLage(n){
   for(let i=0;i<NOTENLAGE.length;i++){ if(NOTENLAGE[i][0].test(n)) return NOTENLAGE[i][1]; }
@@ -2532,7 +2551,7 @@ function notenLage(n){
 }
 const LAGELBL = {kopf:'Kopf', herz:'Herz', basis:'Basis'};
 function kernNoten(a, top){
-  const w = {}, roh = {};
+  const w = {}, roh = {}, cnt = {}, best = {};
   top.slice(0,10).forEach(function(r,i){
     const g = Math.max(0.3, 1 - i*0.07);
     String(r.f.notes).split(',').forEach(function(n){
@@ -2540,6 +2559,8 @@ function kernNoten(a, top){
       if(n.length < 3) return;
       const k = n.toLowerCase();
       w[k] = (w[k]||0) + g;
+      cnt[k] = (cnt[k]||0) + 1;
+      if(best[k] === undefined) best[k] = i;
       if(!roh[k]) roh[k] = n;
     });
   });
@@ -2549,16 +2570,36 @@ function kernNoten(a, top){
     const t = LBL[k]; if(!t) return;
     const s = String(t).toLowerCase();
     w[s] = (w[s]||0) + 2.6;
+    cnt[s] = (cnt[s]||0) + 2;
     if(!roh[s]) roh[s] = t;
   });
   const alle = Object.keys(w).sort(function(x,y){ return w[y]-w[x]; });
   if(!alle.length) return {kern:[], lagen:{kopf:[],herz:[],basis:[]}, meiden:[]};
   const spitze = w[alle[0]] || 1;
-  const kern = alle.slice(0,7).map(function(k){
-    return {n: roh[k], lage: notenLage(k), pct: Math.round(w[k]/spitze*100)};
-  });
+  /* Je Schicht getrennt auswaehlen, nicht global. Sonst besteht ein warmes
+     Profil aus sieben Basisnoten und die Pyramide steht leer da - obwohl
+     die Treffer sehr wohl eine Kopfnote haben. Die Frage lautet ja nicht
+     "welche sieben Noten", sondern "was rieche ich wann". */
+  /* Eine Note, die in genau einem von zehn Treffern weit unten vorkommt,
+     ist keine Kernnote. Sie muss entweder mehrfach auftauchen oder in den
+     ersten drei Treffern stehen - sonst steht Karamell im Zitrusprofil. */
+  /* Ein ausdruecklicher Ausschluss darf nie als gesuchte Note auftauchen.
+     Die harten Filter arbeiten auf den Tags eines Duftes - eine Note kann
+     trotzdem in der Notenliste stehen, und dann staende auf der Karte
+     "Fragen Sie nach Vanille" direkt neben "Vanille bitte nicht". */
+  const nogoTxt = (a.nogo||[]).map(function(k){ return String(LBL[k]||'').toLowerCase(); });
+  const istNogo = function(s){
+    return nogoTxt.some(function(g){ return g.length>2 && (g.indexOf(s)>=0 || s.indexOf(g)>=0); });
+  };
   const lagen = {kopf:[], herz:[], basis:[]};
-  kern.forEach(function(z){ lagen[z.lage].push(z); });
+  alle.forEach(function(k){
+    if(cnt[k] < 2 && best[k] > 2) return;
+    if(k.length > 3 && istNogo(k)) return;
+    const l = notenLage(k);
+    if(lagen[l].length >= 3) return;
+    lagen[l].push({n: roh[k], lage: l, pct: Math.round(w[k]/spitze*100), w: w[k]});
+  });
+  const kern = lagen.kopf.concat(lagen.herz, lagen.basis).sort(function(x,y){ return y.w-x.w; });
   return {kern:kern, lagen:lagen, meiden:(a.nogo||[]).map(function(k){ return LBL[k]; })};
 }
 /* Die drei Baender der Pyramide - einmal berechnet, zweimal genutzt:
@@ -2571,21 +2612,26 @@ const PYR = [
 /* Abgestumpfte Spitze statt spitzem Dreieck: In eine echte Spitze passt
    die Beschriftung des Kopfbands nicht hinein, sie liefe weiss auf Papier. */
 function pyrBreite(t){ return 0.34 + 0.66*t; }
-function pyramideSVG(lagen){
-  const W = 220, H = 168, TOP = 8, BOT = 158, HALB = 98;
-  const br = t => pyrBreite(t)*HALB;
-  const bands = PYR.map(function(b){
-    const ya = TOP + (BOT-TOP)*b.y0, yb = TOP + (BOT-TOP)*b.y1;
-    const wa = br(b.y0), wb = br(b.y1);
-    const p = [[110-wa,ya],[110+wa,ya],[110+wb,yb],[110-wb,yb]]
-      .map(function(q){ return q[0].toFixed(1)+','+q[1].toFixed(1); }).join(' ');
-    const n = (lagen[b.k]||[]).length;
-    return '<polygon class="band" points="'+p+'" fill="'+b.col+'"></polygon>'
-      + '<text class="lbl" x="110" y="'+((ya+yb)/2+3.5).toFixed(1)+'" text-anchor="middle">'
-      + LAGELBL[b.k].toUpperCase() + (n?'  ·  '+n:'') + '</text>';
-  }).join('');
-  return '<svg class="pyr" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Duftpyramide: Kopf, Herz, Basis">'
-    + bands + '</svg>';
+const LAGEZEIT = {kopf:'die ersten Minuten', herz:'nach einer halben Stunde', basis:'über Stunden'};
+/* Die Pyramide als Raster: links das Band, rechts genau die Noten, die in
+   dieser Schicht sitzen. Jedes Band ist eine eigene Zeile, deshalb stehen
+   Band und Noten immer auf derselben Hoehe - ein Bild plus danebenstehende
+   Liste wuerde bei langen Notennamen sofort verrutschen. Die Trapezform
+   kommt aus clip-path, nicht aus einer Grafik. */
+function pyramideHTML(lagen){
+  return '<div class="pyrgrid">' + PYR.map(function(b, i){
+    const ta = pyrBreite(b.y0), tb = pyrBreite(b.y1);
+    const p = [ ((1-ta)/2*100).toFixed(1)+'% 0%', ((1+ta)/2*100).toFixed(1)+'% 0%',
+                ((1+tb)/2*100).toFixed(1)+'% 100%', ((1-tb)/2*100).toFixed(1)+'% 100%' ].join(',');
+    const v = lagen[b.k] || [];
+    return '<div class="pband" style="background:'+b.col+';clip-path:polygon('+p+')">'
+         + '<span>' + LAGELBL[b.k] + '</span></div>'
+         + '<div class="plist">'
+         + (v.length
+             ? '<ul>' + v.map(function(z){ return '<li>'+esc(z.n)+'</li>'; }).join('') + '</ul>'
+             : '<p class="leer">in deinen Treffern kaum besetzt</p>')
+         + '<small>' + LAGEZEIT[b.k] + '</small></div>';
+  }).join('') + '</div>';
 }
 
 /* Duftpass als Klappkarte: zwei Seiten im Postkartenformat statt einer
@@ -2644,29 +2690,41 @@ function drawKarte(x, x0, y0, w0, h, a, picks){
   x.textAlign='left';
 }
 
-/* Duftpyramide auf dem Pass - dieselbe Geometrie wie im SVG auf der Seite.
-   Die Noten selbst stehen darunter in der Kernnotenzeile: In das oberste,
-   schmale Band passt kein Text, ohne dass er abgeschnitten wird. */
-function drawPyramide(x, cx, cy, w, h, lagen){
-  const oben = cy - h/2, halb = w/2;
+/* Duftpyramide auf dem Pass - gleiche Aufteilung wie auf der Seite:
+   links das Band, rechts auf gleicher Hoehe die Noten dieser Schicht.
+   `x0` ist die linke Kante des Bandblocks, `bw` seine Breite, `textW`
+   der Platz fuer die Noten rechts daneben. */
+function drawPyramide(x, x0, cy, bw, textW, h, lagen){
+  const oben = cy - h/2, cx = x0 + bw/2, halb = bw/2;
+  const tx = x0 + bw + 26;
   PYR.forEach(function(b){
-    const ya = oben + h*b.y0, yb = oben + h*b.y1;
+    const ya = oben + h*b.y0 + 2, yb = oben + h*b.y1 - 2;
     const wa = halb*pyrBreite(b.y0), wb = halb*pyrBreite(b.y1);
     x.beginPath();
     x.moveTo(cx-wa, ya); x.lineTo(cx+wa, ya); x.lineTo(cx+wb, yb); x.lineTo(cx-wb, yb);
     x.closePath();
     x.fillStyle = b.col; x.fill();
-    x.strokeStyle = '#F5F2EA'; x.lineWidth = 3; x.stroke();
-    const n = (lagen[b.k]||[]).length;
+    const mitte = (ya+yb)/2;
     x.fillStyle = '#fff'; x.textAlign = 'center'; x.textBaseline = 'middle';
-    x.font = '700 16px "DM Sans",system-ui,sans-serif';
-    x.fillText(LAGELBL[b.k].toUpperCase() + (n ? '  ·  ' + n : ''), cx, (ya+yb)/2 + 1);
-    x.textAlign = 'left'; x.textBaseline = 'alphabetic';
+    x.font = '700 15px "DM Sans",system-ui,sans-serif';
+    x.fillText(LAGELBL[b.k].toUpperCase(), cx, mitte + 1);
+    /* Noten dieser Schicht, notfalls auf zwei Zeilen */
+    const v = (lagen[b.k]||[]).map(function(z){ return z.n; });
+    x.textAlign = 'left';
+    if(v.length){
+      x.font = '500 17px "DM Sans",system-ui,sans-serif';
+      const zeilen = passLines(x, v.join(', '), textW, '500 17px "DM Sans",system-ui,sans-serif').slice(0,2);
+      x.fillStyle = '#2C2823';
+      zeilen.forEach(function(z,i){ x.fillText(z, tx, mitte - (zeilen.length-1)*11 + i*22); });
+    } else {
+      x.font = '400 15px "DM Sans",system-ui,sans-serif';
+      x.fillStyle = '#948C7F';
+      x.fillText('kaum besetzt', tx, mitte);
+    }
+    x.textBaseline = 'alphabetic';
   });
   x.fillStyle = '#948C7F'; x.font = '400 14px "DM Sans",system-ui,sans-serif';
-  x.textAlign = 'center';
-  x.fillText('Kopf 0–5 Min · Herz ½–2 Std · Basis 2–8 Std', cx, oben + h + 28);
-  x.textAlign = 'left';
+  x.fillText('Kopf: die ersten Minuten · Herz: nach einer halben Stunde · Basis: über Stunden', x0, oben + h + 26);
 }
 
 function buildPass(name,blurb,a,anc,top,MAX){
@@ -2691,7 +2749,9 @@ function buildPass(name,blurb,a,anc,top,MAX){
   const beratL = beraterText(a,anc).map(t=>passLines(m, t, CW, DS(400,20)));
   const kn = kernNoten(a, top);
   const HALB = (CW-52)/2;
-  const treffL = passLines(m, kn.kern.map(function(z){ return z.n+' ('+LAGELBL[z.lage]+')'; }).join(' · '), HALB, DS(500,19));
+  /* Die vollstaendigen Kernnoten stehen in der Pyramide. Hier steht nur
+     noch der Satz zum Vorlesen - sonst dieselbe Liste zweimal. */
+  const treffL = passLines(m, kn.kern.slice(0,3).map(function(z){ return z.n; }).join(' · '), HALB, DS(500,19));
   const meidL  = passLines(m, kn.meiden.length ? kn.meiden.join(' · ') : 'Keine Ausschlüsse angegeben.', HALB, DS(500,19));
   const rows = dossierRows(a,anc);
   const half = Math.ceil(rows.length/2);
@@ -2708,8 +2768,8 @@ function buildPass(name,blurb,a,anc,top,MAX){
   const RAD_R = 118, RAD_LBL = 142;
   const RAD_CX = M + RAD_R + 52;
   /* Vorderseite rechts: die Duftpyramide. Rueckseite unten: die Landkarte. */
-  const PYX = M + 2*RAD_R + 150, PYW = Math.min(340, W - M - (M + 2*RAD_R + 150)), PYH = 236;
-  const PYCX = PYX + PYW/2;
+  const PYX = M + 2*RAD_R + 150, PYBW = 168, PYH = 236;
+  const PYTW = W - M - PYX - PYBW - 26;
   const KX = M + 118, KW = CW - 236, KH = 230;
   const GRAFH = Math.max(RAD_LBL, PYH/2 + 22);
 
@@ -2761,14 +2821,14 @@ function buildPass(name,blurb,a,anc,top,MAX){
   x1.fillStyle = INK; x1.font = FS(62); putLines(x1, nameL, M, yName, 70);
   x1.fillStyle = MID; x1.font = DS(400,23); putLines(x1, blurbL, M, yBlurb, 34);
   passRadar(x1, RAD_CX, yRadC, RAD_R, radarFromAnswers(a), radarFromFragrance(top[0].f), RAD_LBL);
-  drawPyramide(x1, PYCX, yRadC, PYW, PYH, kn.lagen);
+  drawPyramide(x1, PYX, yRadC, PYBW, PYTW, PYH, kn.lagen);
   x1.fillStyle = DIM; x1.font = DS(400,16); x1.textAlign='center';
   x1.fillText('Fläche: dieses Profil · Linie: ' + fit(top[0].f.n, 2*RAD_R+60, DS(400,16)), RAD_CX, yCapt);
   x1.textAlign='left';
   /* Kernnoten: der Satz, mit dem man in die Parfuemerie gehen kann. */
   rule(x1, yKL1-22);
-  label(x1, 'DANACH FRAGEN · KERNNOTEN', yKL1);
-  x1.fillStyle=CORAL; x1.font=DS(700,15); x1.fillText('DIESE NOTEN SUCHE ICH', M, yKN);
+  label(x1, 'DER SATZ FÜR DIE BERATUNG', yKL1);
+  x1.fillStyle=CORAL; x1.font=DS(700,15); x1.fillText('FRAGEN SIE MICH NACH', M, yKN);
   x1.fillStyle=INK; x1.font=DS(500,19); putLines(x1, treffL, M, yKN+26, 26);
   x1.fillStyle=DIM; x1.font=DS(700,15); x1.fillText('DIESE BITTE NICHT', M+HALB+52, yKN);
   x1.fillStyle = kn.meiden.length ? INK : DIM; x1.font=DS(500,19);
@@ -3064,14 +3124,15 @@ function renderResult(){
 
     <div class="sec-head"><h2>Welche Noten du suchst</h2><hr><span>abgeleitet, nicht abgefragt</span></div>
     <div class="pyrbox">
-      ${pyramideSVG(kern.lagen)}
       <div class="pyrtext">
         <h4>Deine Kernnoten</h4>
         <p class="sag">Frag in der Parfümerie nach <b>${esc(kern.kern.slice(0,3).map(z=>z.n).join(', '))}</b>.</p>
-        <ul class="notenzeile">${kern.kern.map(z=>`<li>${esc(z.n)}<i>${LAGELBL[z.lage]}</i></li>`).join('')}</ul>
+      </div>
+      ${pyramideHTML(kern.lagen)}
+      <div class="pyrtext">
         ${kern.meiden.length?`<p style="margin-bottom:.35rem">Und was draußen bleiben soll:</p>
         <ul class="notenzeile weg">${kern.meiden.map(z=>`<li>${esc(z)}</li>`).join('')}</ul>`:''}
-        <p>Diese Noten tauchen in deinen Treffern immer wieder auf — sie sind die kürzeste Beschreibung deines Geschmacks. Die Pyramide zeigt, wann sie auftreten: Kopf in den ersten Minuten, Herz nach einer halben Stunde, Basis über Stunden.</p>
+        <p>Diese Noten tauchen in deinen Treffern immer wieder auf — sie sind die kürzeste Beschreibung deines Geschmacks. Die Pyramide zeigt, wann du welche riechst: ein Duft ist nach zwei Stunden ein anderer als in der ersten Minute.</p>
       </div>
     </div>
 
@@ -3091,7 +3152,7 @@ function renderResult(){
       <div class="insight">
         <h4>Woran dein Ergebnis hängt</h4>
         <span class="big">${sens[0].churn}&thinsp;%</span>
-        <p><b>${esc(sens[0].label.charAt(0).toUpperCase()+sens[0].label.slice(1))}</b> ist dein Taktgeber: Eine andere Antwort an dieser Stelle tauscht <b>${sens[0].churn}&thinsp;%</b> deiner Top 10 aus.${
+        <p><b>${esc(sens[0].label.charAt(0).toUpperCase()+sens[0].label.slice(1))}</b> ist dein Taktgeber: Eine andere Antwort an dieser Stelle tauscht <b>${sens[0].churn}&thinsp;%</b> deiner Trefferliste aus.${
           sens.length>1 ? ` Am wenigsten Einfluss hat <b>${esc(sens[sens.length-1].label)}</b> mit ${sens[sens.length-1].churn}&thinsp;% — dort kannst du beim Testen großzügig sein.` : ''}</p>
       </div>` : ''}
 
@@ -3246,7 +3307,7 @@ function renderResult(){
   };
   saveState();
   document.getElementById('again').onclick = ()=>{
-    state.step=-1; state.a={}; state.fb={}; state.duell=null;
+    state.step=-1; state.a={}; state.fb={};
     try{ localStorage.removeItem(STORE); }catch(e){}
     wardrobeUsed.clear(); /* Kopfzeile bekommt beim Scrollen einen Schatten. */
 window.addEventListener('scroll', function(){
