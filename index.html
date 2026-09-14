@@ -3,7 +3,28 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sillage Duftprofil</title>
+<title>Sillage — Duftprofil statt Bestenliste</title>
+<meta name="description" content="Ein Fragebogen, der aus Anlässen, Bildern und No-Gos ein persönliches Duftprofil rechnet — mit Kernnoten, Duftpyramide und einem Duftpass zum Mitnehmen in die Parfümerie. 532 kuratierte Düfte aus 110 Häusern.">
+<meta name="author" content="Jonas Peter">
+<meta name="theme-color" content="#F5F2EA">
+<link rel="canonical" href="https://jonaspeter123.github.io/perfumeguide/">
+<!-- Linkvorschau. Ohne diese Angaben erscheint der Link in WhatsApp,
+     LinkedIn und Mail als nackte Adresse und wird ueberlesen.
+     og:image MUSS eine absolute Adresse sein und neben index.html liegen. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Sillage">
+<meta property="og:locale" content="de_DE">
+<meta property="og:url" content="https://jonaspeter123.github.io/perfumeguide/">
+<meta property="og:title" content="Sillage — Duftprofil statt Bestenliste">
+<meta property="og:description" content="Sechzehn Fragen, ein persönliches Duftprofil: Kernnoten nach Kopf, Herz und Basis, fünf begründete Vorschläge und ein Duftpass für die Beratung.">
+<meta property="og:image" content="https://jonaspeter123.github.io/perfumeguide/vorschau.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Sillage — Duftprofil statt Bestenliste">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sillage — Duftprofil statt Bestenliste">
+<meta name="twitter:description" content="Sechzehn Fragen, ein persönliches Duftprofil — mit Duftpass für die Parfümerie.">
+<meta name="twitter:image" content="https://jonaspeter123.github.io/perfumeguide/vorschau.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&display=swap">
@@ -322,6 +343,11 @@ h1.q em{font-style:normal;color:var(--acc);transition:color .85s ease}
 .passwrap{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:1.4rem;text-align:center}
 .passwrap img{max-width:420px;width:100%;height:auto;border-radius:12px;box-shadow:var(--shadow);display:block;margin:0 auto 1rem}
 .passwrap p{font-size:.86rem;color:var(--ink-dim);margin:0 0 .9rem;max-width:46ch;margin-inline:auto}
+
+/* Hinweis bei einem Profil, das aus einem Link kommt */
+.geteilt{background:var(--paper-2);border-radius:var(--r);padding:.9rem 1.15rem;margin:0 0 1.4rem;max-width:60ch;border-left:4px solid var(--teal)}
+.geteilt b{display:block;font-size:.94rem;margin-bottom:.15rem}
+.geteilt p{margin:0;font-size:.89rem;color:var(--ink-mid);line-height:1.5}
 
 /* Gespeichertes Profil */
 .resume{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:1rem 1.25rem;margin:0 0 1.7rem;border-left:5px solid var(--teal)}
@@ -1765,7 +1791,7 @@ const SWEETV = {trocken:.5,dezent:2,deutlich:3.5,dekadent:5};
 const SPLITCOL = {fam:'#B07A3C',mood:'#6E5A86',occ:'#9E4430',sil:'#46708C',bold:'#93382F',sweet:'#A75A63',notes:'#557C6A',anchor:'#3D6E67',lg:'#96603A'};
 const SPLITLBL = {fam:'Duftfamilien',mood:'Bilder',occ:'Anlass & Saison',sil:'Präsenz',bold:'Wagemut',sweet:'Süße',notes:'Lieblingsnoten',anchor:'Ankerduft',lg:'Haltbarkeit'};
 
-const state = {step:-1, a:{}, fb:{}};
+const state = {step:-1, a:{}, fb:{}, geteilt:false};
 
 /* Aktive Fragen: Einsteiger bekommen einen kuerzeren Weg. Die Duftfamilien
    entfallen dort, weil sie ohnehin aus den Bildern abgeleitet werden; die
@@ -1986,6 +2012,9 @@ function archetype(a){
   if(b>=4 && smoke) return ['Der stille Monolith','Du willst keinen Duft, der gefällt — du willst einen, der steht. Harz, Rauch, Stein: Material statt Parfümerie.'];
   if(b>=4) return ['Der Grenzgänger','Ein Duft ist für dich keine Zutat, sondern eine Position. Reibung gehört dazu — Konsens wäre das Scheitern.'];
   if(sw>=4.5) return ['Der Zuckerbäcker','Vanille, Karamell, Likör, und zwar ohne Entschuldigung. Wer Süße so bewusst wählt, meint sie auch.'];
+  /* Weihrauch mit Praesenz fiel vorher durch alle Zweige und landete beim
+     allgemeinen Schlusssatz - ausgerechnet bei einem sehr klaren Geschmack. */
+  if(smoke && !skin && !warm) return ['Rauch über Holz','Weihrauch, Holz, Harz — Material statt Blumen. Ein Duft, der den Raum ernst nimmt und keine Rücksicht auf gute Laune nimmt.'];
   if(smoke && skin) return ['Der Asketen-Ästhet','Weihrauch und Holz, aber nah am Körper. Ernst ohne Lautstärke — die schwierigste Kategorie, und die eleganteste.'];
   if(warm && a.eff.includes('verfuehrung')) return suess
     ? ['Der warme Hedonist','Honig, Tabak, Vanille, Haut. Du benutzt Duft körperlich, nicht dekorativ — und das darf man merken.']
@@ -2422,6 +2451,37 @@ function verdictLine(r,a,all){
 }
 
 /* ── Speichern & Fortsetzen (nur lokal im Browser) ── */
+/* ── Profil als Link ──────────────────────────────────────────
+   Die Antworten passen in die Adresszeile. Damit laesst sich ein
+   fertiges Ergebnis verschicken, ohne dass der Empfaenger den
+   Fragebogen ausfuellt - der eigentliche Zweck: Wer aus einer Mail
+   heraus draufklickt, sieht sofort, was hinten herauskommt.
+   In der Adresse stehen ausschliesslich Duftvorlieben, keine
+   Angaben zur Person. Alles nach dem # verlaesst den Browser nie. */
+function packProfil(a){
+  try{
+    return btoa(unescape(encodeURIComponent(JSON.stringify(a))))
+      .replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  }catch(e){ return ''; }
+}
+function unpackProfil(s){
+  try{
+    let t = String(s).replace(/-/g,'+').replace(/_/g,'/');
+    while(t.length % 4) t += '=';
+    const o = JSON.parse(decodeURIComponent(escape(atob(t))));
+    return (o && typeof o === 'object' && o.sil && o.sweet) ? o : null;
+  }catch(e){ return null; }
+}
+function profilLink(a){
+  const b = location.href.split('#')[0];
+  return b + '#p=' + packProfil(a);
+}
+function geteiltesProfil(){
+  const h = String(location.hash||'');
+  const m = h.match(/[#&]p=([A-Za-z0-9\-_]+)/);
+  return m ? unpackProfil(m[1]) : null;
+}
+
 const STORE = 'sillage.profil.v1';
 function saveState(){
   try{ localStorage.setItem(STORE, JSON.stringify({a:state.a, fb:state.fb, ts:Date.now()})); }catch(e){}
@@ -3100,7 +3160,11 @@ function renderResult(){
 
   stage.innerHTML = `
   <div class="fade reveal">
-    <p class="verdict-eyebrow">Dein Duftprofil</p>
+    ${state.geteilt ? `<div class="geteilt">
+      <b>Ein geteiltes Profil</b>
+      <p>Diese Auswertung stammt aus einem Link, nicht aus deinen eigenen Antworten. Unten lässt sich der Fragebogen starten — sechzehn Fragen, etwa acht Minuten.</p>
+    </div>` : ''}
+    <p class="verdict-eyebrow">${state.geteilt ? 'Ein Duftprofil' : 'Dein Duftprofil'}</p>
     <h1 class="archetype">${esc(name)}</h1>
     <div class="stripwrap">
       <div class="strip" title="Die Farben deiner Antworten">${AQ().map(q=>`<i style="background:${q.acc}"></i>`).join('')}</div>
@@ -3267,7 +3331,8 @@ function renderResult(){
     </details>
 
     <div class="foot-actions">
-      <button class="ghost" id="again">Von vorn beginnen</button>
+      <button class="ghost" id="teilen">Dieses Profil als Link kopieren</button>
+      <button class="ghost" id="again">${state.geteilt ? 'Eigenes Profil erstellen' : 'Von vorn beginnen'}</button>
     </div>
     <p class="disclaimer">Kuratierte Auswahl von ${F.length} Düften aus ${HOUSES} Häusern, keine Live-Datenbank. Die Prozentwerte sind der Anteil der in deinem Profil erreichbaren Punkte, kein objektives Qualitätsurteil. Duftnoten sind Herstellerangaben in verkürzter Form, Preisbänder sind Richtwerte.</p>
   </div>`;
@@ -3298,6 +3363,14 @@ function renderResult(){
     }catch(err){ pc.textContent = 'Geht hier nicht — bitte per Rechtsklick sichern'; }
     setTimeout(()=>{ pc.textContent = 'Bild in die Zwischenablage'; }, 2800);
   };
+  const tl = document.getElementById('teilen');
+  if(tl) tl.onclick = async ()=>{
+    const url = profilLink(a);
+    try{ await navigator.clipboard.writeText(url); tl.textContent = 'Link kopiert ✓'; }
+    catch(err){ try{ location.hash = 'p=' + packProfil(a); tl.textContent = 'Link steht oben in der Adresszeile'; }
+                catch(e2){ tl.textContent = 'Kopieren geht hier nicht'; } }
+    setTimeout(()=>{ tl.textContent = 'Dieses Profil als Link kopieren'; }, 3200);
+  };
   const cp = document.getElementById('copy');
   if(cp) cp.onclick = async e=>{
     const txt = plainText(name, blurb, a, anc, top3, wildsFinal, chart, MAX, terms);
@@ -3305,9 +3378,12 @@ function renderResult(){
     catch(err){ e.target.textContent='Kopieren nicht möglich'; }
     setTimeout(()=>{ e.target.textContent='Profil als Text kopieren'; }, 2200);
   };
-  saveState();
+  /* Ein geteiltes Profil ist nicht das eigene - es darf den gespeicherten
+     Stand nicht ueberschreiben. */
+  if(!state.geteilt) saveState();
   document.getElementById('again').onclick = ()=>{
-    state.step=-1; state.a={}; state.fb={};
+    state.step=-1; state.a={}; state.fb={}; state.geteilt = false;
+    try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){ location.hash=''; }
     try{ localStorage.removeItem(STORE); }catch(e){}
     wardrobeUsed.clear(); /* Kopfzeile bekommt beim Scrollen einen Schatten. */
 window.addEventListener('scroll', function(){
@@ -3462,7 +3538,18 @@ function zaehleHoch(){
   });
 }
 
-renderIntro(); }
+/* Kommt ein geteiltes Profil in der Adresse an, wird es direkt
+   ausgewertet - ohne Fragebogen und ohne Zeremonie. */
+(function(){
+  const g = geteiltesProfil();
+  if(g){
+    state.a = g; state.fb = {}; state.geteilt = true;
+    renderResult(); window.scrollTo(0,0);
+  } else {
+    renderIntro();
+  }
+})();
+}
 catch(err){ fatal((err && err.message) ? err.message : err); }
 </script>
 
