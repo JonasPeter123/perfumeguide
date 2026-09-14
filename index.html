@@ -868,11 +868,11 @@ const Q = [
   ]},
 { id:'sweet', kind:'single', cols:true, acc:'#A75A63', kap:2,
   eyebrow:'Süße', title:'Wie süß darf er <em>werden</em>?',
-  sub:'Die Achse, an der die meisten Düfte scheitern. Sie entscheidet öfter über Gefallen oder Nichtgefallen als die Duftfamilie.',
+  sub:'Die Achse, an der die meisten Düfte scheitern. Gemeint ist der Gesamteindruck, nicht eine bestimmte Note — dieselbe Zutat empfindet nicht jeder gleich süß. Welche Noten raus sollen, fragen wir gleich getrennt.',
   o:[
     ['trocken','Staubtrocken','Kein Gramm Zucker. Holz, Harz, Moos, Stein.'],
-    ['dezent','Dezent süß','Eine Ahnung Tonka oder Amber im Hintergrund.'],
-    ['deutlich','Deutlich süß','Vanille und Honig dürfen tragen.'],
+    ['dezent','Dezent süß','Süße ist da, steht aber nie vorn.'],
+    ['deutlich','Deutlich süß','Süße darf den Duft tragen.'],
     ['dekadent','Dekadent','Sirup, Karamell, Likör. Voll rein.']
   ]},
 { id:'nogo', kind:'multi', min:0, max:5, cols:true, optional:true, acc:'#6E7671', kap:2,
@@ -881,14 +881,15 @@ const Q = [
   o:[
     ['suess','Zu süß','Zuckrig, Sirup, Bonbon.'],
     ['vanille','Vanille','In jeder Form.'],
-    ['pudrig','Pudrig','Iris, Veilchen, Kosmetiktasche.'],
+    ['pudrig','Pudrig','Puder, Lippenstift, Kosmetiktasche.'],
     ['rauchig','Rauchig','Lagerfeuer, Birkenteer, Asche.'],
     ['oud','Oud','Der medizinisch-holzige Agarholz-Ton.'],
     ['animalisch','Animalisch','Kastoreum, Zibet, Kreuzkümmel, Schweiß.'],
     ['patchouli','Patschuli','Erdig, dunkel, 70er.'],
     ['rose','Rose','Auch in moderner Lesart.'],
     ['aldehyde','Aldehydisch','Der seifig-metallische N°5-Effekt.'],
-    ['aquatisch','Aquatisch','Calone, Meeresbrise, Duschgel-Frische.']
+    ['aquatisch','Aquatisch','Calone, Meeresbrise, Duschgel-Frische.'],
+   ['honig','Honig','Klebrig-blumige Süße, wachsig.']
   ]},
 { id:'sil', kind:'single', cols:true, acc:'#46708C', kap:2,
   eyebrow:'Präsenz', title:'Wie viel Raum darf er <em>nehmen</em>?',
@@ -1810,6 +1811,11 @@ F.forEach(f=>{
   if(re('Rauch|Birkenteer|Lagerfeuer|Whisky|Cognac|Torf|Kastanie|Guajak')) add('kamin');
   if(fam('aquatisch') || re('Meersalz|Meeresnoten|Salzluft|Salznote|Kelp|Ozon|Küstenmoos')) add('ozean');
   if((fam('amber')||fam('weihrauch')) && re('Zimt|Safran|Kardamom|Nelke|Muskat|Myrrhe|Labdanum|Weihrauch|Benzoe|Opoponax|Styrax|Harz')) add('basar');
+  /* Honig als eigener Ausschluss. Kam aus dem Parfumo-Forum: Honig ist einer
+     der polarisierendsten Stoffe ueberhaupt, liess sich aber nicht abwaehlen -
+     man konnte nur "zu suess" ankreuzen und verlor damit auch die Vanille.
+     Der Ausschluss arbeitet auf `tags`, deshalb wird der Tag hier gesetzt. */
+  if(re('Honig|Bienenwachs|Met\\b') && f.tags.indexOf('honig') < 0) f.tags.push('honig');
 });
 const HOUSE_LIST = [...new Set(F.map(f=>f.h))];
 const HOUSES = HOUSE_LIST.length;
@@ -1998,8 +2004,14 @@ function score(f,a,anc,ctx){
       if(f.art==='a') return -1;
       return 2;
     }
-    return 0;   /* Einsteiger: neutral. Ein Bonus auf Designer hat den Anteil
-                   auf 82 % getrieben - das Preisband entscheidet schon genug. */
+    /* Einsteiger: leichter Zug Richtung Nische. Anfaenger sein heisst nicht,
+       nur Bekanntes zu wollen - Parfums de Marly kann dem ersten Duft genauso
+       gefallen. Wovor ein Einsteiger geschuetzt werden muss, sind schwierige
+       Duefte, und das erledigt der Wagemut-Abschlag darueber, nicht das Haus.
+       Ein Bonus auf Designer hatte den Anteil auf 82 % getrieben. */
+    if(f.art==='d') return -1;
+    if(f.art==='a') return 0;
+    return 2;
   })();
   if(ctx){
     if(ctx.negFam.length){                       /* was du ausdrücklich nicht mochtest */
@@ -2018,7 +2030,7 @@ function maxScore(a,anc){
   let m = 22*W.fam + 16*W.mood + 20*W.occ + 10*W.sil + 10 + 9*W.sweet + 6 + 8 + 8 + 6 + 6;
   if(a.notes && a.notes.length) m += 16;
   if(anc) m += 12;
-  if(a.exp==='einsteiger') m += 3;
+  if(a.exp==='einsteiger') m += 3 + 2;
   if(a.exp==='sammler') m += 5 + 4;
   if(a.exp==='fortgeschritten') m += 2;
   return m;
@@ -2513,6 +2525,7 @@ const CONFLICTS = [
   {no:'aquatisch',q:'mood',  v:'ozean',     txt:'die Szene Kalte Gischt und Wind'},
   {no:'patchouli',q:'fam',   v:'chypre',    txt:'die Familie Chypre, die auf Patschuli aufbaut'},
   {no:'pudrig',   q:'mood',  v:'iris',      txt:'die Szene Puderige Iris und Wildleder'},
+  {no:'honig',    q:'mood',  v:'honig',     txt:'die Szene Honig und Tabak'},
   {no:'rose',     q:'mood',  v:'bluete',    txt:'die Szene Blütenbaum im Frühling'}
 ];
 function findConflicts(){
@@ -3264,7 +3277,7 @@ function renderResult(){
 
   /* Ab "fortgeschritten" hoechstens zwei breit verfuegbare Designerduefte
      unter den fuenf sichtbaren Treffern. */
-  const dGrenze = a.exp === 'einsteiger' ? null : 2;
+  const dGrenze = a.exp === 'einsteiger' ? 3 : 2;
   const chart = diversify(list, 10, 2, null, dGrenze);
   const used = new Set(chart.map(r=>r.f.n));
   const wilds = diversify(list.filter(r=>r.f.bold >= Math.max(3.5, BOLDV[a.bold])), 2, 1, used);
