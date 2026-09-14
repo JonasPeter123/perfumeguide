@@ -468,9 +468,37 @@ body::after{
 .wrap{position:relative;z-index:1}
 
 /* Kopfzeile bleibt oben stehen und legt sich mit Milchglas ueber den Inhalt */
-.masthead{position:sticky;top:0;z-index:20;backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);background:linear-gradient(180deg,rgba(245,242,234,.95),rgba(245,242,234,.75));margin:0 -.6rem;padding-left:.6rem;padding-right:.6rem;transition:box-shadow .3s}
-.masthead.gescrollt{box-shadow:0 10px 26px -22px rgba(44,40,35,.6)}
-.rail{position:sticky;top:74px;z-index:19;padding:.4rem 0;background:linear-gradient(180deg,rgba(245,242,234,.93),rgba(245,242,234,0))}
+/* Kopfzeile und Fortschritt bleiben oben stehen.
+   Der Hintergrund wird ueber ein Pseudoelement bis an beide Bildschirmraender
+   gezogen (`inset:0 -50vw`), sonst sieht man links und rechts das Papier
+   durchscheinen und die Leiste wirkt wie ein schwebender Kasten.
+   Deckend statt Verlauf: Ein Verlauf laesst durchlaufenden Text unter der
+   Leiste halb sichtbar - das war der Eindruck, dass die Ueberschrift
+   "mitgezogen" wird. */
+/* Der Hintergrund wird ueber einen Schlagschatten mit grosser Streuung nach
+   links und rechts verlaengert und senkrecht wieder beschnitten. Ein
+   Pseudoelement mit `-50vw` wuerde dasselbe leisten, aber die Seite waagerecht
+   ueberlaufen lassen - html scrollt dann seitlich. Dieser Weg veraendert das
+   Layout nicht. */
+.masthead{position:sticky;top:0;z-index:20;transition:box-shadow .3s}
+.masthead::before{
+  content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);
+  box-shadow:0 0 0 100vmax var(--paper);
+  clip-path:inset(0 -100vmax 0 -100vmax);
+}
+.masthead::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;z-index:-1;
+  background:transparent;box-shadow:0 0 0 100vmax transparent;
+  clip-path:inset(0 -100vmax 0 -100vmax);transition:background .3s,box-shadow .3s;
+}
+.masthead.gescrollt::after{background:var(--line);box-shadow:0 0 0 100vmax var(--line)}
+.masthead.gescrollt{box-shadow:0 12px 24px -24px rgba(44,40,35,.5)}
+.rail{position:sticky;top:var(--kopfh,86px);z-index:19;padding:.45rem 0 .55rem}
+.rail::before{
+  content:"";position:absolute;inset:0;z-index:-1;background:var(--paper);
+  box-shadow:0 0 0 100vmax var(--paper);
+  clip-path:inset(0 -100vmax 0 -100vmax);
+}
 
 /* Kapitelanzeige */
 .kapitel{display:flex;align-items:center;gap:.7rem;margin:0 0 1rem;flex-wrap:wrap}
@@ -624,7 +652,7 @@ body::after{
   .mast-note{display:none}
   .stepno{font-size:.76rem}
   .stepno b{font-size:1.1rem}
-  .rail{top:52px;margin:0 0 1rem;padding:.3rem 0}
+  .rail{margin:0 0 1rem;padding:.35rem 0 .4rem}
   .rail i{height:5px}
   .kapitel{margin:0 0 .7rem;gap:.5rem}
   .kapname{font-size:.94rem}
@@ -2837,24 +2865,33 @@ function buildPass(name,blurb,a,anc,top,MAX){
   let y1 = 70 + 16 + 46;                       /* Streifen + Kopfzeile */
   const yName = y1 + 62; y1 = yName + (nameL.length-1)*70 + 46;
   const yBlurb = y1; y1 = yBlurb + (blurbL.length-1)*34 + 40;
-  const yRadC = y1 + GRAFH + 8;
-  const yCapt = yRadC + GRAFH + 34;
-  y1 = yCapt + 26;
-  const yKL1 = y1 + 30, yKN = yKL1 + 34;
-  y1 = yKN + 26 + Math.max(treffL.length, meidL.length)*26 + 16;
-  const yMet = y1 + 30; y1 = yMet + 92;
-  const yPickL = y1 + 34; const yPick = yPickL + 44;
-  y1 = yPick + (picks.length-1)*76 + 30;
+  /* Ein einziger Rhythmus fuer beide Seiten: Linie, Abschnittstitel, Inhalt,
+     grosser Abstand. Jeder Abschnitt sieht gleich aus, damit das Auge die
+     Struktur erkennt statt einzelne Elemente zu suchen. */
+  const BLOCK = 52;   /* Luft zwischen zwei Abschnitten */
+  const NACH  = 34;   /* Titel-Grundlinie bis Oberkante des Inhalts */
+
+  const yLGraf = y1 + 26;
+  const yRadC  = yLGraf + 34 + GRAFH;
+  const yCapt  = yRadC + GRAFH + 36;
+  y1 = yCapt + BLOCK;
+  const yLKern = y1 + 26, yKN = yLKern + NACH;
+  y1 = yKN + 26 + Math.max(treffL.length, meidL.length)*26 + BLOCK - 12;
+  const yLMet = y1 + 26, yMet = yLMet + NACH;
+  y1 = yMet + 84 + BLOCK - 12;
+  const yPickL = y1 + 26; const yPick = yPickL + 48;
+  y1 = yPick + (picks.length-1)*78 + 34;
   const H1 = y1 + 78;
 
   let y2 = 70 + 16 + 46;
-  const yB2 = y2 + 40; let bh=0; beratL.forEach(l=>{ bh += l.length*28 + 10; });
-  y2 = yB2 + bh + 14;
-  const yKL = y2 + 30, yKarte = yKL + 30;
-  y2 = yKarte + KH + 66;
-  const yDL = y2 + 30, yDos = yDL + 34;
-  y2 = yDos + Math.max(colH[0], colH[1]) + 8;
-  const yFL = y2 + 26, yFam = yFL + 26;
+  const yLBer = y2 + 52; const yB2 = yLBer + NACH;
+  let bh=0; beratL.forEach(l=>{ bh += l.length*28 + 10; });
+  y2 = yB2 + bh + BLOCK - 22;
+  const yKL = y2 + 26, yKarte = yKL + NACH;
+  y2 = yKarte + KH + 62;
+  const yDL = y2 + 26, yDos = yDL + NACH + 4;
+  y2 = yDos + Math.max(colH[0], colH[1]) + BLOCK - 26;
+  const yFL = y2 + 26, yFam = yFL + 30;
   y2 = yFam + 104;
   const H2 = y2 + 150;
   const H = Math.max(H1, H2, 1400);
@@ -2870,8 +2907,18 @@ function buildPass(name,blurb,a,anc,top,MAX){
     acc.forEach((col,i)=>{ x.fillStyle=col; x.fillRect(M+i*sw, 70, sw-4, 16); });
     return {cv:cv, x:x};
   }
-  const rule = (x,yv) => { x.strokeStyle=LINE; x.lineWidth=2; x.beginPath(); x.moveTo(M,yv); x.lineTo(W-M,yv); x.stroke(); };
-  const label = (x,t,yv,col) => { x.fillStyle=col||CORAL; x.font=DS(700,18); x.fillText(t,M,yv); };
+  const rule = (x,yv,x0,x1e) => { x.strokeStyle=LINE; x.lineWidth=2; x.beginPath();
+    x.moveTo(x0||M, yv); x.lineTo(x1e||(W-M), yv); x.stroke(); };
+  /* Abschnittstitel sind ruhig gehalten. Die Akzentfarbe bleibt den Zahlen
+     und Daten vorbehalten - sonst schreit jede Zeile gleich laut. */
+  const kopf = (x,t,yv,zusatz) => {
+    rule(x, yv-24);
+    x.fillStyle=DIM; x.font=DS(700,15); x.letterSpacing='0.14em';
+    x.fillText(t, M, yv);
+    if(zusatz){ x.textAlign='right'; x.font=DS(400,15); x.fillText(zusatz, W-M, yv); x.textAlign='left'; }
+    x.letterSpacing='0px';
+  };
+  const label = (x,t,yv,col) => { x.fillStyle=col||DIM; x.font=DS(700,15); x.fillText(t,M,yv); };
 
   /* ── Seite 1: das Profil ── */
   const s1 = neu(), x1 = s1.x;
@@ -2880,36 +2927,42 @@ function buildPass(name,blurb,a,anc,top,MAX){
   x1.textAlign='right'; x1.font = DS(400,17); x1.fillText(stamp, W-M, 70+16+40); x1.textAlign='left';
   x1.fillStyle = INK; x1.font = FS(62); putLines(x1, nameL, M, yName, 70);
   x1.fillStyle = MID; x1.font = DS(400,23); putLines(x1, blurbL, M, yBlurb, 34);
+  kopf(x1, 'DEIN PROFIL IM ÜBERBLICK', yLGraf, 'Radar und Duftpyramide');
   passRadar(x1, RAD_CX, yRadC, RAD_R, radarFromAnswers(a), radarFromFragrance(top[0].f), RAD_LBL);
   drawPyramide(x1, PYX, yRadC, PYBW, PYTW, PYH, kn.lagen);
   x1.fillStyle = DIM; x1.font = DS(400,16); x1.textAlign='center';
   x1.fillText('Fläche: dieses Profil · Linie: ' + fit(top[0].f.n, 2*RAD_R+60, DS(400,16)), RAD_CX, yCapt);
   x1.textAlign='left';
+
   /* Kernnoten: der Satz, mit dem man in die Parfuemerie gehen kann. */
-  rule(x1, yKL1-22);
-  label(x1, 'DER SATZ FÜR DIE BERATUNG', yKL1);
-  x1.fillStyle=CORAL; x1.font=DS(700,15); x1.fillText('FRAGEN SIE MICH NACH', M, yKN);
-  x1.fillStyle=INK; x1.font=DS(500,19); putLines(x1, treffL, M, yKN+26, 26);
-  x1.fillStyle=DIM; x1.font=DS(700,15); x1.fillText('DIESE BITTE NICHT', M+HALB+52, yKN);
-  x1.fillStyle = kn.meiden.length ? INK : DIM; x1.font=DS(500,19);
-  putLines(x1, meidL, M+HALB+52, yKN+26, 26);
-  const mw = (CW - 3*16)/4;
+  kopf(x1, 'FÜR DIE BERATUNG', yLKern);
+  x1.fillStyle=DIM; x1.font=DS(700,14);
+  x1.fillText('FRAGEN SIE MICH NACH', M, yKN);
+  x1.fillText('DIESE BITTE NICHT', M+HALB+52, yKN);
+  x1.fillStyle=INK; x1.font=DS(500,20); putLines(x1, treffL, M, yKN+28, 26);
+  x1.fillStyle = kn.meiden.length ? INK : DIM; x1.font=DS(500,20);
+  putLines(x1, meidL, M+HALB+52, yKN+28, 26);
+
+  kopf(x1, 'KENNWERTE', yLMet);
+  const mw = (CW - 3*20)/4;
   mets.forEach((mt,i)=>{
-    const mx = M + i*(mw+16);
-    x1.fillStyle=DIM;  x1.font=DS(700,15); x1.fillText(String(mt[0]).toUpperCase(), mx, yMet);
-    x1.fillStyle=INK;  x1.font=FS(25);     x1.fillText(fit(mt[1], mw, FS(25)), mx, yMet+32);
-    x1.fillStyle=LINE; x1.fillRect(mx, yMet+46, mw-12, 6);
-    x1.fillStyle=CORAL;x1.fillRect(mx, yMet+46, (mw-12)*(mt[2]/100), 6);
+    const mx = M + i*(mw+20);
+    x1.fillStyle=DIM;  x1.font=DS(700,14); x1.fillText(String(mt[0]).toUpperCase(), mx, yMet);
+    x1.fillStyle=INK;  x1.font=FS(26);     x1.fillText(fit(cap(mt[1]), mw, FS(26)), mx, yMet+34);
+    x1.fillStyle=LINE; x1.fillRect(mx, yMet+50, mw-14, 6);
+    x1.fillStyle=CORAL;x1.fillRect(mx, yMet+50, (mw-14)*(mt[2]/100), 6);
   });
-  rule(x1, yPickL-24);
-  label(x1, 'PASST DAZU · TOP ' + picks.length + ' AUS ' + F.length + ' DÜFTEN', yPickL);
-  const nmax = W - M - 118 - (M + 56);
+
+  kopf(x1, 'PASST DAZU', yPickL, picks.length + ' von ' + F.length + ' Düften');
+  const nmax = W - M - 128 - (M + 56);
   picks.forEach((r,i)=>{
-    const ty = yPick + i*76;
-    x1.fillStyle=CORAL; x1.font=MO(21); x1.fillText(String(i+1).padStart(2,'0'), M, ty);
-    x1.fillStyle=INK;   x1.font=FS(28); x1.fillText(fit(r.f.n, nmax, FS(28)), M+56, ty);
-    x1.fillStyle=DIM;   x1.font=DS(500,16);
-    x1.fillText(fit(String(r.f.h).toUpperCase()+'  ·  '+r.f.notes, nmax, DS(500,16)), M+56, ty+23);
+    const ty = yPick + i*78;
+    if(i) rule(x1, ty-30);
+    x1.fillStyle=DIM;  x1.font=MO(19); x1.fillText(String(i+1).padStart(2,'0'), M, ty);
+    x1.fillStyle=INK;  x1.font=FS(28); x1.fillText(fit(r.f.n, nmax, FS(28)), M+56, ty);
+    x1.fillStyle=MID;  x1.font=DS(500,16);
+    const kurz = String(r.f.notes).split(',').slice(0,4).join(',').trim();
+    x1.fillText(fit(String(r.f.h).toUpperCase()+'   '+kurz, nmax, DS(500,16)), M+56, ty+24);
     x1.fillStyle=CORAL; x1.font=MO(24); x1.textAlign='right';
     x1.fillText(pctOf(r.s,MAX)+'%', W-M, ty); x1.textAlign='left';
   });
@@ -2922,14 +2975,12 @@ function buildPass(name,blurb,a,anc,top,MAX){
   x2.fillText('R Ü C K S E I T E', M, 70+16+40);
   x2.textAlign='right'; x2.font=DS(600,19); x2.fillStyle=INK;
   x2.fillText(fit(name, CW-260, DS(600,19)), W-M, 70+16+40); x2.textAlign='left';
-  label(x2, 'FÜR DIE BERATUNG', yB2-14);
-  let by = yB2 + 18; x2.font = DS(400,20);
+  kopf(x2, 'WAS DIESER MENSCH SUCHT', yLBer, 'für das Beratungsgespräch');
+  let by = yB2; x2.font = DS(400,20);
   beratL.forEach(l=>{ x2.fillStyle=INK; putLines(x2, l, M, by, 28); by += l.length*28 + 10; });
-  rule(x2, yKL-22);
-  label(x2, 'DUFTLANDKARTE · WO DIE VORSCHLÄGE LIEGEN', yKL);
+  kopf(x2, 'DUFTLANDKARTE', yKL, 'wo die fünf Vorschläge liegen');
   drawKarte(x2, KX, yKarte, KW, KH, a, picks);
-  rule(x2, yDL-22);
-  label(x2, 'STECKBRIEF · ALLE ' + frageZahl() + ' ANTWORTEN', yDL);
+  kopf(x2, 'STECKBRIEF', yDL, 'alle ' + frageZahl() + ' Antworten');
   colsF.forEach((col,ci)=>{
     let cy = yDos; const cx0 = M + ci*(COLW+52);
     col.forEach(f=>{
@@ -2939,8 +2990,7 @@ function buildPass(name,blurb,a,anc,top,MAX){
       cy += fieldH(f);
     });
   });
-  rule(x2, yFL-20);
-  label(x2, 'WORAUS DIE AUSWAHL BESTEHT', yFL);
+  kopf(x2, 'WORAUS DIE AUSWAHL BESTEHT', yFL, 'Duftfamilien der zehn Treffer');
   /* Duftorgel: gefuellte Flakons statt eines Balkens. */
   const spitze = famZ[famS[0]]/famGes;
   famS.slice(0,7).forEach(function(k,i){
@@ -2971,8 +3021,25 @@ function buildPass(name,blurb,a,anc,top,MAX){
   x2.fillStyle=DIM; x2.font=DS(400,16);
   x2.fillText('Sillage · Seite 2 von 2 · erstellt am ' + stamp, M, H-44);
 
-  return {vorn: s1.cv.toDataURL('image/png'), hinten: s2.cv.toDataURL('image/png')};
+  /* Beide Seiten zusaetzlich nebeneinander auf einem Blatt. Die Zwischenablage
+     nimmt nur ein Bild auf - wer kopiert, will aber die ganze Karte. */
+  const LUECKE = 48;
+  const bd = document.createElement('canvas');
+  bd.width = 2*W + 3*LUECKE; bd.height = H + 2*LUECKE;
+  const xb = bd.getContext('2d');
+  xb.fillStyle = '#E8E3D8'; xb.fillRect(0,0,bd.width,bd.height);
+  xb.drawImage(s1.cv, LUECKE, LUECKE);
+  xb.drawImage(s2.cv, 2*LUECKE + W, LUECKE);
+  xb.strokeStyle = LINE; xb.lineWidth = 2;
+  xb.strokeRect(LUECKE, LUECKE, W, H);
+  xb.strokeRect(2*LUECKE + W, LUECKE, W, H);
+
+  return {vorn: s1.cv.toDataURL('image/png'),
+          hinten: s2.cv.toDataURL('image/png'),
+          beide: bd.toDataURL('image/png')};
 }
+/* Beide Seiten als ein Bild - fuer die Zwischenablage. */
+let passBeide = '';
 async function renderPass(name,blurb,a,anc,top,MAX){
   try{ if(document.fonts && document.fonts.ready) await document.fonts.ready; }catch(e){}
   const v = document.getElementById('passvorn'), h = document.getElementById('passhinten');
@@ -2981,6 +3048,7 @@ async function renderPass(name,blurb,a,anc,top,MAX){
     const bilder = buildPass(name,blurb,a,anc,top,MAX);
     v.src = bilder.vorn;
     h.src = bilder.hinten;
+    passBeide = bilder.beide;
   }catch(e){
     const w = v.closest('.passwrap');
     if(w) w.innerHTML = '<p>Der Duftpass lässt sich in dieser Ansicht nicht erzeugen. Der Steckbrief oben enthält dieselben Angaben als Text.</p>';
@@ -3314,7 +3382,7 @@ function renderResult(){
         <figure><img id="passhinten" alt="Duftpass Rückseite: ${esc(name)}"><figcaption>Rückseite · Beratung</figcaption></figure>
       </div>
       <p>Beide Seiten zusammen enthalten alle ${frageZahl()} Antworten, Archetyp, Kennwerte und Empfehlungen — zum Vorzeigen in der Parfümerie. Rechtsklick oder langes Antippen speichert es. Einen Download startet die Seite bewusst nicht selbst, der wird in eingebetteten Ansichten blockiert.</p>
-      <button class="ghost" id="passcopy">Bild in die Zwischenablage</button>
+      <button class="ghost" id="passcopy">Beide Seiten in die Zwischenablage</button>
     </div>
 
     <details class="fold" style="margin-top:1.6rem">
@@ -3355,13 +3423,16 @@ function renderResult(){
   renderPass(name, blurb, a, anc, chart, MAX);
   const pc = document.getElementById('passcopy');
   if(pc) pc.onclick = async ()=>{
-    const img = document.getElementById('passvorn');
+    /* Beide Seiten als ein Bild. Die Zwischenablage haelt nur ein Bild -
+       zwei nacheinander zu schreiben ueberschreibt das erste. */
+    const quelle = passBeide || (document.getElementById('passvorn')||{}).src;
+    if(!quelle){ pc.textContent = 'Der Pass ist noch nicht fertig'; return; }
     try{
-      const blob = await (await fetch(document.getElementById('passvorn').src)).blob();
+      const blob = await (await fetch(quelle)).blob();
       await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
-      pc.textContent = 'Kopiert ✓';
+      pc.textContent = 'Beide Seiten kopiert ✓';
     }catch(err){ pc.textContent = 'Geht hier nicht — bitte per Rechtsklick sichern'; }
-    setTimeout(()=>{ pc.textContent = 'Bild in die Zwischenablage'; }, 2800);
+    setTimeout(()=>{ pc.textContent = 'Beide Seiten in die Zwischenablage'; }, 2800);
   };
   const tl = document.getElementById('teilen');
   if(tl) tl.onclick = async ()=>{
@@ -3385,30 +3456,11 @@ function renderResult(){
     state.step=-1; state.a={}; state.fb={}; state.geteilt = false;
     try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){ location.hash=''; }
     try{ localStorage.removeItem(STORE); }catch(e){}
-    wardrobeUsed.clear(); /* Kopfzeile bekommt beim Scrollen einen Schatten. */
-window.addEventListener('scroll', function(){
-  const mh = document.querySelector('.masthead');
-  if(mh) mh.classList.toggle('gescrollt', window.scrollY > 12);
-}, {passive:true});
-
-/* Prozentwerte im Ergebnis zaehlen hoch statt einfach dazustehen. */
-function zaehleHoch(){
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  document.querySelectorAll('.chart .pc, .score b').forEach(function(el){
-    const ziel = parseInt(el.textContent, 10);
-    if(isNaN(ziel)) return;
-    let n = Math.max(0, ziel - 18), t0 = null;
-    function tick(t){
-      if(!t0) t0 = t;
-      const f = Math.min(1, (t - t0) / 700);
-      el.textContent = Math.round(n + (ziel - n) * f) + '%';
-      if(f < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  });
-}
-
-renderIntro(); window.scrollTo(0,0);
+    /* Hier stand versehentlich eine zweite Kopie des Scroll-Zuhoerers und
+       von zaehleHoch(). Bei jedem "Von vorn beginnen" kam ein weiterer
+       Scroll-Zuhoerer dazu. Beides gibt es genau einmal, ganz unten. */
+    wardrobeUsed.clear();
+    renderIntro(); window.scrollTo(0,0);
   };
   wardrobeUsed.clear();
   /* Der Flakon sprüht einmal, wenn das Ergebnis erscheint. */
@@ -3537,6 +3589,21 @@ function zaehleHoch(){
     requestAnimationFrame(tick);
   });
 }
+
+/* Die Fortschrittsleiste muss genau unter der Kopfzeile einrasten. Eine feste
+   Zahl stimmt nie: Die Kopfhoehe haengt an Schriftgroesse und Bildschirmbreite.
+   Steht sie zu tief, rutscht die Leiste hinter den Kopf - dann sieht es aus,
+   als wuerde die Ueberschrift beim Scrollen mitgezogen. */
+function kopfHoehe(){
+  const mh = document.querySelector('.masthead');
+  if(!mh) return;
+  const h = Math.round(mh.getBoundingClientRect().height);
+  if(h > 0) document.documentElement.style.setProperty('--kopfh', h + 'px');
+}
+window.addEventListener('resize', kopfHoehe);
+window.addEventListener('load', kopfHoehe);
+kopfHoehe();
+setTimeout(kopfHoehe, 600);   /* nachmessen, wenn die Schriften geladen sind */
 
 /* Wird ein Profil-Link in die Adresszeile einer bereits geoeffneten Seite
    eingefuegt, laedt der Browser nicht neu - er springt nur zum Anker.
