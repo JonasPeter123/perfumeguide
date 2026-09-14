@@ -344,6 +344,13 @@ h1.q em{font-style:normal;color:var(--acc);transition:color .85s ease}
 .passwrap img{max-width:420px;width:100%;height:auto;border-radius:12px;box-shadow:var(--shadow);display:block;margin:0 auto 1rem}
 .passwrap p{font-size:.86rem;color:var(--ink-dim);margin:0 0 .9rem;max-width:46ch;margin-inline:auto}
 
+/* Hinweis zum Preisrahmen: Ehrlichkeit statt Kaschieren */
+.preisnote{background:var(--paper-2);border-radius:var(--r);padding:1.1rem 1.3rem;margin:0 0 1.4rem;max-width:66ch;border-left:4px solid var(--teal)}
+.preisnote b{display:block;font-size:.95rem;margin-bottom:.35rem}
+.preisnote p{margin:0 0 .6rem;font-size:.92rem;color:var(--ink-mid);line-height:1.55}
+.preisnote p:last-child{margin-bottom:0}
+.preisnote p b{display:inline;font-size:inherit;color:var(--ink)}
+
 /* Hinweis bei einem Profil, das aus einem Link kommt */
 .geteilt{background:var(--paper-2);border-radius:var(--r);padding:.9rem 1.15rem;margin:0 0 1.4rem;max-width:60ch;border-left:4px solid var(--teal)}
 .geteilt b{display:block;font-size:.94rem;margin-bottom:.15rem}
@@ -1745,6 +1752,48 @@ const F = D.filter(function(a){
   _gesehen[k] = 1; return true;
 }).map(a=>({n:a[0],h:a[1],fam:a[2],mood:a[3].slice(),sil:a[4],sweet:a[5],bold:a[6],seas:a[7],occ:a[8],vibe:a[9],eff:a[10],g:a[11],p:a[12],tags:a[13],notes:a[14]}));
 
+/* ── Hausart ──────────────────────────────────────────────────
+   'd' = breit verfuegbares Designer- und Kaufhaushaus
+   'n' = Nische, Spezialhandel, Manufaktur
+   'a' = arabische Haeuser im unteren Preisband
+
+   Bewusst am Haus gepflegt, nicht am einzelnen Duft: 106 Zeilen statt 532,
+   und eine Korrektur wirkt sofort ueberall. Das Kriterium ist **nicht
+   Qualitaet**, sondern Verfuegbarkeit — die Frage lautet "kennt jemand mit
+   Sammlung das schon", nicht "ist das gut". Bel Ami und Dior Homme Intense
+   stehen deshalb unter 'd' und sind trotzdem Referenzduefte.
+   Exklusivlinien grosser Haeuser zaehlen als Nische, weil sie es im Handel
+   auch sind (Les Exclusifs, La Collection Privee, Armani Prive, Hermessence).
+   Unbekannte Haeuser laufen als 'n', weil die Datenbank so kuratiert ist. */
+const HAUSART = {
+  'Acqua di Parma':'d','Aesop':'n','Al Haramain':'a','Amouage':'n','Annick Goutal':'n',
+  'Armani Privé':'n','Atelier Cologne':'n','Azzaro':'d','BDK Parfums':'n','Balmain':'d',
+  'Bvlgari':'d','Byredo':'n','Cacharel':'d','Calvin Klein':'d','Carolina Herrera':'d',
+  'Caron':'n','Carthusia':'n','Cartier':'d','Casamorati / Xerjoff':'n','Chanel':'d',
+  'Chanel Les Exclusifs':'n','Chloé':'d','Clinique':'d','Clive Christian':'n',
+  'Comme des Garçons':'n','Creed':'n','Davidoff':'d','Dior':'d',
+  'Dior La Collection Privée':'n','Diptyque':'n','Dolce & Gabbana':'d','Donna Karan':'d',
+  'Escentric Molecules':'n','Estée Lauder':'d','Etro':'n','Ex Nihilo':'n',
+  'Frédéric Malle':'n','Geoffrey Beene':'d','Giorgio Armani':'d','Givenchy':'d',
+  'Glossier':'d','Goldfield & Banks':'n','Grès':'n','Gucci':'d','Guerlain':'d',
+  'Heeley':'n','Hermessence':'n','Hermès':'d','Histoires de Parfums':'n','Houbigant':'n',
+  'Hugo Boss':'d','Initio':'n','Issey Miyake':'d','Jean Paul Gaultier':'d',
+  'Jo Malone London':'d','Juliette Has a Gun':'n','Kenzo':'d','Kilian Paris':'n',
+  "L'Artisan Parfumeur":'n',"L'Occitane":'d','Lalique':'n','Lancôme':'d','Lanvin':'d',
+  'Lattafa':'a','Le Labo':'n','Louis Vuitton':'d','M. Micallef':'n','Maison Crivelli':'n',
+  'Maison Francis Kurkdjian':'n','Maison Margiela Replica':'d','Mancera':'n',
+  'Marc Jacobs':'d','Marc-Antoine Barrois':'n','Matière Première':'n','Memo Paris':'n',
+  'Molinard':'n','Montale':'n','Montblanc':'d','Mugler':'d','Narciso Rodriguez':'d',
+  'Nasomatto':'n','Nina Ricci':'d','Nishane':'n','Ormonde Jayne':'n','Orto Parisi':'n',
+  'Paco Rabanne':'d','Parfum d\'Empire':'n','Parfums de Marly':'n','Parfums de Nicolaï':'n',
+  "Penhaligon's":'n','Prada':'d','Profumum Roma':'n','Rasasi':'a','Robert Piguet':'n',
+  'Rochas':'d','Roja Parfums':'n','Sana Jardin':'n','Serge Lutens':'n','Sisley':'d',
+  'Stéphane Humbert Lucas 777':'n','Swiss Arabian':'a','Tiziana Terenzi':'n','Tom Ford':'d',
+  'Van Cleef & Arpels':'d','Versace':'d','Viktor & Rolf':'d','Vilhelm Parfumerie':'n',
+  'Xerjoff':'n','Yves Saint Laurent':'d','Zarkoperfume':'n'
+};
+F.forEach(function(f){ f.art = HAUSART[f.h] || 'n'; });
+
 /* Vier Szenen werden aus Familien und Noten abgeleitet, damit sie nicht
    in 234 Zeilen von Hand gepflegt werden müssen. */
 F.forEach(f=>{
@@ -1933,6 +1982,25 @@ function score(f,a,anc,ctx){
   other += f.p<=bud ? 6 : -3;          /* Ausschluss passiert in rank(), nicht hier */
   if(a.exp==='einsteiger'){ other += f.bold>=4.5 ? -7 : (f.bold<=3 ? 3 : 0); }
   if(a.exp==='sammler'){ other += f.bold>=4 ? 5 : 0; other += (f.p<=1 && f.bold<=2) ? -5 : 0; }
+  /* Wer eine Sammlung hat, kennt die grossen Haeuser laengst. Bis hierhin
+     blieb die Erfahrungsfrage fuer die Haeuserauswahl folgenlos: gemessen
+     bekam ein Sammler denselben Designeranteil wie ein Einsteiger. */
+  other += (function(){
+    if(a.exp === 'sammler'){
+      if(f.art==='d') return -5;    /* -9 war zu hart: Sammler bekamen 0 % Designer.
+                                       Ziel ist selten, nicht ausgeschlossen — sonst
+                                       verschwinden Klassiker wie Habit Rouge ganz. */
+      if(f.art==='a') return -3;
+      return 4;
+    }
+    if(a.exp === 'fortgeschritten'){
+      if(f.art==='d') return -4;
+      if(f.art==='a') return -1;
+      return 2;
+    }
+    return 0;   /* Einsteiger: neutral. Ein Bonus auf Designer hat den Anteil
+                   auf 82 % getrieben - das Preisband entscheidet schon genug. */
+  })();
   if(ctx){
     if(ctx.negFam.length){                       /* was du ausdrücklich nicht mochtest */
       other -= inter(ctx.negFam,f.fam).length/ctx.negFam.length * 10;
@@ -1951,7 +2019,8 @@ function maxScore(a,anc){
   if(a.notes && a.notes.length) m += 16;
   if(anc) m += 12;
   if(a.exp==='einsteiger') m += 3;
-  if(a.exp==='sammler') m += 5;
+  if(a.exp==='sammler') m += 5 + 4;
+  if(a.exp==='fortgeschritten') m += 2;
   return m;
 }
 
@@ -1995,16 +2064,39 @@ function rank(a){
   return {list: pool.map(f=>score(f,a,anc,ctx)).sort((x,y)=>y.s-x.s), MAX, anc};
 }
 
-function diversify(list, limit, maxPerHouse, skip){
-  const seen = {}, out = [], used = skip||new Set();
-  for(const r of list){
-    if(used.has(r.f.n)) continue;
-    const c = seen[r.f.h]||0;
-    if(c >= maxPerHouse) continue;
-    seen[r.f.h] = c+1; out.push(r);
-    if(out.length===limit) break;
-  }
-  return out;
+/* `maxD` begrenzt breit verfuegbare Designerduefte in den ersten fuenf
+   Plaetzen - das sind die, die im Ergebnis sichtbar sind. Ab Platz sechs
+   greift die Grenze nicht mehr, damit die Liste nicht kuenstlich ausduennt.
+   Wird nur gesetzt, wenn jemand Erfahrung angegeben hat; ein Einsteiger soll
+   Bekanntes ruhig vorne sehen. Zweiter Durchgang ohne Grenze, falls sonst
+   nicht genug zusammenkommt. */
+function diversify(list, limit, maxPerHouse, skip, maxD){
+  const nimm = function(grenze){
+    const seen = {}, out = [], used = skip||new Set();
+    let d = 0;
+    for(const r of list){
+      if(used.has(r.f.n)) continue;
+      const c = seen[r.f.h]||0;
+      if(c >= maxPerHouse) continue;
+      if(grenze != null && out.length < 5 && r.f.art === 'd'){
+        if(d >= grenze) continue;
+        d++;
+      }
+      seen[r.f.h] = c+1; out.push(r);
+      if(out.length===limit) break;
+    }
+    return out;
+  };
+  const eng = nimm(maxD);
+  if(eng.length >= limit || maxD == null) return eng;
+  /* Reicht die begrenzte Auswahl nicht, wird hinten aufgefuellt statt die
+     Grenze fallen zu lassen: Die ersten fuenf Plaetze bleiben so, wie sie
+     gedacht sind, und die Liste ist trotzdem vollstaendig. */
+  const drin = new Set(eng.map(r=>r.f.n));
+  nimm(null).forEach(function(r){
+    if(eng.length < limit && !drin.has(r.f.n)){ drin.add(r.f.n); eng.push(r); }
+  });
+  return eng;
 }
 
 function reasons(r,a){
@@ -3170,7 +3262,10 @@ function renderResult(){
   const fbCount = Object.keys(state.fb).length;
   const rk = rank(a), list = rk.list, MAX = rk.MAX, anc = rk.anc;
 
-  const chart = diversify(list, 10, 2);
+  /* Ab "fortgeschritten" hoechstens zwei breit verfuegbare Designerduefte
+     unter den fuenf sichtbaren Treffern. */
+  const dGrenze = a.exp === 'einsteiger' ? null : 2;
+  const chart = diversify(list, 10, 2, null, dGrenze);
   const used = new Set(chart.map(r=>r.f.n));
   const wilds = diversify(list.filter(r=>r.f.bold >= Math.max(3.5, BOLDV[a.bold])), 2, 1, used);
   const wildsFinal = wilds.length ? wilds : diversify(list, 2, 1, used);
@@ -3319,6 +3414,11 @@ function renderResult(){
 
     <div class="sec-head"><h2>Was dazu passt</h2><hr><span>${fbCount?`neu gerechnet mit ${fbCount} Bewertungen`:`fünf Vorschläge aus ${F.length} Düften`}</span></div>
     <p class="caveat short">Fünf Vorschläge, <b>keine Rangliste</b>. Die Prozentwerte liegen dicht beieinander — welcher davon deiner ist, entscheidet die Haut, nicht die Zahl. Tippen öffnet die Begründung. Gerechnet gegen ${F.length} kuratierte Düfte aus ${HOUSES} Häusern; der Markt ist fünfstellig.</p>
+    ${+a.budget === 1 ? `<div class="preisnote">
+      <b>Ein Wort zum Preisrahmen</b>
+      <p>Unter 100 € ist die Nische dünn besetzt — das ist keine Lücke in dieser Auswahl, sondern eine Eigenschaft des Marktes. Deshalb stehen hier bewusst auch Klassiker der großen Häuser. Sie sind nicht die zweite Wahl: Viele davon gehören zu den bestgemachten Düften überhaupt, sie sind nur überall zu haben.</p>
+      <p>Wenn dich die Nische interessiert, ist der bessere Weg mit diesem Budget: <b>keinen Flakon kaufen, sondern fünf Abfüllungen.</b> Für den Preis eines Designerflakons bekommst du fünf bis sieben Proben aus der Nische und weißt danach erheblich genauer, was du suchst. Jede gute Parfümerie stellt dir so etwas zusammen.</p>
+    </div>` : ''}
     <ul class="chart" id="chart">
       ${chart.slice(0,5).map((r,i)=>zeile(r,i,false)).join('')}
     </ul>
