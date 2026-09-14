@@ -2066,14 +2066,20 @@ function rank(a){
   const grund = f => inter(a.nogo,f.tags).length>0 || skip.has(f.n);
   const blocked = f => grund(f) || ueberBudget(f) || codeRaus(f) || mutRaus(f);
   let pool = F.filter(f=>!blocked(f));
-  /* Notfall-Lockerung in dieser Reihenfolge: zuerst faellt die Wagemut-Bedingung,
-     erst danach wird das Budget angetastet. Das Budget ist das Versprechen,
-     das am wenigsten gebrochen werden darf. */
-  if(pool.length < 25) pool = F.filter(f=>!grund(f) && !ueberBudget(f) && !codeRaus(f));
-  if(pool.length < 25) pool = F.filter(f=>!grund(f) && !codeRaus(f) && (bud>=4 || f.p <= bud+1));
-  if(pool.length < 15) pool = F.filter(f=>!skip.has(f.n));
+  /* Notfall-Lockerung, in dieser Reihenfolge. Die Regel dahinter: Was der
+     Nutzer ausdruecklich gesagt hat, faellt zuletzt. Zuerst die Wagemut-
+     Bedingung (abgeleitet), dann das Budget (gesagt, aber verhandelbar),
+     und die ausdruecklichen No-Gos gar nicht — ein ausgeschlossener Stoff
+     darf nie zurueckkommen, das ist das staerkste Versprechen im ganzen
+     Fragebogen. Frueher fiel auf der letzten Stufe alles weg, No-Gos
+     eingeschlossen; das war die falsche Reihenfolge. */
+  let lockerung = 0;
+  if(pool.length < 25){ pool = F.filter(f=>!grund(f) && !ueberBudget(f) && !codeRaus(f)); lockerung = 1; }
+  if(pool.length < 25){ pool = F.filter(f=>!grund(f) && !codeRaus(f) && (bud>=4 || f.p <= bud+1)); lockerung = 2; }
+  if(pool.length < 15){ pool = F.filter(f=>!grund(f) && !codeRaus(f)); lockerung = 3; }
+  if(pool.length < 8){  pool = F.filter(f=>!grund(f)); lockerung = 4; }
   const MAX = maxScore(a,anc);
-  return {list: pool.map(f=>score(f,a,anc,ctx)).sort((x,y)=>y.s-x.s), MAX, anc};
+  return {list: pool.map(f=>score(f,a,anc,ctx)).sort((x,y)=>y.s-x.s), MAX, anc, lockerung};
 }
 
 /* `maxD` begrenzt breit verfuegbare Designerduefte in den ersten fuenf
@@ -3274,6 +3280,10 @@ function renderResult(){
   state.fb = state.fb||{};
   const fbCount = Object.keys(state.fb).length;
   const rk = rank(a), list = rk.list, MAX = rk.MAX, anc = rk.anc;
+  /* Musste das Budget gelockert werden, wird das gesagt statt verschwiegen. */
+  const budGelockert = rk.lockerung >= 2 && +a.budget < 4;
+  const ueberBudgetZahl = budGelockert
+    ? diversify(list,10,2,null,a.exp==='einsteiger'?3:2).filter(r=>r.f.p > +a.budget).length : 0;
 
   /* Ab "fortgeschritten" hoechstens zwei breit verfuegbare Designerduefte
      unter den fuenf sichtbaren Treffern. */
@@ -3427,6 +3437,11 @@ function renderResult(){
 
     <div class="sec-head"><h2>Was dazu passt</h2><hr><span>${fbCount?`neu gerechnet mit ${fbCount} Bewertungen`:`fünf Vorschläge aus ${F.length} Düften`}</span></div>
     <p class="caveat short">Fünf Vorschläge, <b>keine Rangliste</b>. Die Prozentwerte liegen dicht beieinander — welcher davon deiner ist, entscheidet die Haut, nicht die Zahl. Tippen öffnet die Begründung. Gerechnet gegen ${F.length} kuratierte Düfte aus ${HOUSES} Häusern; der Markt ist fünfstellig.</p>
+    ${ueberBudgetZahl ? `<div class="preisnote">
+      <b>Deine Angaben lassen wenig übrig</b>
+      <p>Mit dieser Kombination aus Ausschlüssen, Duftcode und Preisrahmen bleiben zu wenige Düfte für eine sinnvolle Liste. Damit überhaupt etwas dasteht, ${ueberBudgetZahl === 1 ? 'liegt ein Treffer' : 'liegen '+ueberBudgetZahl+' Treffer'} über deinem Preisrahmen — in der aufgeklappten Begründung steht bei ${ueberBudgetZahl === 1 ? 'ihm' : 'ihnen'} „über Budget". Deine Ausschlüsse bleiben unangetastet.</p>
+      <p>Wenn du im Rahmen bleiben willst: ein No-Go weniger setzen oder den Duftcode weiter fassen.</p>
+    </div>` : ''}
     ${+a.budget === 1 ? `<div class="preisnote">
       <b>Ein Wort zum Preisrahmen</b>
       <p>Unter 100 € ist die Nische dünn besetzt — das ist keine Lücke in dieser Auswahl, sondern eine Eigenschaft des Marktes. Deshalb stehen hier bewusst auch Klassiker der großen Häuser. Sie sind nicht die zweite Wahl: Viele davon gehören zu den bestgemachten Düften überhaupt, sie sind nur überall zu haben.</p>
