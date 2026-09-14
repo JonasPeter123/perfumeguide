@@ -888,7 +888,8 @@ const Q = [
     ['patchouli','Patschuli','Erdig, dunkel, 70er.'],
     ['rose','Rose','Auch in moderner Lesart.'],
     ['aldehyde','Aldehydisch','Der seifig-metallische N°5-Effekt.'],
-    ['aquatisch','Aquatisch','Calone, Meeresbrise, Duschgel-Frische.'],
+    ['aquatisch','Aquatisch','Calone, Wassernoten, Duschgel-Frische.'],
+   ['maritim','Maritim','Meersalz, Algen, Seetang, Strand.'],
    ['honig','Honig','Klebrig-blumige Süße, wachsig.']
   ]},
 { id:'sil', kind:'single', cols:true, acc:'#46708C', kap:2,
@@ -1816,6 +1817,20 @@ F.forEach(f=>{
      man konnte nur "zu suess" ankreuzen und verlor damit auch die Vanille.
      Der Ausschluss arbeitet auf `tags`, deshalb wird der Tag hier gesetzt. */
   if(re('Honig|Bienenwachs|Met\\b') && f.tags.indexOf('honig') < 0) f.tags.push('honig');
+  /* Maritim ist nicht dasselbe wie aquatisch. Aus dem Forum: Jemand mag
+     saubere Wassernoten (das Calone-artige "Meeresnoten"), findet Salz,
+     Algen und Seetang aber furchtbar. Im Katalog sind das zwei getrennte
+     Vokabulare - "Meeresnoten" auf der einen Seite, "Meersalz / Algen /
+     Kuestenmoos / Treibholz" auf der anderen. Ambergris gehoert
+     ausdruecklich NICHT dazu: Die Note ist warm und hautnah, nicht salzig,
+     und steckt in Dueften wie Baccarat Rouge 540, die niemand maritim nennt. */
+  if(re('Meersalz|Salznote|salzig|Algen|Seetang|Kelp|Küstenmoos|Treibholz|Driftholz|Muschel|Gischt')
+     && f.tags.indexOf('maritim') < 0) f.tags.push('maritim');
+  /* Dabei aufgefallen: 9 der 30 Duefte der Familie Aquatisch trugen den Tag
+     `aquatisch` nicht - der Ausschluss lief bei ihnen also ins Leere. Wer
+     "Aquatisch" abgewaehlt hatte, bekam trotzdem Costa Azzurra oder Dune.
+     Der Tag wird jetzt aus der Familie mitgezogen, statt von Hand gepflegt. */
+  if(fam('aquatisch') && f.tags.indexOf('aquatisch') < 0) f.tags.push('aquatisch');
 });
 const HOUSE_LIST = [...new Set(F.map(f=>f.h))];
 const HOUSES = HOUSE_LIST.length;
@@ -2111,7 +2126,16 @@ function diversify(list, limit, maxPerHouse, skip, maxD){
      Grenze fallen zu lassen: Die ersten fuenf Plaetze bleiben so, wie sie
      gedacht sind, und die Liste ist trotzdem vollstaendig. */
   const drin = new Set(eng.map(r=>r.f.n));
-  nimm(null).forEach(function(r){
+  const frei = nimm(null);
+  /* Erst auffuellen, ohne die Grenze in den ersten fuenf zu brechen ... */
+  frei.forEach(function(r){
+    if(eng.length >= limit || drin.has(r.f.n)) return;
+    if(eng.length < 5 && r.f.art === 'd'
+       && eng.filter(x=>x.f.art==='d').length >= maxD) return;
+    drin.add(r.f.n); eng.push(r);
+  });
+  /* ... und nur wenn es dann immer noch nicht reicht, ohne Ruecksicht. */
+  frei.forEach(function(r){
     if(eng.length < limit && !drin.has(r.f.n)){ drin.add(r.f.n); eng.push(r); }
   });
   return eng;
@@ -2532,6 +2556,7 @@ const CONFLICTS = [
   {no:'patchouli',q:'fam',   v:'chypre',    txt:'die Familie Chypre, die auf Patschuli aufbaut'},
   {no:'pudrig',   q:'mood',  v:'iris',      txt:'die Szene Puderige Iris und Wildleder'},
   {no:'honig',    q:'mood',  v:'honig',     txt:'die Szene Honig und Tabak'},
+  {no:'maritim',  q:'mood',  v:'ozean',     txt:'die Szene Kalte Gischt und Wind'},
   {no:'rose',     q:'mood',  v:'bluete',    txt:'die Szene Blütenbaum im Frühling'}
 ];
 function findConflicts(){
