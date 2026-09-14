@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sillage — Duftprofil statt Bestenliste</title>
+<title>Sillage — Dein Duftpass statt Ratespiel</title>
 <meta name="description" content="Ein Fragebogen, der aus Anlässen, Bildern und No-Gos ein persönliches Duftprofil rechnet — mit Kernnoten, Duftpyramide und einem Duftpass zum Mitnehmen in die Parfümerie. 532 kuratierte Düfte aus 110 Häusern.">
 <meta name="author" content="Jonas Peter">
 <meta name="theme-color" content="#F5F2EA">
@@ -15,15 +15,15 @@
 <meta property="og:site_name" content="Sillage">
 <meta property="og:locale" content="de_DE">
 <meta property="og:url" content="https://jonaspeter123.github.io/perfumeguide/">
-<meta property="og:title" content="Sillage — Duftprofil statt Bestenliste">
-<meta property="og:description" content="Sechzehn Fragen, ein persönliches Duftprofil: Kernnoten nach Kopf, Herz und Basis, fünf begründete Vorschläge und ein Duftpass für die Beratung.">
+<meta property="og:title" content="Sillage — Dein Duftpass statt Ratespiel">
+<meta property="og:description" content="Sechzehn Fragen ergeben ein persönliches Profil: welche Noten du suchst, was draußen bleibt — und eine Karte, die du in die Parfümerie mitnimmst.">
 <meta property="og:image" content="https://jonaspeter123.github.io/perfumeguide/vorschau.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Sillage — Duftprofil statt Bestenliste">
+<meta property="og:image:alt" content="Ein Beispiel-Duftpass: Archetyp, Radar, Duftpyramide, Kernnoten und fünf Treffer">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Sillage — Duftprofil statt Bestenliste">
-<meta name="twitter:description" content="Sechzehn Fragen, ein persönliches Duftprofil — mit Duftpass für die Parfümerie.">
+<meta name="twitter:title" content="Sillage — Dein Duftpass statt Ratespiel">
+<meta name="twitter:description" content="Sechzehn Fragen ergeben ein persönliches Profil — mit einer Karte, die du in die Parfümerie mitnimmst.">
 <meta name="twitter:image" content="https://jonaspeter123.github.io/perfumeguide/vorschau.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -3537,6 +3537,21 @@ function zaehleHoch(){
     requestAnimationFrame(tick);
   });
 }
+
+/* Wird ein Profil-Link in die Adresszeile einer bereits geoeffneten Seite
+   eingefuegt, laedt der Browser nicht neu - er springt nur zum Anker.
+   Ohne diesen Zuhoerer passiert dann gar nichts und die Seite wirkt kaputt.
+   Gleiches gilt fuer den Zurueck-Knopf des Browsers. */
+window.addEventListener('hashchange', function(){
+  const g = geteiltesProfil();
+  if(g){
+    state.a = g; state.fb = {}; state.geteilt = true;
+    renderResult(); window.scrollTo(0,0);
+  } else if(state.geteilt){
+    state.geteilt = false; state.step = -1; state.a = {}; state.fb = {};
+    renderIntro(); window.scrollTo(0,0);
+  }
+});
 
 /* Kommt ein geteiltes Profil in der Adresse an, wird es direkt
    ausgewertet - ohne Fragebogen und ohne Zeremonie. */
