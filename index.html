@@ -1068,6 +1068,7 @@ Q.push(
     ['Eichenmoos','Eichenmoos','Waldboden, das Rückgrat der Chypres.'],
     ['Oud','Oud','Agarholz: medizinisch, dunkel, polarisierend.'],
     ['Kardamom','Kardamom','Grün-würzig, elegant.'],
+    ['Pfeffer','Pfeffer','Scharf-frisch, prickelnd im Kopf.'],
     ['Tabak','Tabak','Getrocknetes Blatt, honigsüß.'],
     ['Safran','Safran','Ledrig-würzig, leicht metallisch.'],
     ['Orangenblüte','Orangenblüte','Sonnig, weich, leicht seifig.'],
@@ -1080,12 +1081,12 @@ Q.push(
     ['Kakao','Kakao','Dunkle Schokolade, trocken.'],
     ['Kokos','Kokos','Sonnencreme und Strand.'],
     ['Pfirsich','Pfirsich','Samtig, saftig, sommerlich.'],
-    ['Moschus','Moschus','Warm und hautnah. Riecht nach sauberer Haut, nicht nach Parfum — deshalb sagen Leute bei Moschusdüften oft „das riechst du gar nicht, das bist du".'],
-    ['Weißer Moschus','Weißer Moschus','Die saubere Variante: frische Wäsche, Seife, weiches Handtuch.'],
-    ['Zitrusnoten','Zitrusnoten','Sammelbegriff für Zitrone, Bergamotte, Limette, Grapefruit, Mandarine. Spritzig und hell.'],
-    ['Grüne Noten','Grüne Noten','Sammelbegriff für zerriebenes Blatt, Gras, Stängel. Wie frisch gemähter Rasen oder ein geknickter Zweig.'],
-    ['Kräuter','Kräuter','Sammelbegriff für Salbei, Rosmarin, Thymian, Minze, Lavendel. Würzig-aromatisch, nie süß.'],
-    ['Harze','Harze','Sammelbegriff für Labdanum, Benzoe, Myrrhe. Dunkel und klebrig-warm, wie Baumharz in der Sonne.']
+    ['Moschus','Moschus','Warme, saubere Haut. Nah am Körper.'],
+    ['Weißer Moschus','Weißer Moschus','Frische Wäsche, Seife, weiches Handtuch.'],
+    ['Zitrusnoten','Zitrusnoten','Zitrone bis Mandarine. Spritzig und hell.'],
+    ['Grüne Noten','Grüne Noten','Zerriebenes Blatt, frisch gemähter Rasen.'],
+    ['Kräuter','Kräuter','Salbei, Rosmarin, Minze. Würzig, nie süß.'],
+    ['Harze','Harze','Labdanum und Myrrhe. Dunkel, klebrig-warm.']
   ]}
 );
 
@@ -1772,7 +1773,7 @@ D.push(
 ["Santal Blanc","Van Cleef & Arpels",["holzig","gourmand","amber"],["cremig","bibliothek"],3,3,2,["ganzjahr","herbst"],["alltag","abend"],["klassisch","minimal"],["waerme","gepflegt"],"u",3,[],"Sandelholz, Tonka, Iris, Kardamom, Moschus"],
 ["Black Gemstone","Stéphane Humbert Lucas 777",["weihrauch","holzig","leder"],["weihrauch","kamin"],5,1,5,["winter","herbst"],["abend"],["rebellisch","intellektuell"],["statement","kopfkino"],"u",4,["rauchig","oud"],"Weihrauch, schwarzer Pfeffer, Oud, Rauch, Harz"],
 ["Soleil de Jeddah","Stéphane Humbert Lucas 777",["gourmand","holzig","amber"],["honig","basar"],5,4,4,["herbst","winter"],["abend","event"],["extrovertiert","sinnlich"],["statement","verfuehrung"],"u",4,["suess","oud"],"Mango, Oud, Safran, Sandelholz, Amber"],
-["Marrakech Intense","Aesop",["basar","holzig","floral"],["basar","cremig"],2,2,3,["ganzjahr","herbst"],["alltag","signature"],["minimal","intellektuell"],["gepflegt","kopfkino"],"u",2,[],"Nelke, Kardamom, Sandelholz, Neroli, Zeder"],
+["Marrakech Intense","Aesop",["aromatisch","holzig","floral"],["basar","cremig"],2,2,3,["ganzjahr","herbst"],["alltag","signature"],["minimal","intellektuell"],["gepflegt","kopfkino"],"u",2,[],"Nelke, Kardamom, Sandelholz, Neroli, Zeder"],
 ["Hwyl","Aesop",["gruen","weihrauch","holzig"],["waldboden","weihrauch"],3,1,4,["herbst","winter"],["alltag","abend"],["intellektuell","minimal"],["kopfkino","gepflegt"],"u",2,[],"Zypresse, Vetiver, Weihrauch, Wacholder, Moos"],
 ["Fougère Royale","Houbigant",["aromatisch","chypre","gruen"],["kraeuter","waldboden"],4,2,3,["ganzjahr","herbst"],["alltag","abend","event"],["klassisch","intellektuell"],["autoritaet","gepflegt"],"m",3,[],"Lavendel, Kamille, Eichenmoos, Kumarin, Zimt"],
 ["Aqva pour Homme","Bvlgari",["aquatisch","holzig","amber"],["ozean","salzhaut"],3,1,2,["sommer","ganzjahr"],["alltag","freizeit","signature"],["sportlich","minimal"],["gepflegt"],"m",1,["aquatisch"],"Meeresalgen, Mandarine, Petitgrain, Mineralamber"],
@@ -3361,12 +3362,36 @@ function sensitivity(a, baseTop){
 }
 
 /* Familien, die du nie gewählt hast, die aber deine Treffer prägen */
+/* Welche Duftfamilie ist durch eine ausdruecklich gewaehlte Lieblingsnote
+   schon abgedeckt? Ohne das behauptete der blinde Fleck „du hast Moschus nie
+   angekreuzt" bei jemandem, der Moschus gerade als Lieblingsnote gewaehlt
+   hatte — er hatte es nur nicht als Familie angekreuzt. Bewusst nur die
+   eindeutigen Zuordnungen, sonst werden echte blinde Flecken unterdrueckt. */
+const NOTEFAM = {
+  'Moschus':['moschus'], 'Weißer Moschus':['moschus'],
+  'Zitrusnoten':['zitrus'], 'Zitrone':['zitrus'], 'Grapefruit':['zitrus'],
+  'Grüne Noten':['gruen'], 'Kräuter':['aromatisch'], 'Lavendel':['aromatisch'],
+  'Harze':['weihrauch'], 'Weihrauch':['weihrauch'], 'Amber':['amber'],
+  'Vanille':['gourmand'], 'Kakao':['gourmand'], 'Kaffee':['gourmand'],
+  'Kokos':['gourmand'], 'Tonka':['gourmand'], 'Honig':['gourmand'],
+  'Rose':['floral'], 'Jasmin':['floral'], 'Tuberose':['floral'],
+  'Ylang-Ylang':['floral'], 'Orangenblüte':['floral'], 'Iris':['floral'],
+  'Sandelholz':['holzig'], 'Zeder':['holzig'], 'Oud':['holzig'],
+  'Vetiver':['holzig'], 'Leder':['leder'], 'Tabak':['leder'],
+  'Eichenmoos':['chypre'], 'Patschuli':['chypre'],
+  'Pfeffer':['aromatisch'], 'Kardamom':['aromatisch'],
+  'Safran':['leder'], 'Rum':['gourmand']
+};
 function blindSpots(a, top){
   const cnt = {};
   top.forEach(r=>r.f.fam.forEach(k=>cnt[k]=(cnt[k]||0)+1));
   const need = Math.max(3, Math.ceil(top.length*0.35));
+  const abgedeckt = {};
+  (a.notes||[]).forEach(function(n){
+    (NOTEFAM[n]||[]).forEach(function(k){ abgedeckt[k] = 1; });
+  });
   return Object.entries(cnt)
-    .filter(e=>!a.fam.includes(e[0]) && e[1]>=need)
+    .filter(e=>!a.fam.includes(e[0]) && !abgedeckt[e[0]] && e[1]>=need)
     .sort((p,q)=>q[1]-p[1]).slice(0,2)
     .map(e=>({fam:FAMLBL[e[0]], n:e[1]}));
 }
