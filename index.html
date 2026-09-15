@@ -3431,11 +3431,12 @@ function renderResult(){
           sens.length>1 ? ` Am wenigsten Einfluss hat <b>${esc(sens[sens.length-1].label)}</b> mit ${sens[sens.length-1].churn}&thinsp;% — dort kannst du beim Testen großzügig sein.` : ''}</p>
       </div>` : ''}
 
-      ${blind.length ? `
       <div class="insight">
         <h4>Dein blinder Fleck</h4>
-        <p>Du hast <b>${esc(blind.map(z=>z.fam).join(' und '))}</b> nie angekreuzt — aber ${blind[0].n} deiner zehn Treffer führen ${esc(blind[0].fam)} in der Komposition. Offenbar magst du es, ohne es zu benennen. <b>Nimm es beim nächsten Durchgang bewusst dazu</b> und sieh, was passiert.</p>
-      </div>` : ''}
+        ${blind.length
+          ? `<p>Du hast <b>${esc(blind.map(z=>z.fam).join(' und '))}</b> nie angekreuzt — aber ${blind[0].n} deiner zehn Treffer führen ${esc(blind[0].fam)} in der Komposition. Offenbar magst du es, ohne es zu benennen. <b>Nimm es beim nächsten Durchgang bewusst dazu</b> und sieh, was passiert.</p>`
+          : `<p><b>Du hast keinen.</b> Es gibt keine Duftfamilie, die in deinen Treffern auffällig oft vorkommt, ohne dass du sie angekreuzt hättest. Das ist bei etwa jedem sechsten Profil so und heißt: Du kennst deinen Geschmack und kannst ihn auch benennen. Die Lücke, die dieser Kasten sonst zeigt, gibt es bei dir nicht.</p>`}
+      </div>
 
       ${tens.map(t=>`
       <div class="insight">
