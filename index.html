@@ -3443,7 +3443,15 @@ function renderResult(){
           ? `Nur <b>${rar.n} von ${F.length}</b> Düften der Auswahl treffen dein Muster aus Familie, Süße, Präsenz und Saison. Du suchst in einer <b>dünn besetzten Ecke</b> — das erklärt, warum dir in Parfümerien selten spontan etwas gefällt. Gute Nachricht: Wenn du fündig wirst, ist es meist ein Volltreffer.`
           : rar.pct<=20
           ? `<b>${rar.n} von ${F.length}</b> Düften treffen dein Muster. Ein klar umrissener, aber nicht exotischer Geschmack — du wirst regelmäßig etwas finden, ohne dass es beliebig wird.`
-          : `<b>${rar.n} von ${F.length}</b> Düften treffen dein Muster. Dein Geschmack liegt im gut versorgten Bereich: viel Auswahl, aber auch viel Ähnliches. Schärfen hilft mehr als suchen — setz ein, zwei zusätzliche No-Gos.`}</p>
+          : `<b>${rar.n} von ${F.length}</b> Düften treffen dein Muster. Dein Geschmack liegt im gut versorgten Bereich: viel Auswahl, aber auch viel Ähnliches. Schärfen hilft mehr als suchen.${
+            /* Wer schon vier Ausschlüsse gesetzt hat, bekam hier "setz noch
+               welche dazu" und zwei Kästen weiter "du hast zu viele". Der
+               Widerspruch trat in 4 % der Profile auf und wurde im Forum
+               gemeldet. Der Rat haengt jetzt daran, wie viel schon
+               ausgeschlossen ist. */
+            (a.nogo||[]).length >= 3
+              ? ` An den Ausschlüssen musst du dafür nichts mehr ändern, davon hast du schon einige. Wirksamer ist, bei den Lieblingsnoten zwei, drei Noten konkret zu benennen — oder bei Präsenz und Süße eine Stufe weiter zu gehen, statt in der Mitte zu bleiben.`
+              : ` Setz ein, zwei zusätzliche No-Gos, das bringt mehr als eine weitere Vorliebe.`}`}</p>
       </div>
 
       ${sens.length ? `
