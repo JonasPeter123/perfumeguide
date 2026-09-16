@@ -3422,8 +3422,28 @@ function blindSpots(a, top){
   (a.notes||[]).forEach(function(n){
     (NOTEFAM[n]||[]).forEach(function(k){ abgedeckt[k] = 1; });
   });
+  /* Ein blinder Fleck ist nur dann ein Hinweis, wenn er zu den uebrigen
+     Antworten passt. Gemeldet aus dem Forum: Jemand suchte ausdruecklich
+     etwas Unsuesses, Staubtrockenes — und bekam „Amber" vorgeschlagen.
+     Von 179 Amber-Dueften im Katalog sind 85 % suess und genau zwei
+     trocken; der Rat war also einer, den der Katalog gar nicht einloesen
+     kann. Gemessen betraf das 15 % aller trockenen Profile.
+     Geprueft wird nicht der Familienschnitt des ganzen Katalogs, sondern
+     die Suesse der eigenen Treffer: Wer zufaellig die zwei trockenen
+     Amber in der Liste hat, bekommt den Hinweis weiterhin — dort stimmt
+     er ja. Schwelle 1.6 gemessen gegen 1.2 und 2.0: Bei 1.6 fallen die
+     Widersprueche von 74 auf 2 von rund 500, und der Kasten bleibt in
+     70 % der Profile gefuellt. Bei 1.2 waeren es null Widersprueche, aber
+     der Kasten waere zu oft leer. */
+  const wT = SWEETV[a.sweet];
+  const passtZurSuesse = function(k){
+    const tr = top.filter(function(r){ return r.f.fam.includes(k); });
+    if(!tr.length) return true;
+    const m = tr.reduce(function(s,r){ return s + r.f.sweet; }, 0) / tr.length;
+    return (m - wT) <= 1.6;
+  };
   return Object.entries(cnt)
-    .filter(e=>!a.fam.includes(e[0]) && !abgedeckt[e[0]] && e[1]>=need)
+    .filter(e=>!a.fam.includes(e[0]) && !abgedeckt[e[0]] && e[1]>=need && passtZurSuesse(e[0]))
     .sort((p,q)=>q[1]-p[1]).slice(0,2)
     .map(e=>({fam:FAMLBL[e[0]], n:e[1]}));
 }
