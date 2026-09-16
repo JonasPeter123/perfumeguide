@@ -868,12 +868,12 @@ const Q = [
     ['gourmand','Süß & essbar','Vanille, Karamell, Kakao, Honig - zum Anbeißen.'],
     ['leder','Leder & Tabak','Wie eine Lederjacke und eine Zigarrenkiste.'],
     ['chypre','Herb & moosig','Bitterorange über Moos und Erde. Fachbegriff: Chypre.'],
-    ['aquatisch','Wässrig & salzig','Meeresluft, Ozon, nasser Stein.'],
+    ['aquatisch','Wässrig & salzig','Von Lotus und Gurke bis Meersalz und Algen.'],
     ['moschus','Wie saubere Haut','Weich, nah, kaum greifbar. Fachbegriff: Moschus.']
   ]},
-{ id:'mood', kind:'multi', min:1, max:3, cols:true, acc:'#6E5A86', kap:2,
+{ id:'mood', kind:'multi', min:1, max:5, cols:true, acc:'#6E5A86', kap:2,
   eyebrow:'Bilder', title:'Welche Szene <em>zieht dich an</em>?',
-  sub:'Der ehrlichste Teil. Niemand weiß, ob er Labdanum mag — aber jeder weiß, ob er das hier riechen will. Bis zu drei, und lieber eine zu wenig als eine zu viel: Die erste Wahl wiegt am schwersten.',
+  sub:'Der ehrlichste Teil. Niemand weiß, ob er Labdanum mag — aber jeder weiß, ob er das hier riechen will. Bis zu fünf, und lieber eine zu wenig als eine zu viel: Je mehr Szenen, desto breiter das Ergebnis.',
   o:[
     ['zitrusgarten','Zitrusgarten an der Amalfiküste','Aufgeschnittene Zitrone, Bergamotte, Orangenschale, Hitze.'],
     ['kamin','Kaminfeuer & Whisky','Rauch, verkohltes Holz, Wärme im Glas.'],
@@ -882,7 +882,7 @@ const Q = [
     ['bluete','Blütenbaum im Frühling','Orangenblüte, Jasmin, Tuberose, weiß und weich.'],
     ['weihrauch','Weihrauch in einer Steinkirche','Kühl, harzig, sakral, hallend.'],
     ['ozean','Kalte Gischt und Wind','Meersalz, Ozon, nasser Stein, nichts Warmes.'],
-    ['waesche','Frisch gewaschene Wäsche','Sauber, warm, unaufdringlich, nah.'],
+    ['waesche','Wäsche, warm aus dem Trockner','Sauber, warm, unaufdringlich, nah.'],
     ['cremig','Sonnencreme auf warmer Haut','Vanille, Kokosmilch, Mandel — wohlig und weich.'],
     ['waldboden','Waldboden nach dem Regen','Moos, feuchte Erde, Rinde, Pilze, Schatten.'],
     ['obstgarten','Obstgarten im Spätsommer','Reife Pfirsiche, Birnen, Pflaumen, warmes Gras.'],
@@ -1188,7 +1188,7 @@ D.push(
 ["Colonia","Acqua di Parma",["zitrus","aromatisch"],["waesche"],3,1,1,["sommer","fruehling"],["alltag","freizeit","signature"],["klassisch","minimal"],["gepflegt"],"u",1,[],"Sizilianische Zitrone, Lavendel, Rosmarin, Patschuli, Vetiver"],
 ["Colonia Oud","Acqua di Parma",["holzig","amber","zitrus"],["bibliothek"],4,2,3,["herbst","winter"],["abend","event"],["klassisch","extrovertiert"],["autoritaet","gepflegt"],"u",3,["oud"],"Bergamotte, Oud, Amber, Sandelholz, Leder"],
 ["Fico di Amalfi","Acqua di Parma",["zitrus","gruen"],["feige","salzhaut"],3,2,1,["sommer"],["freizeit","alltag"],["sportlich","minimal"],["gepflegt","kopfkino"],"u",2,[],"Feige, Feigenblatt, Bergamotte, Zeder"],
-["Mirto di Panarea","Acqua di Parma",["zitrus","gruen","aquatisch"],["salzhaut","kraeuter"],3,1,1,["sommer"],["freizeit","alltag"],["sportlich","minimal"],["gepflegt"],"u",2,[],"Myrte, Basilikum, Zitrone, Zeder, Moschus"],
+["Mirto di Panarea","Acqua di Parma",["zitrus","gruen","aquatisch"],["salzhaut","kraeuter","ozean"],3,1,1,["sommer"],["freizeit","alltag"],["sportlich","minimal"],["gepflegt"],"u",2,[],"Myrte, Basilikum, Zitrone, Zeder, Moschus"],
 ["Ambra","Acqua di Parma",["amber","holzig"],["honig"],4,3,2,["herbst","winter"],["abend","alltag"],["klassisch","sinnlich"],["waerme"],"u",3,[],"Amber, Sandelholz, Zimt, Bergamotte, Leder"]
 );
 /* ── Creed ── */
@@ -1381,7 +1381,7 @@ D.push(
 /* ── Carthusia & M. Micallef ── */
 D.push(
 ["Uomo","Carthusia",["holzig","gruen","aromatisch"],["kraeuter","salzhaut"],3,1,2,["sommer","fruehling"],["alltag","freizeit"],["klassisch","sportlich"],["gepflegt"],"m",2,[],"Rosmarin, Zeder, Kiefer, Amber, Moschus"],
-["Mediterraneo","Carthusia",["zitrus","gruen"],["salzhaut","kraeuter"],3,2,1,["sommer"],["freizeit","alltag"],["sportlich","minimal"],["gepflegt","kopfkino"],"u",2,[],"Zitrone, grüner Tee, Bergamotte, Zeder"],
+["Mediterraneo","Carthusia",["zitrus","gruen"],["salzhaut","kraeuter","ozean"],3,2,1,["sommer"],["freizeit","alltag"],["sportlich","minimal"],["gepflegt","kopfkino"],"u",2,[],"Zitrone, grüner Tee, Bergamotte, Zeder"],
 ["Fiori di Capri","Carthusia",["floral","holzig","amber"],["iris","kraeuter"],4,3,3,["fruehling","sommer"],["abend","event"],["klassisch","kreativ"],["kopfkino","waerme"],"f",2,[],"Nelke, Ylang-Ylang, Sandelholz, Amber, Zeder"],
 ["Io Capri","Carthusia",["floral","zitrus","gourmand"],["salzhaut","waesche"],3,3,2,["sommer","fruehling"],["alltag","freizeit"],["sinnlich","kreativ"],["waerme","gepflegt"],"f",2,[],"Bergamotte, Ylang-Ylang, Sandelholz, Vanille, Moschus"],
 ["Note Vanillée","M. Micallef",["gourmand","amber"],["honig"],4,5,2,["winter","herbst"],["abend"],["sinnlich","extrovertiert"],["waerme","verfuehrung"],"u",3,["suess","vanille"],"Vanille, Tonka, Zimt, Sandelholz, Amber"],
@@ -1660,7 +1660,7 @@ D.push(
 ["Eleventh Hour","Byredo",["gourmand","gruen","holzig"],["feige","honig"],4,4,3,["herbst","winter"],["abend","alltag"],["kreativ","sinnlich"],["kopfkino","waerme"],"u",2,["suess"],"Feige, Cashew, schwarzer Pfeffer, Tonka, Zypresse"],
 ["Young Rose","Byredo",["floral","chypre"],["iris"],3,2,3,["fruehling","herbst"],["alltag","abend"],["kreativ","minimal"],["gepflegt"],"u",2,["rose"],"Damaszener Rose, rosa Pfeffer, Moos, Zeder"],
 ["Wood Jasmin","BDK Parfums",["floral","holzig"],["bluete"],4,2,3,["fruehling","herbst"],["abend","event"],["klassisch","sinnlich"],["verfuehrung","gepflegt"],"u",2,[],"Bergamotte, Jasmin, Zeder, Vetiver, Moschus"],
-["Citrus Riviera","BDK Parfums",["zitrus","aromatisch","holzig"],["kraeuter","salzhaut"],3,1,1,["sommer"],["freizeit","alltag","signature"],["sportlich","minimal"],["gepflegt"],"u",2,[],"Zitrone, Neroli, Basilikum, Vetiver, Zeder"],
+["Citrus Riviera","BDK Parfums",["zitrus","aromatisch","holzig"],["kraeuter","salzhaut","ozean"],3,1,1,["sommer"],["freizeit","alltag","signature"],["sportlich","minimal"],["gepflegt"],"u",2,[],"Zitrone, Neroli, Basilikum, Vetiver, Zeder"],
 ["Velvet Tonka","BDK Parfums",["gourmand","leder","amber"],["honig"],5,5,3,["winter"],["abend","event"],["sinnlich","extrovertiert"],["verfuehrung","waerme"],"u",2,["suess","vanille"],"Tonka, Tabak, Safran, Vanille, Sandelholz"],
 ["Poivre Samarcande","Hermessence",["holzig","gruen","aromatisch"],["asphalt","kraeuter"],3,1,3,["ganzjahr","herbst"],["alltag","signature"],["minimal","intellektuell"],["gepflegt"],"u",3,[],"Schwarzer Pfeffer, Vetiver, Zeder, Thymian"],
 ["Osmanthe Yunnan","Hermessence",["floral","leder","zitrus"],["bluete"],3,2,3,["fruehling","herbst"],["alltag","abend"],["intellektuell","minimal"],["kopfkino","gepflegt"],"u",3,[],"Osmanthus, schwarzer Tee, Aprikose, Leder, Freesie"],
@@ -1845,7 +1845,24 @@ F.forEach(f=>{
   if(re('Pfirsich|Birne|Pflaume|Aprikose|Himbeere|Beere|Johannisbeere|Litschi|Apfel|Mango|Ananas|Kirsche|Melone|Rhabarber|Quitte')) add('obstgarten');
   if(re('Feige')) add('feige');
   if(re('Rauch|Birkenteer|Lagerfeuer|Whisky|Cognac|Torf|Kastanie|Guajak')) add('kamin');
-  if(fam('aquatisch') || re('Meersalz|Meeresnoten|Salzluft|Salznote|Kelp|Ozon|Küstenmoos')) add('ozean');
+  /* „Kalte Gischt und Wind" ist eine Szene, keine Kopie der Familie. Bis v33
+     zog `fam('aquatisch')` die Szene automatisch nach — Szene und Familie
+     trafen dadurch exakt dieselben 30 Duefte, die Szene trug also keinerlei
+     eigene Information. Wer sie anklickte, sagte nichts, was die Familie
+     nicht schon sagte. Jetzt entscheiden die Noten.
+     Drei Ebenen, bewusst verschieden breit:
+       Familie `aquatisch` — der Duft IST waessrig (Lotus, Bambus, Gurke).
+       Tag `maritim`       — eng, fuer den Ausschluss: Salz, Algen, Seetang.
+       Szene `ozean`       — das BILD Meer, quer durch alle Familien.
+     Deshalb faellt Lotus-Wasser (L'Eau d'Issey, Omnia Crystalline) und
+     Flieder-nach-Regen (En Passant) aus der Szene heraus, waehrend das
+     kuehle Kuestenbild von Eau des Merveilles und Green Irish Tweed
+     hineinkommt, obwohl beide nicht aquatisch sind.
+     `salzig` steht bewusst NICHT in der Liste: Es traf „salzige Vanille"
+     (Olympéa) und „salziger Hautschleier" (Molecule 02) — beides warm und
+     hautnah, kein Meer. */
+  if(re('Meersalz|Meeresnoten|Salzluft|Salznote|Algen|Seetang|Kelp|Küstenmoos|Treibholz|Driftholz|Muschel|Gischt|Ozon')
+     || (re('Ambergris') && (fam('zitrus')||fam('gruen')) && f.sweet<=2)) add('ozean');
   if((fam('amber')||fam('weihrauch')) && re('Zimt|Safran|Kardamom|Nelke|Muskat|Myrrhe|Labdanum|Weihrauch|Benzoe|Opoponax|Styrax|Harz')) add('basar');
   /* Honig als eigener Ausschluss. Kam aus dem Parfumo-Forum: Honig ist einer
      der polarisierendsten Stoffe ueberhaupt, liess sich aber nicht abwaehlen -
@@ -1858,8 +1875,12 @@ F.forEach(f=>{
      Vokabulare - "Meeresnoten" auf der einen Seite, "Meersalz / Algen /
      Kuestenmoos / Treibholz" auf der anderen. Ambergris gehoert
      ausdruecklich NICHT dazu: Die Note ist warm und hautnah, nicht salzig,
-     und steckt in Dueften wie Baccarat Rouge 540, die niemand maritim nennt. */
-  if(re('Meersalz|Salznote|salzig|Algen|Seetang|Kelp|Küstenmoos|Treibholz|Driftholz|Muschel|Gischt')
+     und steckt in Dueften wie Baccarat Rouge 540, die niemand maritim nennt.
+     Auch `salzig` ist raus (v35): Es traf "Salzige Vanille" (Olympéa) und
+     "warmer, salziger Hautschleier" (Molecule 02) - beides Gourmand bzw.
+     Hautduft. Wer den Strand abwaehlt, verlor dadurch einen Vanilleduft.
+     Es zaehlt nur das konkrete Kuestenvokabular. */
+  if(re('Meersalz|Salznote|Algen|Seetang|Kelp|Küstenmoos|Treibholz|Driftholz|Muschel|Gischt')
      && f.tags.indexOf('maritim') < 0) f.tags.push('maritim');
   /* Dabei aufgefallen: 9 der 30 Duefte der Familie Aquatisch trugen den Tag
      `aquatisch` nicht - der Ausschluss lief bei ihnen also ins Leere. Wer
@@ -3367,6 +3388,17 @@ function sensitivity(a, baseTop){
    angekreuzt" bei jemandem, der Moschus gerade als Lieblingsnote gewaehlt
    hatte — er hatte es nur nicht als Familie angekreuzt. Bewusst nur die
    eindeutigen Zuordnungen, sonst werden echte blinde Flecken unterdrueckt. */
+/* Wie viele Duftfamilien darf man ankreuzen? Direkt aus der Frage gelesen,
+   damit der blinde Fleck nicht aus dem Tritt geraet, wenn die Grenze sich
+   aendert. Gemeldet von einer Testerin: Sie bekam „holzige Duefte" als
+   blinden Fleck vorgehalten, obwohl sie Holzig angekreuzt haette — die vier
+   Plaetze waren schon voll. Gemessen betraf das 66 % aller Nutzer, die ihre
+   Auswahl ausgeschoepft hatten. Die Karte erscheint trotzdem immer, nur der
+   Text wird ehrlich. */
+const FAMMAX = (function(){
+  const q = Q.filter(function(x){ return (x.key||x.id) === 'fam'; })[0];
+  return (q && q.max) ? q.max : 4;
+})();
 const NOTEFAM = {
   'Moschus':['moschus'], 'Weißer Moschus':['moschus'],
   'Zitrusnoten':['zitrus'], 'Zitrone':['zitrus'], 'Grapefruit':['zitrus'],
@@ -3589,7 +3621,9 @@ function renderResult(){
       <div class="insight">
         <h4>Dein blinder Fleck</h4>
         ${blind.length
-          ? `<p>Du hast <b>${esc(blind.map(z=>z.fam).join(' und '))}</b> nie angekreuzt — aber ${blind[0].n} deiner zehn Treffer führen ${esc(blind[0].fam)} in der Komposition. Offenbar magst du es, ohne es zu benennen. <b>Nimm es beim nächsten Durchgang bewusst dazu</b> und sieh, was passiert.</p>`
+          ? ((a.fam||[]).length >= FAMMAX
+            ? `<p>Bei den Duftfamilien hattest du ${FAMMAX} Plätze — für <b>${esc(blind.map(z=>z.fam).join(' und '))}</b> war keiner mehr frei. Trotzdem führen ${blind[0].n} deiner zehn Treffer ${esc(blind[0].fam)} in der Komposition. Bei begrenzter Auswahl ist das kein Widerspruch, eher ein Hinweis: <b>Das wäre womöglich der nächste Haken gewesen.</b></p>`
+            : `<p>Du hast <b>${esc(blind.map(z=>z.fam).join(' und '))}</b> nie angekreuzt — aber ${blind[0].n} deiner zehn Treffer führen ${esc(blind[0].fam)} in der Komposition. Offenbar magst du es, ohne es zu benennen. <b>Nimm es beim nächsten Durchgang bewusst dazu</b> und sieh, was passiert.</p>`)
           : `<p><b>Du hast keinen.</b> Es gibt keine Duftfamilie, die in deinen Treffern auffällig oft vorkommt, ohne dass du sie angekreuzt hättest. Das ist bei etwa jedem sechsten Profil so und heißt: Du kennst deinen Geschmack und kannst ihn auch benennen. Die Lücke, die dieser Kasten sonst zeigt, gibt es bei dir nicht.</p>`}
       </div>
 
