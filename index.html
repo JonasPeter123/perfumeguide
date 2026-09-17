@@ -878,6 +878,15 @@ body::after{
 @media print{
   @page{margin:12mm}
   html,body{background:#fff !important}
+  /* Warum das noetig ist: `.fade` traegt eine Einlaufanimation mit `both`,
+     deren erster Schritt `opacity:0` ist — beim Drucken kam daher ein leeres
+     Blatt. `overflow-x:hidden` am Body und die `sticky`-Kopfzeile koennen die
+     Seitenumbrueche zusaetzlich verschlucken. Der Knopf „Als PDF sichern"
+     geht inzwischen einen eigenen Weg ueber einen Druckrahmen; diese Regeln
+     sind fuer alle, die von Hand Strg+P druecken. */
+  *{animation:none !important;transition:none !important}
+  html,body{overflow:visible !important;height:auto !important}
+  .fade,.reveal,#stage>.fade{opacity:1 !important;transform:none !important}
   body::before,body::after{display:none !important}
   .masthead,.rail,.recalc,.foot-actions,.navfix{display:none !important}
   #stage>.fade>*{display:none !important}
@@ -4728,11 +4737,57 @@ function renderResult(){
     setTimeout(()=>{ tl.textContent = 'Link kopieren'; }, 3200);
   };
 
-  /* Als PDF sichern — ohne Bibliothek und ohne Server: Der Druckdialog gibt
-     ueber @media print genau die zwei Passseiten aus, je eine pro Blatt.
-     Vorher stand an dieser Stelle eine Anleitung zum Rechtsklick. */
+  /* Als PDF sichern.
+     Erster Versuch war `window.print()` auf der laufenden Seite plus ein
+     `@media print`, das alles ausser dem Pass ausblendet. Die Regeln stimmen
+     — nachgewiesen, indem sie testweise als Bildschirmregeln eingehaengt
+     wurden, dann steht genau der Pass da. Gedruckt kam trotzdem ein leeres
+     Blatt. Ursache ist die Seite selbst: `.fade` traegt eine Animation mit
+     `both`, die bei 0 % auf `opacity:0` steht, dazu `overflow-x:hidden` am
+     Body und mehrere `position:sticky`-Elemente. Was davon im Einzelfall
+     zuschlaegt, haengt vom Browser ab — und genau deshalb ist der Weg falsch.
+
+     Jetzt wird ein eigenes, winziges Dokument in einem unsichtbaren Rahmen
+     aufgebaut, das nur die beiden Passbilder enthaelt und kein einziges
+     Stylesheet der Anwendung sieht. Das kann nicht leer werden. */
+  function passDrucken(){
+    const v = document.getElementById('passvorn'), h = document.getElementById('passhinten');
+    if(!v || !v.src || v.src.length < 100) return false;
+    const alt = document.getElementById('druckrahmen');
+    if(alt) alt.remove();
+    const f = document.createElement('iframe');
+    f.id = 'druckrahmen';
+    f.setAttribute('aria-hidden','true');
+    f.setAttribute('title','Duftpass zum Drucken');
+    f.style.cssText = 'position:fixed;right:0;bottom:0;width:1px;height:1px;opacity:0;border:0;pointer-events:none';
+    document.body.appendChild(f);
+    const d = f.contentWindow.document;
+    d.open();
+    d.write('<!doctype html><html lang="de"><head><meta charset="utf-8">'
+      + '<title>Sillage — Duftpass Nr. ' + passNr + '</title>'
+      + '<style>@page{margin:10mm}html,body{margin:0;padding:0;background:#fff}'
+      + 'img{display:block;width:100%;height:auto}'
+      + 'img+img{page-break-before:always;break-before:page}</style></head><body>'
+      + '<img src="' + v.src + '" alt="Duftpass Vorderseite">'
+      + (h && h.src && h.src.length > 100 ? '<img src="' + h.src + '" alt="Duftpass Rückseite">' : '')
+      + '</body></html>');
+    d.close();
+    const los = function(){
+      try{ f.contentWindow.focus(); f.contentWindow.print(); }catch(e){}
+      /* Der Rahmen bleibt stehen, bis der Dialog sicher durch ist — wird er
+         zu frueh entfernt, bricht der Druck in manchen Browsern ab. */
+      setTimeout(function(){ try{ f.remove(); }catch(e){} }, 60000);
+    };
+    if(d.readyState === 'complete') setTimeout(los, 150);
+    else f.onload = function(){ setTimeout(los, 150); };
+    return true;
+  }
   const pdf = document.getElementById('passpdf');
   if(pdf) pdf.onclick = ()=>{
+    let ok = false;
+    try{ ok = passDrucken(); }catch(e){ ok = false; }
+    if(ok) return;
+    /* Der Pass ist noch nicht gezeichnet oder der Rahmen wurde blockiert. */
     try{ window.print(); }
     catch(e){ pdf.textContent = 'Druck geht hier nicht';
               setTimeout(()=>{ pdf.textContent = 'Als PDF sichern'; }, 2800); }
