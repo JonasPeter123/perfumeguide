@@ -367,10 +367,15 @@ h1.q em{font-style:normal;color:var(--acc);transition:color .85s ease}
 .geteilt p{margin:0;font-size:.89rem;color:var(--ink-mid);line-height:1.5}
 
 /* Gespeichertes Profil */
-.resume{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:1rem 1.25rem;margin:0 0 1.7rem;border-left:5px solid var(--teal)}
-.resume div{flex:1;min-width:200px}
-.resume b{display:block;font-size:.98rem}
-.resume small{color:var(--ink-dim);font-size:.84rem}
+/* Die Wiederaufnahme war eine Karte in Kartengroesse — genauso schwer wie
+   die beiden Wege darueber, obwohl sie nur eine Randnotiz ist. Jetzt eine
+   Zeile; der Knopf bleibt kraeftig, weil er das Einzige ist, was man hier
+   tun kann. */
+.resume{display:flex;gap:.9rem;align-items:center;flex-wrap:wrap;
+  padding:.35rem 0 0;margin:.9rem 0 0;border:0;background:none;box-shadow:none}
+.resume div{flex:1;min-width:180px;display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap}
+.resume b{display:inline;font-size:.9rem;font-weight:500;color:var(--ink-mid)}
+.resume small{color:var(--ink-dim);font-size:.82rem}
 .resume button{all:unset;cursor:pointer;background:var(--teal);color:#fff;font-weight:700;font-size:.86rem;padding:.58rem 1.25rem;border-radius:99px}
 .resume button:hover{filter:brightness(1.1)}
 .resume button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
@@ -532,6 +537,43 @@ body::after{
 .skipbar button:hover{background:var(--acc);color:#fff;transform:translateY(-1px)}
 .skipbar button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 .skipbar button:last-child{margin-left:auto}
+
+/* Die Weiche auf der Startseite. Zwei gleichwertige Wege statt einem
+   Startknopf — der Geschenkfall ist kein Zusatz, sondern ein eigener
+   Einstieg. Beide Kacheln sind gleich gross, damit keiner wie die
+   Sparversion des anderen aussieht. */
+/* Der Fragenschatz auf der Startseite. Vorher standen hier siebzehn
+   Kacheln mit den Kapitelnamen — korrekt, aber eine Wand aus Text, bevor
+   irgendjemand irgendetwas verstanden hatte. Jetzt ein langsam driftendes
+   Feld aus Punkten in den Kennfarben der Fragen, verbunden wo sie nah
+   beieinander liegen. Die Begriffe tauchen einzeln auf und verschwinden
+   wieder, statt alle gleichzeitig zu konkurrieren. */
+.schatz{position:relative;height:210px;margin:1.8rem 0 .4rem;border-radius:var(--r);
+  background:var(--paper-2);overflow:hidden}
+.schatz canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.schatzwort{position:absolute;inset:0 0 1.6rem;display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces',Georgia,serif;font-size:clamp(1.3rem,4vw,2rem);font-weight:600;
+  color:var(--ink);letter-spacing:-.01em;opacity:0;transition:opacity .9s ease;pointer-events:none;
+  text-align:center;padding:0 1.2rem}
+.schatzwort.an{opacity:1}
+.schatzfuss{position:absolute;left:0;right:0;bottom:.7rem;margin:0;text-align:center;
+  font-size:.78rem;color:var(--ink-dim);letter-spacing:.04em}
+.schatzfuss b{color:var(--ink-mid);font-weight:700}
+@media(max-width:640px){.schatz{height:168px;margin:1.4rem 0 .3rem}}
+@media(prefers-reduced-motion:reduce){.schatzwort{transition:none}}
+
+.hausvor{margin:2.6rem 0 .6rem;font-size:.82rem;color:var(--ink-dim);letter-spacing:.03em}
+.wege{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin:1.4rem 0 0}
+.weg{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:.45rem;
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:1.35rem 1.4rem 1.2rem;
+  box-shadow:0 1px 2px rgba(44,40,35,.05);transition:border-color .2s,transform .18s,box-shadow .2s}
+.weg:hover{border-color:var(--acc);transform:translateY(-2px);box-shadow:0 6px 18px rgba(44,40,35,.09)}
+.weg:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.wegtitel{font-family:'Fraunces',Georgia,serif;font-size:1.35rem;font-weight:600;color:var(--ink);line-height:1.2}
+.wegtext{font-size:.94rem;color:var(--ink-mid);line-height:1.5}
+.wegmeta{font-size:.8rem;color:var(--ink-dim);letter-spacing:.02em;margin-top:.2rem}
+@media(max-width:640px){.wege{grid-template-columns:1fr;gap:.7rem;margin-top:1.5rem}
+  .weg{padding:1.1rem 1.15rem}.wegtitel{font-size:1.2rem}.wegtext{font-size:.9rem}}
 
 /* Antwortkarten laufen gestaffelt ein */
 @keyframes optIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
@@ -834,9 +876,50 @@ window.addEventListener('load', function(){
 <script>
 /* ═══ 1 — Fragebogen ═══════════════════════════════════════ */
 const Q = [
-{ id:'occ', kind:'multi', min:1, max:3, cols:true, acc:'#9E4430', kap:1,
+{ id:'beziehung', kind:'single', cols:true, acc:'#9E4430', kap:1, modus:'geschenk',
+  eyebrow:'Für wen', title:'Für wen suchst du <em>einen Duft</em>?',
+  sub:'Das entscheidet mehr, als man denkt. Ein Duft für die Partnerin darf Dinge, die im Büro schiefgehen.',
+  o:[
+    ['partner','Partnerin oder Partner','Nähe ist erlaubt.'],
+    ['familie','Familie','Eltern, Geschwister, erwachsene Kinder.'],
+    ['freund','Freundin oder Freund','Vertraut, aber kein Zuhause.'],
+    ['arbeit','Kollegin, Kollege oder Vorgesetzte','Hier gilt: eher zu leise als zu laut.'],
+    ['andere','Jemand anderes','Keine Vorannahme.']
+  ]},
+{ id:'ankerrichtung', kind:'single', cols:true, optional:true, acc:'#3D6E67', kap:3, modus:'geschenk',
+  wenn:function(a){ return (a.anchor||[]).length === 0; },
+  eyebrow:'Richtung', title:'In welche Richtung geht der Duft, <em>den die Person trägt</em>?',
+  sub:'Falls du ihn gerochen, aber nicht benennen kannst. Grob reicht völlig — und wenn du gar nichts weißt, überspring die Frage.',
+  o:[
+    ['r_frisch','Frisch und sauber','Zitrus, Seife, wie frisch geduscht.'],
+    ['r_blumig','Blumig','Rose, Jasmin, ein Blütenstrauß.'],
+    ['r_suess','Süß','Vanille, Karamell, etwas Dessertartiges.'],
+    ['r_holzig','Holzig oder erdig','Sandelholz, Zeder, Waldboden.'],
+    ['r_warm','Schwer und warm','Amber, Harz, Gewürze.'],
+    ['r_leder','Ledrig oder rauchig','Dunkel, ernst, ein bisschen streng.']
+  ]},
+{ id:'ankernaehe', kind:'single', cols:true, optional:true, acc:'#3D6E67', kap:3, modus:'geschenk',
+  wenn:function(a){ return (a.anchor||[]).length > 0 || !!a.ankerrichtung; },
+  eyebrow:'Abstand', title:'Soll es in diese Richtung gehen — oder <em>woanders hin</em>?',
+  sub:'Hier entscheidest du, wie viel du riskierst.',
+  o:[
+    ['nah','Nah dran','Ähnlich wie das, was sie oder er schon trägt. Wenig Risiko.'],
+    ['verwandt','Verwandt, aber neu','Erkennbar dieselbe Welt, anderer Blickwinkel.'],
+    ['anders','Bewusst anders','Eine Entdeckung. Kann danebengehen, kann begeistern.']
+  ]},
+{ id:'occ', kind:'multi', min:1, max:3, cols:true, acc:'#9E4430', kap:1, gkap:2,
   eyebrow:'Anlass', title:'Wofür suchst du <em>einen Duft</em>?',
   sub:'Ein Duft fürs Büro löst eine andere Aufgabe als einer für den Abend. Bis zu drei.',
+  g:{ title:'Wann soll der Duft <em>getragen werden</em>?',
+      sub:'Bis zu drei. Wenn du es nicht weißt, nimm die letzte Option — das ist besser als zu raten.',
+      o:[
+        ['alltag','Alltag & Büro','Nah am Körper, nichts, was den Raum füllt.'],
+        ['abend','Abend & Date','Wärme, Tiefe, etwas Absicht.'],
+        ['event','Besondere Anlässe','Hochzeit, Oper, große Bühne.'],
+        ['freizeit','Freizeit & Reisen','Leicht, unkompliziert, hitzefest.'],
+        ['signature','Ein Duft für alles','Einer, der die Person überall begleitet.'],
+        ['occ_egal','Kein bestimmter Anlass','Soll einfach passen.']
+      ] },
   o:[
     ['alltag','Alltag & Büro','Nah am Körper. Niemand im Meetingraum soll ihn mitbenutzen müssen.'],
     ['abend','Abend & Date','Wärme, Tiefe, etwas Absicht.'],
@@ -844,9 +927,11 @@ const Q = [
     ['freizeit','Freizeit & Reisen','Leicht, unkompliziert, hitzefest.'],
     ['signature','Ein Signature für alles','Ein Duft, der dich überall begleitet.']
   ]},
-{ id:'season', kind:'multi', min:1, max:3, cols:true, acc:'#4A7A6B', kap:1,
+{ id:'season', kind:'multi', min:1, max:3, cols:true, acc:'#4A7A6B', kap:1, gkap:2,
   eyebrow:'Jahreszeit', title:'Wann wird er <em>getragen</em>?',
   sub:'Hitze verstärkt Süße und Amber, Kälte schluckt Zitrus. Das verschiebt die Auswahl erheblich.',
+  g:{ title:'Wann soll der Duft <em>getragen werden</em>?',
+      sub:'Hitze verstärkt Süße und Amber, Kälte schluckt Zitrus. Wenn du unsicher bist, nimm „Ganzjährig" — das ist beim Geschenk meistens die sicherste Wahl.' },
   o:[
     ['fruehling','Frühling','Grün, frisch, aufwachend.'],
     ['sommer','Sommer','Hitzefest, nichts Klebriges.'],
@@ -854,9 +939,11 @@ const Q = [
     ['winter','Winter','Dicht, warm, tragfähig.'],
     ['ganzjahr','Ganzjährig','Soll das ganze Jahr funktionieren.']
   ]},
-{ id:'fam', kind:'multi', min:1, max:4, cols:true, acc:'#B07A3C', kap:2, pfad:['fortgeschritten','sammler'],
+{ id:'fam', kind:'multi', min:1, max:4, cols:true, acc:'#B07A3C', kap:2, gkap:3, pfad:['fortgeschritten','sammler'],
   eyebrow:'Duftfamilien', title:'Was riechst du <em>gerne</em>?',
   sub:'Bis zu vier — aber weniger ist präziser. Kreuze nur an, was wirklich zutrifft; die erste Wahl wiegt am schwersten. Unsicher? Aus deinen Bildern steht schon ein Vorschlag drin, dann einfach auf Weiter.',
+  g:{ title:'Was riecht <em>die Person</em> gerne?',
+      sub:'Bis zu vier. Aus deinen Bildern steht schon ein Vorschlag drin — wenn du es nicht besser weißt, einfach auf Weiter. Nur ändern, wo du dir sicher bist.' },
   o:[
     ['zitrus','Zitrisch & spritzig','Wie eine aufgeschnittene Zitrone: hell, sauber, wach.'],
     ['gruen','Grün & pflanzlich','Zerriebene Blätter, frisch gemähtes Gras, Tomatenstaude.'],
@@ -874,6 +961,33 @@ const Q = [
 { id:'mood', kind:'multi', min:1, max:5, cols:true, acc:'#6E5A86', kap:2,
   eyebrow:'Bilder', title:'Welche Szene <em>zieht dich an</em>?',
   sub:'Der ehrlichste Teil. Niemand weiß, ob er Labdanum mag — aber jeder weiß, ob er das hier riechen will. Bis zu fünf, und lieber eine zu wenig als eine zu viel: Je mehr Szenen, desto breiter das Ergebnis.',
+  /* Drei der achtzehn Szenen sind reine Geruchsaufzaehlungen und lassen
+     sich keinem Menschen zuordnen — die bekommen hier eine Situation als
+     Beschriftung. Der Schluessel bleibt derselbe, die Bewertung merkt
+     davon nichts. */
+  g:{ title:'Welche dieser Bilder passen <em>zu der Person</em>?',
+      sub:'Nicht wörtlich gemeint — es geht um die Stimmung, nicht um den Aufenthaltsort. Bis zu fünf.',
+      o:[
+        ['zitrusgarten','Zitrusgarten an der Amalfiküste','Aufgeschnittene Zitrone, Bergamotte, Orangenschale, Hitze.'],
+        ['kamin','Kaminfeuer & Whisky','Rauch, verkohltes Holz, Wärme im Glas.'],
+        ['bibliothek','Alte Bibliothek','Leder, Papier, Staub, Ruhe.'],
+        ['feige','Feigenbaum im Schatten','Grünes Blatt, milchige Frucht, warmer Stein.'],
+        ['bluete','Blütenbaum im Frühling','Orangenblüte, Jasmin, Tuberose, weiß und weich.'],
+        ['weihrauch','Weihrauch in einer Steinkirche','Kühl, harzig, sakral, hallend.'],
+        ['ozean','Kalte Gischt und Wind','Meersalz, Ozon, nasser Stein, nichts Warmes.'],
+        ['waesche','Saubere Wäsche und warme Haut','Seife, weißer Moschus, weich und hautnah.'],
+        ['cremig','Kaschmirdecke und Vanille','Milchig, mandelig, wohlig weich — zum Einwickeln.'],
+        ['waldboden','Waldboden nach dem Regen','Moos, feuchte Erde, Rinde, Pilze, Schatten.'],
+        ['obstgarten','Obstgarten im Spätsommer','Reife Pfirsiche, Birnen, Pflaumen, warmes Gras.'],
+        ['nachtblueten','Nachtblüten im Dunkeln','Jasmin und Tuberose, schwer und betörend.'],
+        ['salzhaut','Salzige Haut nach dem Meer','Sonne, Kokos, Wärme auf der Schulter.'],
+        ['basar','Gewürzbasar am Nachmittag','Zimt, Safran, Kardamom, Harz in Säcken.'],
+        ['honig','Alte Bar am späten Abend','Honig, Tabak, Karamell — süß und ein bisschen dekadent.'],
+        ['iris','Vintage-Mantel und Lederhandschuhe','Puderige Iris, Wildleder, kühl und elegant.'],
+        ['asphalt','Regen auf heißem Stein','Mineralisch, metallisch, Petrichor.'],
+        ['kraeuter','Zerriebene Kräuter im Garten','Bitter-grün, Erde, Sonne, Thymian.'],
+        ['mood_egal','Keines davon trifft es','Dann überspringe ich das.']
+      ] },
   o:[
     ['zitrusgarten','Zitrusgarten an der Amalfiküste','Aufgeschnittene Zitrone, Bergamotte, Orangenschale, Hitze.'],
     ['kamin','Kaminfeuer & Whisky','Rauch, verkohltes Holz, Wärme im Glas.'],
@@ -882,8 +996,8 @@ const Q = [
     ['bluete','Blütenbaum im Frühling','Orangenblüte, Jasmin, Tuberose, weiß und weich.'],
     ['weihrauch','Weihrauch in einer Steinkirche','Kühl, harzig, sakral, hallend.'],
     ['ozean','Kalte Gischt und Wind','Meersalz, Ozon, nasser Stein, nichts Warmes.'],
-    ['waesche','Wäsche, warm aus dem Trockner','Sauber, warm, unaufdringlich, nah.'],
-    ['cremig','Sonnencreme auf warmer Haut','Vanille, Kokosmilch, Mandel — wohlig und weich.'],
+    ['waesche','Saubere Wäsche und warme Haut','Seife, weißer Moschus, weich und hautnah.'],
+    ['cremig','Kaschmirdecke und Vanille','Milchig, mandelig, wohlig weich — zum Einwickeln.'],
     ['waldboden','Waldboden nach dem Regen','Moos, feuchte Erde, Rinde, Pilze, Schatten.'],
     ['obstgarten','Obstgarten im Spätsommer','Reife Pfirsiche, Birnen, Pflaumen, warmes Gras.'],
     ['nachtblueten','Nachtblüten im Dunkeln','Jasmin und Tuberose, schwer und betörend.'],
@@ -897,15 +1011,26 @@ const Q = [
 { id:'sweet', kind:'single', cols:true, acc:'#A75A63', kap:2,
   eyebrow:'Süße', title:'Wie süß darf er <em>werden</em>?',
   sub:'Die Achse, an der die meisten Düfte scheitern. Gemeint ist der Gesamteindruck, nicht eine bestimmte Note — dieselbe Zutat empfindet nicht jeder gleich süß. Welche Noten raus sollen, fragen wir gleich getrennt.',
+  g:{ title:'Mag die Person <em>Süßes</em> im Duft?',
+      sub:'Die Frage, bei der die Meinungen am weitesten auseinandergehen. Wenn du unsicher bist, überspring sie lieber, als zu raten.',
+      o:[
+        ['trocken','Auf keinen Fall','Nichts Süßliches, nichts Vanilliges.'],
+        ['dezent','Eher zurückhaltend','Ein bisschen darf sein, mehr nicht.'],
+        ['deutlich','Gern süß','Vanille, Karamell, Gebäck. Warm und rund.'],
+        ['dekadent','Je süßer, desto besser','Sirup, Dessert, keine Zurückhaltung.'],
+        ['sw_egal','Weiß ich nicht','Dann lasse ich die Süße offen.']
+      ] },
   o:[
     ['trocken','Staubtrocken','Kein Gramm Zucker. Holz, Harz, Moos, Stein.'],
     ['dezent','Dezent süß','Süße ist da, steht aber nie vorn.'],
     ['deutlich','Deutlich süß','Süße darf den Duft tragen.'],
     ['dekadent','Dekadent','Sirup, Karamell, Likör. Voll rein.']
   ]},
-{ id:'nogo', kind:'multi', min:0, max:5, cols:true, optional:true, acc:'#6E7671', kap:2,
+{ id:'nogo', kind:'multi', min:0, max:5, cols:true, optional:true, acc:'#6E7671', kap:2, gkap:3,
   eyebrow:'Ausschlüsse', title:'Was geht <em>gar nicht</em>?',
   sub:'Wichtiger als jede Vorliebe. Ausgeschlossene Noten fliegen vollständig aus der Auswahl. Nichts anzukreuzen ist eine gültige Antwort.',
+  g:{ title:'Gibt es etwas, das die Person <em>nicht riechen kann</em>?',
+      sub:'Wichtiger als jede Vorliebe — Ausgeschlossenes fliegt vollständig aus der Auswahl. Nur ankreuzen, wo du dir sicher bist. Nichts anzukreuzen ist eine gültige Antwort.' },
   o:[
     ['suess','Zu süß','Zuckrig, Sirup, Bonbon.'],
     ['vanille','Vanille','In jeder Form.'],
@@ -923,6 +1048,15 @@ const Q = [
 { id:'sil', kind:'single', cols:true, acc:'#46708C', kap:2,
   eyebrow:'Präsenz', title:'Wie viel Raum darf er <em>nehmen</em>?',
   sub:'Sillage ist die Spur, die du hinterlässt. Der häufigste Fehlkauf entsteht hier, nicht bei den Noten.',
+  g:{ title:'Wie präsent darf der Duft <em>sein</em>?',
+      sub:'Woran du es festmachen kannst: Merkt man die Person, bevor sie den Raum betritt?',
+      o:[
+        ['skin','Ganz nah','Nur wer ihr nahe kommt, riecht ihn.'],
+        ['dezent','Dezent','Eine Armlänge. Bürosicher, aber wahrnehmbar.'],
+        ['praesent','Präsent','Man merkt, dass sie den Raum betreten hat.'],
+        ['raumfuellend','Raumfüllend','Der Duft geht durch die Tür, bevor sie es tut.'],
+        ['sil_egal','Weiß ich nicht','Dann lasse ich die Präsenz offen.']
+      ] },
   o:[
     ['skin','Skin Scent','Nur wer dir nahe kommt, riecht ihn.'],
     ['dezent','Dezent','Eine Armlänge. Bürosicher, aber wahrnehmbar.'],
@@ -932,6 +1066,23 @@ const Q = [
 { id:'vibe', kind:'multi', min:1, max:3, cols:true, acc:'#6B8757', kap:2,
   eyebrow:'Typ', title:'Wie würdest du <em>dich</em> beschreiben?',
   sub:'Nicht wie du sein möchtest — wie du an einem normalen Dienstag bist. Bis zu drei.',
+  /* Im Geschenkpfad steckt die Kleidung in den Antworten statt in einer
+     eigenen Frage. Sie schreibt auf dasselbe Feld wie der Charakter — eine
+     zweite Frage dazu waere Arbeit fuer den Nutzer ohne mehr Information.
+     So wird aus einer psychologischen Einschaetzung eine Beobachtung. */
+  g:{ title:'Wie würdest du <em>die Person</em> beschreiben?',
+      sub:'Woran du es festmachen kannst: Kleidung, Einrichtung, wie sie einen Raum betritt. Bis zu drei.',
+      o:[
+        ['klassisch','Klassisch & elegant','Gut geschnittene Sachen, nichts Modisches. Qualität vor Auffälligkeit.'],
+        ['minimal','Minimalistisch','Wenige Teile, klare Farben, nichts Überflüssiges.'],
+        ['extrovertiert','Extrovertiert','Wird gesehen, bevor sie etwas sagt.'],
+        ['kreativ','Kreativ & unkonventionell','Kombiniert Dinge, auf die andere nicht kommen.'],
+        ['sportlich','Sportlich & aktiv','Praktisch, unkompliziert, viel unterwegs.'],
+        ['intellektuell','Intellektuell & zurückgenommen','Eher leise, eher Bücher als Bühne.'],
+        ['sinnlich','Sinnlich & warm','Nähe, Stoffe, Wärme.'],
+        ['rebellisch','Rebellisch','Ecken und Kanten, bewusst gegen den Strich.'],
+        ['vibe_egal','Schwer zu sagen','Dann überspringe ich das.']
+      ] },
   o:[
     ['klassisch','Klassisch & elegant','Qualität vor Neuheit, Struktur vor Effekt.'],
     ['minimal','Minimalistisch','Weniger, aber richtig.'],
@@ -945,6 +1096,17 @@ const Q = [
 { id:'eff', kind:'multi', min:1, max:2, cols:true, acc:'#A98338', kap:2,
   eyebrow:'Wirkung', title:'Was soll er <em>für dich tun</em>?',
   sub:'Ein Duft ist ein Werkzeug. Bis zu zwei Aufgaben.',
+  g:{ title:'Was soll der Duft <em>über die Person</em> sagen?',
+      sub:'Hier darfst du deine eigene Absicht einbringen. Bis zu zwei.',
+      o:[
+        ['gepflegt','Gepflegt und unaufdringlich','Auffallen, indem er nicht auffällt.'],
+        ['autoritaet','Präsenz und Autorität','Ernst genommen werden, Raum halten.'],
+        ['waerme','Wärme und Nähe','Menschen sollen näher kommen wollen.'],
+        ['verfuehrung','Verführerisch','Explizit, körperlich, gemeint.'],
+        ['statement','Ein Statement','Erinnert werden. Auch polarisierend.'],
+        ['kopfkino','Kopfkino','Ein Duft wie ein Ort. Für sie allein.'],
+        ['eff_egal','Weiß ich nicht','Dann lasse ich die Wirkung offen.']
+      ] },
   o:[
     ['gepflegt','Unaufdringlich gepflegt wirken','Auffallen, indem er nicht auffällt.'],
     ['autoritaet','Autorität ausstrahlen','Ernst genommen werden, Raum halten.'],
@@ -956,6 +1118,15 @@ const Q = [
 { id:'bold', kind:'single', cols:true, acc:'#93382F', kap:2,
   eyebrow:'Wagemut', title:'Wie <em>eigenwillig</em> darf er sein?',
   sub:'Der Regler, der über Nische entscheidet. Unten liegt, was alle mögen — oben, was Leute im Aufzug fragen lässt, was das ist.',
+  g:{ title:'Trägt die Person gern <em>Auffälliges</em>?',
+      sub:'Kleidung, Schmuck, Auftreten — das überträgt sich erstaunlich zuverlässig auf Düfte.',
+      o:[
+        ['crowdpleaser','Eher nicht','Lieber etwas, das gefällt und nicht auffällt.'],
+        ['ausgewogen','Ausgewogen','Charakter ja, Diskussion nein.'],
+        ['eigenwillig','Ja, gern','Darf ungewohnt sein. Nicht jeder muss es mögen.'],
+        ['polarisierend','Je eigener, desto besser','Reibung ist der Punkt.'],
+        ['bold_egal','Weiß ich nicht','Dann lasse ich es offen.']
+      ] },
   o:[
     ['crowdpleaser','Crowd-Pleaser','Soll gefallen. Komplimente sind das Ziel.'],
     ['ausgewogen','Ausgewogen','Charakter ja, Diskussion nein.'],
@@ -965,6 +1136,8 @@ const Q = [
 { id:'anchor', kind:'multi', min:0, max:5, cols:true, optional:true, searchable:true, acc:'#3D6E67', kap:3,
   eyebrow:'Ankerdüfte', title:'Kennst du einen davon — und <em>mochtest ihn</em>?',
   sub:'Der stärkste Hebel im ganzen Fragebogen — ein bekannter Duft, der dir gefallen hat, verrät mehr als drei Duftfamilien. Bis zu fünf. Kennst du keinen davon: einfach überspringen, das Ergebnis funktioniert auch ohne.',
+  g:{ title:'Steht einer davon <em>bei der Person</em> im Regal?',
+      sub:'Die wertvollste Angabe im ganzen Fragebogen — ein Flakon, den du gesehen hast, ist mehr wert als zehn Vermutungen. Bis zu fünf. Wenn du keinen erkennst: überspringen, die nächste Frage fängt das auf.' },
   o:[
     ['a_sauvage','Dior Sauvage','Frisch-würzig, Ambroxan, überall.'],
     ['a_bdc','Bleu de Chanel','Holzig-zitrisch, glatt, unangreifbar.'],
@@ -1000,21 +1173,45 @@ const Q = [
     ['a_pol','Frédéric Malle Portrait of a Lady','Rose, Patschuli, Weihrauch.'],
     ['a_erbapura','Xerjoff Erba Pura','Früchte, Vanille, Sommer.'],
     ['a_khamrah','Lattafa Khamrah','Dattel, Zimt, Praline.'],
-    ['a_wsss','Jo Malone Wood Sage & Sea Salt','Meersalz, Salbei, leicht.']
+    ['a_wsss','Jo Malone Wood Sage & Sea Salt','Meersalz, Salbei, leicht.'],
+    ['a_jadore',"Dior J'adore",'Ylang, Rose, Jasmin — der Klassiker.'],
+    ['a_missdior','Dior Miss Dior','Rose, Patschuli, modern-chypre.'],
+    ['a_chance','Chanel Chance Eau Tendre','Grapefruit, Quitte, Jasmin, leicht.'],
+    ['a_libre','YSL Libre','Lavendel, Orangenblüte, Vanille.'],
+    ['a_idole','Lancôme Idôle','Rose, Jasmin, Moschus, sehr sauber.'],
+    ['a_alien','Mugler Alien','Jasmin, Amber, Holz — laut und unverwechselbar.'],
+    ['a_lightblue','Dolce & Gabbana Light Blue','Zitrone, Apfel, Zeder, sommerlich.'],
+    ['a_bloom','Gucci Bloom','Tuberose, Jasmin, üppig weiß.']
   ]},
 { id:'exp', kind:'single', cols:true, acc:'#7A6248', kap:1,
   eyebrow:'Erfahrung', title:'Wo stehst du <em>gerade</em>?',
   sub:'Damit die Empfehlungen zur Lernkurve passen — schwierige Düfte brauchen eine trainierte Nase, sonst landen sie ungenutzt im Regal.',
+  g:{ eyebrow:'Sammlung', title:'Wie viele Parfums besitzt <em>die Person</em>?',
+      sub:'Das sagt mehr über die Erwartung als über den Geschmack. Wer eine Sammlung hat, kennt das Naheliegende längst.',
+      o:[
+        ['einsteiger','Eine Handvoll','Ein, zwei Flakons, die seit Jahren dastehen.'],
+        ['fortgeschritten','Mehrere, sie werden gewechselt','Je nach Tag und Anlass etwas anderes.'],
+        ['sammler','Eine richtige Sammlung','Ein Regal, nicht ein Platz im Bad.'],
+        ['unbekannt','Weiß ich nicht','Dann mische ich Bekanntes und Ausgefallenes.']
+      ] },
   o:[
     ['einsteiger','Einsteiger','Ein, zwei Düfte im Schrank. Nische ist Neuland.'],
     ['fortgeschritten','Fortgeschritten','Ich kenne meine Richtung, will sie schärfen.'],
     ['sammler','Sammler','Zweistellige Sammlung. Zeig mir, was ich noch nicht habe.']
   ]},
-{ id:'frame', kind:'group', acc:'#9E4430', kap:3,
+{ id:'frame', kind:'group', acc:'#9E4430', kap:3, gkap:1,
   eyebrow:'Rahmen', title:'Zum Schluss der <em>Rahmen</em>.',
   sub:'Zwei letzte Angaben, damit die Empfehlungen realistisch bleiben.',
+  g:{ title:'Erst einmal der <em>Rahmen</em>.',
+      sub:'Zwei Angaben, die beim Geschenk meistens von vornherein feststehen.' },
   groups:[
-    {key:'gender', label:'Duftcode', multi:true, hinweis:'<b>Empfehlung: Unisex mit ankreuzen.</b> Der größte Teil der Nischenparfümerie ist bewusst geschlechtsneutral komponiert — wer hier nur nach dem eigenen Geschlecht wählt, filtert sich die interessantesten Düfte weg. Mehrfachauswahl möglich: Unisex plus Maskulin ist die häufigste Kombination. Alle drei anzukreuzen heißt schlicht: ist mir egal.', o:[
+    {key:'gender', label:'Duftcode', multi:true,
+     hinweis:'<b>Empfehlung: Unisex mit ankreuzen.</b> Der größte Teil der Nischenparfümerie ist bewusst geschlechtsneutral komponiert — wer hier nur nach dem eigenen Geschlecht wählt, filtert sich die interessantesten Düfte weg. Mehrfachauswahl möglich: Unisex plus Maskulin ist die häufigste Kombination. Alle drei anzukreuzen heißt schlicht: ist mir egal.',
+     ghinweis:'Geschlechtsneutral komponierte Düfte zähle ich <b>immer</b> mit dazu — das sind 261 der 532, und darunter die interessantesten Häuser. Du gibst hier nur an, in welche Richtung es <b>zusätzlich</b> gehen soll.',
+     /* Unisex steht im Geschenkpfad nicht zur Wahl: Es wird ohnehin immer
+        mitgenommen, eine Kachel dafuer waere eine Scheinentscheidung. */
+     go:[['m','Maskulin','Klassisch maskulin codiert.'],
+         ['f','Feminin','Klassisch feminin codiert.']], o:[
       ['u','Unisex','Geschlechtsneutral komponiert.'],
       ['m','Maskulin','Klassisch maskulin codiert.'],
       ['f','Feminin','Klassisch feminin codiert.']
@@ -1031,7 +1228,9 @@ const Q = [
 
 /* ── Zwei ergänzende Fragen ──────────────────────────────── */
 Q.push(
-{ id:'longevity', kind:'single', cols:true, acc:'#96603A', kap:2,
+/* Nur im eigenen Profil: Die Hautchemie einer anderen Person kann niemand
+   einschaetzen, und geraten waere schlechter als weggelassen. */
+{ id:'longevity', kind:'single', cols:true, acc:'#96603A', kap:2, modus:'selbst',
   eyebrow:'Haltbarkeit', title:'Wie lange hält Duft auf <em>deiner Haut</em>?',
   sub:'Hautchemie ist real. Manche Haut frisst Zitrus und Moschus in zwei Stunden, andere trägt einen Amber durch den ganzen Tag. Wer weiß, dass bei ihm nichts hält, braucht schwerere Basen.',
   o:[
@@ -1043,12 +1242,16 @@ Q.push(
 { id:'anchorneg', kind:'multi', min:0, max:3, cols:true, optional:true, searchable:true, acc:'#7D5470', kap:3, pfad:['fortgeschritten','sammler'],
   eyebrow:'Abneigungen', title:'Und welchen fandst du <em>schrecklich</em>?',
   sub:'Diagnostisch stärker als jede Zustimmung — Ablehnung schneidet mehr Suchraum weg. Bis zu drei. Kennst du keinen davon oder fällt dir nichts ein: einfach überspringen, das ist völlig in Ordnung.',
+  g:{ title:'Und gab es einen, den <em>die Person</em> nicht mochte?',
+      sub:'Eine Ablehnung, die du mitbekommen hast, schneidet mehr Suchraum weg als jede Zustimmung. Bis zu drei. Wenn dir nichts einfällt: überspringen.' },
   o:[] }
 );
 Q.push(
 { id:'notes', kind:'multi', min:0, max:8, cols:true, optional:true, searchable:true, acc:'#557C6A', kap:3, pfad:['fortgeschritten','sammler'],
   eyebrow:'Lieblingsnoten', title:'Gibt es Noten, die du <em>besonders liebst</em>?',
   sub:'Die konkreteste Angabe im ganzen Fragebogen — genauer als jede Duftfamilie. Bis zu acht. Wenn dir nichts einfällt: überspringen, das Ergebnis funktioniert auch ohne.',
+  g:{ title:'Gibt es Noten, die <em>die Person</em> besonders mag?',
+      sub:'Die konkreteste Angabe im ganzen Fragebogen. Nur ankreuzen, wo du es wirklich weißt — geraten schadet hier mehr, als es nützt. Wenn du unsicher bist: überspringen.' },
   o:[
     ['Vanille','Vanille','Warm, süß, cremig.'],
     ['Sandelholz','Sandelholz','Milchig-weiches Holz, sehr beruhigend.'],
@@ -1102,7 +1305,18 @@ Q.find(q=>q.id==='anchorneg').o = Q.find(q=>q.id==='anchor').o.slice();
 /* Reihenfolge: erst die Bilder — die versteht jeder — dann die Duftfamilien
    mit ihrem Fachvokabular, vorbelegt aus genau diesen Bildern. */
 const ORDER = ['exp','occ','season','mood','fam','sweet','nogo','sil','longevity','vibe','eff','bold','schnitt','notes','anchor','anchorneg','frame'];
+/* Der Geschenkpfad braucht eine andere Reihenfolge, nicht andere Fragen.
+   Der Rahmen steht vorn, weil Duftcode und Budget beim Geschenk als Erstes
+   feststehen. Duftfamilien, No-Gos und Noten rutschen hinter den
+   Zwischenschritt: Das sind Angaben, die nur macht, wer die Person gut
+   kennt. Statt Fragen zu verdoppeln, wird hier nur anders sortiert. */
+const ORDER_G = ['beziehung','frame','exp','occ','season','vibe','mood','sil','bold','sweet','eff',
+                 'schnitt','anchor','ankerrichtung','ankernaehe','fam','nogo','notes','anchorneg'];
 const KAPITEL = {1:'Einstieg', 2:'Dein Geschmack', 3:'Feinschliff & Rahmen'};
+/* Im Geschenkpfad steht der Rahmen an zweiter Stelle, nicht am Ende —
+   „Feinschliff & Rahmen" waere dort schlicht falsch beschriftet. Und der
+   Geschmack ist nicht deiner, sondern der eines anderen. */
+const KAPITEL_G = {1:'Wer und was', 2:'Der Mensch dahinter', 3:'Wenn du mehr weißt'};
 Q.sort((x,y)=>ORDER.indexOf(x.id)-ORDER.indexOf(y.id));
 const NUMWORD = {13:'Dreizehn',14:'Vierzehn',15:'Fünfzehn',16:'Sechzehn',17:'Siebzehn'};
 
@@ -1721,6 +1935,40 @@ D.push(
 D.push(
 ["Erolfa","Creed",["aquatisch","zitrus","holzig"],["ozean","salzhaut"],4,1,2,["sommer","fruehling"],["freizeit","alltag","signature"],["sportlich","klassisch"],["gepflegt"],"m",4,["aquatisch"],"Bergamotte, Melone, Meeresnoten, Zeder, Ambergris"],
 ["Un Jardin sur le Nil","Hermès",["gruen","zitrus","holzig"],["feige","kraeuter"],3,2,2,["sommer","fruehling"],["alltag","freizeit"],["minimal","kreativ"],["gepflegt","kopfkino"],"u",2,[],"Grüne Mango, Lotus, Tomatengrün, Weihrauch, Zimt"],
+/* ── Nachtrag 17.09.2026 ───────────────────────────────────────────────
+   Neun Eintraege, gezielt gegen drei gemessene Luecken. Kennwerte an den
+   direkten Nachbarn kalibriert, nicht frei geschaetzt: die Jardin-Reihe an
+   „Un Jardin sur le Nil" (sil 3, sweet 2, bold 2, p2), die Tauer-Eintraege
+   an Ambre Sultan und Avignon, die aquatischen an Acqua di Giò.
+   Sillage, Suesse und Wagemut sind und bleiben Einschaetzung — vor dem
+   Go-live stichprobenartig gegenlesen. */
+["Un Jardin sur la Lagune","Hermès",["gruen","floral","aquatisch"],["bluete","waldboden"],3,2,2,["fruehling","sommer"],["alltag","freizeit"],["minimal","kreativ"],["gepflegt","kopfkino"],"u",2,[],"Magnolie, Lilie, Kiefer, Pittosporum, Holznoten"],
+["Un Jardin après la Mousson","Hermès",["aquatisch","gruen","aromatisch"],["asphalt","obstgarten"],2,2,4,["sommer","fruehling"],["alltag","freizeit"],["kreativ","intellektuell"],["kopfkino"],"u",2,[],"Ingwer, Melone, Kardamom, Vetiver, nasse Erde"],
+["Le Jardin de Monsieur Li","Hermès",["zitrus","gruen","floral"],["zitrusgarten","kraeuter"],2,2,1,["sommer","fruehling"],["alltag","freizeit"],["minimal","sportlich"],["gepflegt"],"u",2,[],"Kumquat, Jasmin, Minze, Feige, Bambus"],
+["Un Jardin en Méditerranée","Hermès",["gruen","holzig"],["feige","kraeuter"],3,2,2,["sommer","fruehling"],["alltag","freizeit","signature"],["minimal","klassisch"],["gepflegt","kopfkino"],"u",2,[],"Feige, Feigenblatt, Zeder, Oleander, Bergamotte"],
+["L'Air du Désert Marocain","Tauer Perfumes",["amber","weihrauch","holzig"],["basar","weihrauch","kamin"],5,2,4,["winter","herbst"],["abend","event"],["intellektuell","kreativ"],["statement","kopfkino"],"u",3,[],"Cistus, Weihrauch, Zedernholz, Kümmel, Amber, Vanille"],
+["Lonestar Memories","Tauer Perfumes",["leder","holzig"],["kamin","bibliothek"],5,1,5,["winter","herbst"],["abend"],["rebellisch","kreativ"],["statement","kopfkino"],"u",3,["rauchig"],"Birkenteer, Leder, Tabak, Wacholder, Rauch"],
+["Acqua di Gioia","Giorgio Armani",["aquatisch","zitrus","floral"],["ozean","zitrusgarten"],3,2,1,["sommer"],["freizeit","alltag"],["sportlich","minimal"],["gepflegt"],"f",1,["aquatisch"],"Minze, Zitrone, Jasmin, Zedernholz, Meeresnoten"],
+["Aqua Allegoria Nerolia Vetiver","Guerlain",["zitrus","gruen","holzig"],["zitrusgarten","kraeuter"],2,1,1,["sommer","fruehling"],["alltag","freizeit"],["minimal","sportlich"],["gepflegt"],"u",1,[],"Neroli, Petitgrain, Grapefruit, Vetiver, Zitrone"],
+/* ── Gritti, 17.09.2026 ────────────────────────────────────────────────
+   Noten und Hauptakkorde von den Parfumo-Duftseiten; die Praesenz aus den
+   dortigen Sillage-Bewertungen, umgerechnet auf unsere Skala. Geeicht an
+   vier Dueften, deren Wert bei uns feststeht:
+     Tam Dao 5,9 → 2 · Acqua di Giò 6,3 → 3 · Aventus 7,3 → 4 ·
+     Black Afgano 8,7 → 5
+   Daraus: unter 6,0 → 2 · 6,0–6,6 → 3 · 6,7–7,6 → 4 · ueber 7,6 → 5.
+   Die Parfumo-Skala ist unten gestaucht, Werte unter 5 kommen praktisch
+   nicht vor — fuer echte Skin Scents taugt die Umrechnung also nicht.
+   Meine erste Schaetzung lag bei drei von fuenf daneben, am deutlichsten
+   bei Beyond the Wall (geschaetzt 2, tatsaechlich 4) — der Eintrag, der in
+   den Tests am haeufigsten auftauchte.
+   Geschaetzt bleibt nur der Wagemut und die Preisstufe. */
+["Pomelo Sorrento","Gritti",["zitrus","gruen","floral"],["zitrusgarten","bluete"],3,2,2,["sommer","fruehling"],["alltag","freizeit","signature"],["minimal","klassisch"],["gepflegt"],"u",3,[],"Grapefruit, Minze, grüne Noten, grüner Tee, Rose, weiße Blüten, weißer Moschus, Amber, Iris, Vetiver"],
+["Pomelo Assoluto","Gritti",["zitrus","aquatisch","gruen"],["zitrusgarten","ozean"],4,2,2,["sommer","fruehling"],["alltag","freizeit"],["sportlich","minimal"],["gepflegt"],"u",3,[],"Pomelo, Grapefruit, Meeresnoten, schwarzer Tee, Wacholder, rosa Pfeffer, Kardamom, Magnolie, Ambergris, weißer Moschus"],
+["Duchessa","Gritti",["gourmand","floral","amber"],["cremig","honig","obstgarten"],5,5,3,["winter","herbst"],["abend","event"],["extrovertiert","sinnlich"],["verfuehrung","waerme"],"u",3,[],"Schwarzkirsche, Marzipan, Bitterorange, Safranblüte, Nelke, Kakao, Jasmin, Mandel, brauner Zucker, Iris"],
+["Mango Aoud","Gritti",["gourmand","holzig","amber"],["obstgarten","cremig","basar"],4,4,3,["ganzjahr","winter"],["abend"],["extrovertiert","sinnlich"],["waerme","statement"],"u",3,[],"Mango, Guave, Neroli, Osmanthus, Ylang-Ylang, Kokosmilch, Amber, Oud, Vanille"],
+["Beyond the Wall","Gritti",["moschus","holzig","aromatisch"],["iris","waesche"],4,3,3,["ganzjahr"],["alltag","abend","signature"],["kreativ","intellektuell"],["kopfkino","waerme"],"u",3,["pudrig"],"Puder, Ingwer, Artemisia, Veilchen, schwarzer Tee, Iris, Milch, Kardamom, Sandelholz, weißer Moschus"],
+["Silver Musk","Nasomatto",["moschus","holzig"],["waesche"],4,1,3,["ganzjahr"],["alltag","signature"],["minimal","sinnlich"],["gepflegt","waerme"],"u",3,[],"Weißer Moschus, Ambrette, Sandelholz, Zitrusnoten"],
 ["Eau Parfumée au Thé Vert","Bvlgari",["gruen","zitrus","moschus"],["kraeuter","waesche"],2,1,2,["sommer","fruehling","ganzjahr"],["alltag","freizeit","signature"],["minimal","klassisch"],["gepflegt"],"u",1,[],"Grüner Tee, Bergamotte, Koriander, Pfeffer, Moschus"],
 ["Infusion d'Iris","Prada",["floral","moschus","holzig"],["iris","waesche"],3,1,2,["ganzjahr","fruehling"],["alltag","event","signature"],["minimal","klassisch"],["gepflegt"],"u",2,["pudrig"],"Iris, Neroli, Weihrauch, Zeder, Vetiver"],
 ["Clair de Musc","Serge Lutens",["moschus","floral"],["waesche","cremig"],2,2,2,["ganzjahr"],["alltag","signature"],["minimal","sinnlich"],["gepflegt"],"u",2,[],"Weißer Moschus, Orangenblüte, Iris, Bergamotte"],
@@ -1822,6 +2070,7 @@ const HAUSART = {
   'Marc Jacobs':'d','Marc-Antoine Barrois':'n','Matière Première':'n','Memo Paris':'n',
   'Molinard':'n','Montale':'n','Montblanc':'d','Mugler':'d','Narciso Rodriguez':'d',
   'Nasomatto':'n','Nina Ricci':'d','Nishane':'n','Ormonde Jayne':'n','Orto Parisi':'n',
+  'Tauer Perfumes':'n','Gritti':'n',
   'Paco Rabanne':'d','Parfum d\'Empire':'n','Parfums de Marly':'n','Parfums de Nicolaï':'n',
   "Penhaligon's":'n','Prada':'d','Profumum Roma':'n','Rasasi':'a','Robert Piguet':'n',
   'Rochas':'d','Roja Parfums':'n','Sana Jardin':'n','Serge Lutens':'n','Sisley':'d',
@@ -1893,41 +2142,58 @@ const HOUSES = HOUSE_LIST.length;
 
 /* Ankerdüfte → Profil-Hinweise */
 const ANCHORS = {
-  a_sauvage:{n:'Sauvage',fam:['zitrus','aromatisch','amber'],mood:['asphalt'],sweet:2,sil:5,bold:1},
-  a_bdc:{n:'Bleu de Chanel',fam:['holzig','zitrus','aromatisch'],mood:['asphalt'],sweet:2,sil:4,bold:1},
-  a_aventus:{n:'Aventus',fam:['zitrus','holzig','chypre'],mood:['asphalt','kamin'],sweet:3,sil:4,bold:2},
-  a_terre:{n:"Terre d'Hermès",fam:['zitrus','holzig','aromatisch'],mood:['asphalt','kraeuter'],sweet:1,sil:3,bold:1},
-  a_br540:{n:'Baccarat Rouge 540',fam:['amber','gourmand','floral'],mood:['honig'],sweet:4,sil:5,bold:4},
-  a_tv:{n:'Tobacco Vanille',fam:['gourmand','leder','amber'],mood:['honig','kamin'],sweet:5,sil:5,bold:3},
-  a_oudwood:{n:'Oud Wood',fam:['holzig','amber'],mood:['bibliothek'],sweet:2,sil:3,bold:3},
-  a_santal:{n:'Santal 33',fam:['holzig','leder','moschus'],mood:['bibliothek','iris'],sweet:2,sil:4,bold:4},
-  a_philosykos:{n:'Philosykos',fam:['gruen','holzig'],mood:['feige','kraeuter'],sweet:2,sil:3,bold:2},
-  a_no5:{n:'N°5',fam:['floral','moschus'],mood:['iris','waesche'],sweet:3,sil:4,bold:3},
-  a_coco:{n:'Coco Mademoiselle',fam:['chypre','zitrus','floral'],mood:['iris'],sweet:3,sil:4,bold:2},
-  a_ombre:{n:'Ombre Nomade',fam:['weihrauch','holzig','floral'],mood:['weihrauch','kamin'],sweet:3,sil:5,bold:4},
-  a_lemale:{n:'Le Male',fam:['aromatisch','gourmand','amber'],mood:['honig','waesche'],sweet:4,sil:5,bold:2},
-  a_1million:{n:'1 Million',fam:['gourmand','amber','zitrus'],mood:['honig'],sweet:5,sil:5,bold:2},
-  a_eros:{n:'Eros',fam:['gourmand','aromatisch','holzig'],mood:['honig'],sweet:5,sil:5,bold:2},
-  a_dh:{n:'Dior Homme Intense',fam:['floral','holzig','gourmand'],mood:['iris'],sweet:3,sil:4,bold:3},
-  a_lanuit:{n:"La Nuit de l'Homme",fam:['aromatisch','amber','holzig'],mood:['kraeuter'],sweet:3,sil:4,bold:1},
-  a_adgp:{n:'Acqua di Giò Profumo',fam:['aquatisch','weihrauch','holzig'],mood:['ozean','salzhaut'],sweet:1,sil:4,bold:2},
-  a_git:{n:'Green Irish Tweed',fam:['gruen','aromatisch','holzig'],mood:['kraeuter'],sweet:1,sil:4,bold:2},
-  a_layton:{n:'Layton',fam:['amber','gourmand','aromatisch'],mood:['honig'],sweet:4,sil:4,bold:2},
-  a_interlude:{n:'Interlude Man',fam:['weihrauch','holzig','leder'],mood:['weihrauch','kamin'],sweet:1,sil:5,bold:5},
-  a_ofg:{n:'Oud for Greatness',fam:['holzig','weihrauch','aromatisch'],mood:['weihrauch','kamin'],sweet:2,sil:5,bold:4},
-  a_tamdao:{n:'Tam Dao',fam:['holzig','weihrauch'],mood:['weihrauch','bibliothek'],sweet:1,sil:2,bold:2},
-  a_mol01:{n:'Molecule 01',fam:['holzig','moschus'],mood:['waesche','asphalt'],sweet:0,sil:2,bold:3},
-  a_gypsy:{n:'Gypsy Water',fam:['holzig','weihrauch','zitrus'],mood:['kamin','kraeuter'],sweet:2,sil:2,bold:2},
-  a_angel:{n:'Angel',fam:['gourmand','chypre'],mood:['honig','cremig'],sweet:5,sil:5,bold:5},
-  a_flowerbomb:{n:'Flowerbomb',fam:['floral','gourmand'],mood:['honig','iris'],sweet:5,sil:5,bold:3},
-  a_goodgirl:{n:'Good Girl',fam:['gourmand','floral','amber'],mood:['honig','iris'],sweet:5,sil:5,bold:3},
-  a_lveb:{n:'La Vie Est Belle',fam:['gourmand','floral'],mood:['iris','honig'],sweet:5,sil:5,bold:2},
-  a_shalimar:{n:'Shalimar',fam:['amber','gourmand','zitrus'],mood:['honig','iris'],sweet:4,sil:5,bold:4},
-  a_opium:{n:'Opium',fam:['amber','gourmand','weihrauch'],mood:['basar','honig'],sweet:4,sil:5,bold:5},
-  a_pol:{n:'Portrait of a Lady',fam:['floral','chypre','weihrauch'],mood:['weihrauch','iris'],sweet:3,sil:5,bold:4},
-  a_erbapura:{n:'Erba Pura',fam:['zitrus','gourmand','moschus'],mood:['salzhaut','obstgarten'],sweet:4,sil:4,bold:1},
-  a_khamrah:{n:'Khamrah',fam:['gourmand','amber','holzig'],mood:['honig','basar','cremig'],sweet:5,sil:5,bold:3},
-  a_wsss:{n:'Wood Sage & Sea Salt',fam:['gruen','aquatisch','moschus'],mood:['salzhaut','ozean'],sweet:1,sil:2,bold:2}
+  a_sauvage:{g:'m',n:'Sauvage',fam:['zitrus','aromatisch','amber'],mood:['asphalt'],sweet:2,sil:5,bold:1},
+  a_bdc:{g:'m',n:'Bleu de Chanel',fam:['holzig','zitrus','aromatisch'],mood:['asphalt'],sweet:2,sil:4,bold:1},
+  a_aventus:{g:'m',n:'Aventus',fam:['zitrus','holzig','chypre'],mood:['asphalt','kamin'],sweet:3,sil:4,bold:2},
+  a_terre:{g:'m',n:"Terre d'Hermès",fam:['zitrus','holzig','aromatisch'],mood:['asphalt','kraeuter'],sweet:1,sil:3,bold:1},
+  a_br540:{g:'u',n:'Baccarat Rouge 540',fam:['amber','gourmand','floral'],mood:['honig'],sweet:4,sil:5,bold:4},
+  a_tv:{g:'u',n:'Tobacco Vanille',fam:['gourmand','leder','amber'],mood:['honig','kamin'],sweet:5,sil:5,bold:3},
+  a_oudwood:{g:'u',n:'Oud Wood',fam:['holzig','amber'],mood:['bibliothek'],sweet:2,sil:3,bold:3},
+  a_santal:{g:'u',n:'Santal 33',fam:['holzig','leder','moschus'],mood:['bibliothek','iris'],sweet:2,sil:4,bold:4},
+  a_philosykos:{g:'u',n:'Philosykos',fam:['gruen','holzig'],mood:['feige','kraeuter'],sweet:2,sil:3,bold:2},
+  a_no5:{g:'f',n:'N°5',fam:['floral','moschus'],mood:['iris','waesche'],sweet:3,sil:4,bold:3},
+  a_coco:{g:'f',n:'Coco Mademoiselle',fam:['chypre','zitrus','floral'],mood:['iris'],sweet:3,sil:4,bold:2},
+  a_ombre:{g:'u',n:'Ombre Nomade',fam:['weihrauch','holzig','floral'],mood:['weihrauch','kamin'],sweet:3,sil:5,bold:4},
+  a_lemale:{g:'m',n:'Le Male',fam:['aromatisch','gourmand','amber'],mood:['honig','waesche'],sweet:4,sil:5,bold:2},
+  a_1million:{g:'m',n:'1 Million',fam:['gourmand','amber','zitrus'],mood:['honig'],sweet:5,sil:5,bold:2},
+  a_eros:{g:'m',n:'Eros',fam:['gourmand','aromatisch','holzig'],mood:['honig'],sweet:5,sil:5,bold:2},
+  a_dh:{g:'m',n:'Dior Homme Intense',fam:['floral','holzig','gourmand'],mood:['iris'],sweet:3,sil:4,bold:3},
+  a_lanuit:{g:'m',n:"La Nuit de l'Homme",fam:['aromatisch','amber','holzig'],mood:['kraeuter'],sweet:3,sil:4,bold:1},
+  a_adgp:{g:'m',n:'Acqua di Giò Profumo',fam:['aquatisch','weihrauch','holzig'],mood:['ozean','salzhaut'],sweet:1,sil:4,bold:2},
+  a_git:{g:'m',n:'Green Irish Tweed',fam:['gruen','aromatisch','holzig'],mood:['kraeuter'],sweet:1,sil:4,bold:2},
+  a_layton:{g:'m',n:'Layton',fam:['amber','gourmand','aromatisch'],mood:['honig'],sweet:4,sil:4,bold:2},
+  a_interlude:{g:'m',n:'Interlude Man',fam:['weihrauch','holzig','leder'],mood:['weihrauch','kamin'],sweet:1,sil:5,bold:5},
+  a_ofg:{g:'u',n:'Oud for Greatness',fam:['holzig','weihrauch','aromatisch'],mood:['weihrauch','kamin'],sweet:2,sil:5,bold:4},
+  a_tamdao:{g:'u',n:'Tam Dao',fam:['holzig','weihrauch'],mood:['weihrauch','bibliothek'],sweet:1,sil:2,bold:2},
+  a_mol01:{g:'u',n:'Molecule 01',fam:['holzig','moschus'],mood:['waesche','asphalt'],sweet:0,sil:2,bold:3},
+  a_gypsy:{g:'u',n:'Gypsy Water',fam:['holzig','weihrauch','zitrus'],mood:['kamin','kraeuter'],sweet:2,sil:2,bold:2},
+  a_angel:{g:'u',n:'Angel',fam:['gourmand','chypre'],mood:['honig','cremig'],sweet:5,sil:5,bold:5},
+  a_flowerbomb:{g:'f',n:'Flowerbomb',fam:['floral','gourmand'],mood:['honig','iris'],sweet:5,sil:5,bold:3},
+  a_goodgirl:{g:'f',n:'Good Girl',fam:['gourmand','floral','amber'],mood:['honig','iris'],sweet:5,sil:5,bold:3},
+  a_lveb:{g:'f',n:'La Vie Est Belle',fam:['gourmand','floral'],mood:['iris','honig'],sweet:5,sil:5,bold:2},
+  a_shalimar:{g:'f',n:'Shalimar',fam:['amber','gourmand','zitrus'],mood:['honig','iris'],sweet:4,sil:5,bold:4},
+  a_opium:{g:'f',n:'Opium',fam:['amber','gourmand','weihrauch'],mood:['basar','honig'],sweet:4,sil:5,bold:5},
+  a_pol:{g:'f',n:'Portrait of a Lady',fam:['floral','chypre','weihrauch'],mood:['weihrauch','iris'],sweet:3,sil:5,bold:4},
+  a_erbapura:{g:'u',n:'Erba Pura',fam:['zitrus','gourmand','moschus'],mood:['salzhaut','obstgarten'],sweet:4,sil:4,bold:1},
+  a_khamrah:{g:'u',n:'Khamrah',fam:['gourmand','amber','holzig'],mood:['honig','basar','cremig'],sweet:5,sil:5,bold:3},
+  a_wsss:{g:'u',n:'Wood Sage & Sea Salt',fam:['gruen','aquatisch','moschus'],mood:['salzhaut','ozean'],sweet:1,sil:2,bold:2},
+  /* Acht feminine Klassiker ergaenzt (17.09.2026). Grund: Die Liste war mit
+     13 maskulinen, 8 femininen und 14 unisex Eintraegen fuer den eigenen
+     Weg ausgewogen — fuer den Geschenkfall aber schief. Gefragt ist dort
+     nicht „welchen kennst du", sondern „welcher steht im Regal", und das
+     sind die meistverkauften Damenduefte. J'adore, Miss Dior, Chance,
+     Libre, Idôle, Alien, Light Blue und Bloom standen alle schon als Duft
+     in der Datenbank, aber nicht als Anker.
+     Die Kennwerte sind aus den vorhandenen Datenbankzeilen uebernommen,
+     nicht neu geschaetzt — damit Anker und Duft nicht auseinanderlaufen. */
+  a_jadore:{g:'f',n:"J'adore",fam:['floral'],mood:['nachtblueten','obstgarten'],sweet:3,sil:4,bold:2},
+  a_missdior:{g:'f',n:'Miss Dior Eau de Parfum',fam:['floral','chypre'],mood:['iris'],sweet:4,sil:4,bold:2},
+  a_chance:{g:'f',n:'Chance Eau Tendre',fam:['floral','zitrus','moschus'],mood:['waesche','zitrusgarten'],sweet:3,sil:4,bold:1},
+  a_libre:{g:'f',n:'Libre',fam:['aromatisch','gourmand','floral'],mood:['honig','nachtblueten'],sweet:4,sil:4,bold:2},
+  a_idole:{g:'f',n:'Idôle',fam:['floral','chypre','moschus'],mood:['waesche','cremig'],sweet:3,sil:3,bold:1},
+  a_alien:{g:'f',n:'Alien',fam:['floral','amber','holzig'],mood:['iris','nachtblueten'],sweet:4,sil:5,bold:4},
+  a_lightblue:{g:'f',n:'Light Blue',fam:['zitrus','gruen','holzig'],mood:['kraeuter','salzhaut'],sweet:2,sil:3,bold:1},
+  a_bloom:{g:'f',n:'Bloom',fam:['floral'],mood:['nachtblueten'],sweet:3,sil:4,bold:3}
 };
 
 /* ═══ 3 — Engine ═══════════════════════════════════════════ */
@@ -1936,7 +2202,18 @@ Q.forEach(q=>{
   (q.o||[]).forEach(o=>LBL[o[0]]=o[1]);
   (q.groups||[]).forEach(g=>g.o.forEach(o=>LBL[g.key+':'+o[0]]=o[1]));
 });
-const MOODLBL = {zitrusgarten:'Zitrusgarten',kamin:'Kaminfeuer & Whisky',bibliothek:'alte Bibliothek',feige:'Feigenbaum im Schatten',bluete:'Blütenbaum',weihrauch:'Weihrauch in Stein',ozean:'kalte Gischt',waesche:'frische Wäsche',cremig:'Sonnencreme auf warmer Haut',waldboden:'Waldboden nach dem Regen',obstgarten:'Obstgarten im Spätsommer',nachtblueten:'Nachtblüten',salzhaut:'salzige Haut',basar:'Gewürzbasar',honig:'Honig & Tabak',iris:'puderige Iris',asphalt:'Regen auf heißem Stein',kraeuter:'zerriebene Kräuter'};
+const MOODLBL = {zitrusgarten:'Zitrusgarten',kamin:'Kaminfeuer & Whisky',bibliothek:'alte Bibliothek',feige:'Feigenbaum im Schatten',bluete:'Blütenbaum',weihrauch:'Weihrauch in Stein',ozean:'kalte Gischt',waesche:'frische Wäsche',cremig:'Kaschmirdecke und Vanille',waldboden:'Waldboden nach dem Regen',obstgarten:'Obstgarten im Spätsommer',nachtblueten:'Nachtblüten',salzhaut:'salzige Haut',basar:'Gewürzbasar',honig:'Honig & Tabak',iris:'puderige Iris',asphalt:'Regen auf heißem Stein',kraeuter:'zerriebene Kräuter'};
+/* Drei Szenen heissen im Geschenkpfad anders, weil reine
+   Geruchsaufzaehlungen sich keinem Menschen zuordnen lassen. Der Schluessel
+   bleibt derselbe; nur die Beschriftung wechselt — hier zentral, damit sie
+   auch im Fliesstext, im Steckbrief und auf dem Duftpass stimmt und nicht
+   nur in der Frage. */
+const MOODLBL_G = {honig:'alte Bar am späten Abend', iris:'Vintage-Mantel und Lederhandschuhe',
+                   waesche:'saubere Wäsche und warme Haut'};
+function moodLbl(k){
+  if(istGeschenk() && MOODLBL_G[k]) return MOODLBL_G[k];
+  return MOODLBL[k];
+}
 const FAMLBL = {zitrus:'Zitrisch',gruen:'Grün',aromatisch:'Aromatisch',floral:'Floral',holzig:'Holzig',weihrauch:'Weihrauch',amber:'Amber',gourmand:'Gourmand',leder:'Leder',chypre:'Chypre',aquatisch:'Aquatisch',moschus:'Moschus'};
 const FAMCOL = {zitrus:'#C9A94E',gruen:'#6B8757',aromatisch:'#8C9A5B',floral:'#B0687F',holzig:'#96703F',weihrauch:'#6E7671',amber:'#B07A3C',gourmand:'#A2593C',leder:'#6E5236',chypre:'#4A7A6B',aquatisch:'#46708C',moschus:'#A79BAE'};
 const SILV = {skin:1,dezent:2,praesent:3.5,raumfuellend:5};
@@ -1985,19 +2262,54 @@ const state = {step:-1, a:{}, fb:{}, geteilt:false};
 /* Aktive Fragen: Einsteiger bekommen einen kuerzeren Weg. Die Duftfamilien
    entfallen dort, weil sie ohnehin aus den Bildern abgeleitet werden; die
    Notenfrage und die Abneigungen setzen Vorwissen voraus. */
+/* Zweiter Weg: „Fuer jemand anderen". Derselbe Motor, dieselbe Datenbasis,
+   anderer Fragensatz. Fragen tragen dafuer ein Feld `modus`:
+     fehlt          — kommt in beiden Wegen vor
+     'selbst'       — nur im eigenen Profil
+     'geschenk'     — nur im Geschenkpfad
+   Im Geschenkpfad greift die `pfad`-Filterung nach Erfahrungsstufe nicht:
+   Dort steuert der Vertiefungsblock, was gefragt wird, nicht das Vorwissen
+   der beschriebenen Person. */
+function istGeschenk(){ return state.a.modus === 'geschenk'; }
 function AQ(){
+  const g = istGeschenk();
   const exp = state.a.exp || 'fortgeschritten';
-  return Q.filter(function(q){ return !q.pfad || q.pfad.indexOf(exp) >= 0; });
+  const liste = Q.filter(function(q){
+    if(q.modus && q.modus !== (g ? 'geschenk' : 'selbst')) return false;
+    if(q.wenn && !q.wenn(state.a)) return false;
+    if(g) return true;
+    return !q.pfad || q.pfad.indexOf(exp) >= 0;
+  });
+  if(!g) return liste;
+  return liste.slice().sort(function(x,y){
+    return ORDER_G.indexOf(x.id) - ORDER_G.indexOf(y.id);
+  });
+}
+/* Viele Fragen bleiben inhaltlich gleich und brauchen nur eine andere
+   Ansprache — „du" wird zu „die Person". Statt sie zu verdoppeln, tragen
+   sie ein Feld `g` mit den abweichenden Texten. Das laesst den bestehenden
+   Weg buchstaeblich unberuehrt: Ohne Geschenkmodus wird `g` nie gelesen. */
+function qT(q, feld){
+  if(istGeschenk() && q.g && q.g[feld] !== undefined) return q.g[feld];
+  return q[feld];
+}
+/* Antwortoptionen koennen im Geschenkpfad abweichen — meist kommt nur eine
+   Ausweichoption dazu („Weiss ich nicht"), manchmal aendert sich eine
+   Beschriftung, die in der dritten Person nicht funktioniert. */
+function qO(q){
+  if(istGeschenk() && q.g && q.g.o) return q.g.o;
+  return q.o;
 }
 /* Der Zwischenschritt ist ein Schritt, aber keine Frage. */
 function frageZahl(){ return AQ().filter(function(q){ return q.kind !== 'info' }).length; }
 function kapitelInfo(){
   const A = AQ(), akt = A[state.step];
   if(!akt) return null;
-  const nr = akt.kap || 1;
-  const inKap = A.filter(function(q){ return (q.kap||1) === nr; });
+  const kapVon = function(q){ return (istGeschenk() && q.gkap) ? q.gkap : (q.kap||1); };
+  const nr = kapVon(akt);
+  const inKap = A.filter(function(q){ return kapVon(q) === nr; });
   const pos = inKap.indexOf(akt) + 1;
-  return {nr:nr, name:KAPITEL[nr], pos:pos, von:inKap.length};
+  return {nr:nr, name:(istGeschenk()?KAPITEL_G:KAPITEL)[nr], pos:pos, von:inKap.length};
 }
 const inter = (a,b)=>a.filter(x=>b.includes(x));
 
@@ -2005,9 +2317,77 @@ const inter = (a,b)=>a.filter(x=>b.includes(x));
    und Reinheit (wie viel des Dufts ist deine Wahl). 0 wenn nichts trifft. */
 /* Schwerpunkt: Die vom Nutzer als wichtigste benannte Dimension zaehlt
    anderthalbfach. Ohne Angabe bleibt alles gleichgewichtig. */
+/* „Weiss ich nicht" im Geschenkpfad. Die Ausweichoptionen schreiben eigene
+   Marken ins Profil (`occ_egal` und so weiter). Die duerfen nicht in die
+   Rechnung geraten, und sie duerfen auch nicht als „nichts angekreuzt"
+   durchgehen: Eine uebersprungene Frage ist keine Enthaltung mit Abzug,
+   sondern eine Frage, die es fuer dieses Profil nicht gibt.
+   Deshalb wird die Marke entfernt UND die Dimension als offen vermerkt.
+   Offene Dimensionen bekommen in `score` und `maxScore` das Gewicht null —
+   dadurch bleiben die Prozentwerte vergleichbar, statt kuenstlich zu
+   sinken, nur weil jemand ehrlich war. */
+const OFFENMARKE = {occ:'occ_egal', sweet:'sw_egal', sil:'sil_egal',
+                    bold:'bold_egal', eff:'eff_egal', vibe:'vibe_egal', mood:'mood_egal'};
+const OFFENERSATZ = {sweet:'dezent', sil:'dezent', bold:'ausgewogen'};
+function normProfil(a){
+  if(a.modus !== 'geschenk') return a;
+  const b = Object.assign({}, a);
+  b.offen = {};
+  Object.keys(OFFENMARKE).forEach(function(k){
+    const marke = OFFENMARKE[k], v = b[k];
+    if(Array.isArray(v)){
+      const rein = v.filter(function(x){ return x !== marke; });
+      if(v.indexOf(marke) >= 0 || !rein.length) b.offen[k] = 1;
+      b[k] = rein;
+    } else if(v === marke){
+      b.offen[k] = 1;
+      b[k] = OFFENERSATZ[k];
+    }
+  });
+  /* Unisex wird im Geschenkpfad immer mitgenommen. Wer ein Geschenk sucht,
+     waehlt fast immer maskulin oder feminin — und filtert sich damit den
+     groessten Teil der Nischenparfuemerie weg, die bewusst
+     geschlechtsneutral komponiert ist. Zahlen im Katalog: 261 unisex
+     gegenueber 153 feminin und 118 maskulin. Ohne diese Zeile waere die
+     Auswahl fuer ein maennliches Geschenk ein Drittel so gross.
+     Der Hinweis an der Frage sagt das offen, damit es keine stille
+     Korrektur hinter dem Ruecken des Nutzers ist. */
+  if(b.gender && b.gender.length && b.gender.indexOf('u') < 0){
+    b.gender = b.gender.concat(['u']);
+  }
+  /* Leitplanke: Ein Duft fuer die Chefin wird nicht verfuehrerisch, auch
+     wenn jemand es ankreuzt. Das ist die eine Stelle, an der die Beziehung
+     mehr ist als eine Vorbelegung. */
+  if(b.beziehung === 'arbeit' && b.eff){
+    b.eff = b.eff.filter(function(x){ return x !== 'verfuehrung'; });
+    if(!b.eff.length){ b.eff = ['gepflegt']; }
+  }
+  /* Haltbarkeit wird im Geschenkpfad gar nicht gefragt */
+  b.offen.lg = 1;
+  if(b.exp === 'unbekannt') b.offen.exp = 1;
+  /* Ohne Familien, aber mit Bildern: Die Familien werden abgeleitet. Das
+     ist derselbe Weg, den Einsteiger im eigenen Profil schon gehen. */
+  if((!b.fam || !b.fam.length) && b.mood && b.mood.length) b.fam = suggestFam(b.mood);
+  return b;
+}
+function OW(a,k){
+  /* Angleichung 17.09.2026: Die Haltbarkeitsfrage wurde in beiden Wegen
+     inkonsequent behandelt. Ihr Zweig fuer „Ganz normal" und „Weiss ich
+     nicht" vergibt an JEDEN Duft pauschal 4 Punkte — ein Posten, der allen
+     dasselbe gibt, bewertet nichts. Das erreichbare Maximum rechnete
+     trotzdem mit 6. Folge: Wer hier ehrlich „weiss ich nicht" ankreuzte,
+     konnte rechnerisch nie 100 % erreichen, ohne dass sich an der
+     Reihenfolge etwas aenderte.
+     Jetzt zaehlt der Posten nur, wenn er auch unterscheidet — also bei
+     „nach zwei Stunden weg" oder „ewig". Das ist dieselbe Regel, die der
+     Geschenkpfad von Anfang an fuer uebersprungene Fragen benutzt. */
+  if(k === 'lg' && a.longevity !== 'schnell' && a.longevity !== 'ewig') return 0;
+  return (a.offen && a.offen[k]) ? 0 : 1;
+}
 function focusW(a){
   const W = {fam:1, mood:1, occ:1, sil:1, sweet:1};
-  if(a.focus && W[a.focus] !== undefined) W[a.focus] = 1.5;
+  Object.keys(W).forEach(function(k){ if(a.offen && a.offen[k]) W[k] = 0; });
+  if(a.focus && W[a.focus]) W[a.focus] = 1.5;
   return W;
 }
 /* Reihenfolge zaehlt: Was zuerst angeklickt wurde, wiegt schwerer. So macht
@@ -2058,7 +2438,7 @@ function score(f,a,anc,ctx){
   p.occ   = W.occ * (12 * f1(occHit.length, a.occ.length, Math.min(f.occ.length,3)) + (seasOk ? 8 : 0));
   p.sil   = W.sil * Math.max(0, 10 - Math.abs(f.sil - sT)*4);
   /* Milder Abzug: schlichte Bauart ist kein Makel, nur eine Abweichung. */
-  p.bold  = Math.max(0, 10 - Math.abs(f.bold - bT)*4.2);
+  p.bold  = OW(a,'bold') * Math.max(0, 10 - Math.abs(f.bold - bT)*4.2);
   p.sweet = W.sweet * Math.max(0, 9 - Math.abs(f.sweet - wT)*3);
   /* Notenebene: die konkreteste Angabe, die jemand machen kann. */
   p.notes = 0;
@@ -2080,12 +2460,13 @@ function score(f,a,anc,ctx){
   }
   /* Haltbarkeit: schwere Basen und hohe Präsenz halten länger */
   const lg = Math.min(5, f.sil*0.55 + inter(['amber','gourmand','leder','weihrauch','holzig'],f.fam).length*0.9);
-  p.lg = a.longevity==='schnell' ? Math.max(0, 6 - Math.abs(5 - lg)*2.2)
+  p.lg = !OW(a,'lg')          ? 0
+       : a.longevity==='schnell' ? Math.max(0, 6 - Math.abs(5 - lg)*2.2)
        : a.longevity==='ewig'    ? Math.max(0, 6 - Math.abs(2.6 - lg)*1.6)
        : 4;
   let other = 0;
-  other += 8 * f1(vibeHit.length, a.vibe.length, Math.min(f.vibe.length,3));
-  other += 8 * f1(effHit.length, a.eff.length, Math.min(f.eff.length,2));
+  other += 8 * OW(a,'vibe') * f1(vibeHit.length, a.vibe.length, Math.min(f.vibe.length,3));
+  other += 8 * OW(a,'eff')  * f1(effHit.length, a.eff.length, Math.min(f.eff.length,2));
   other += (function(){
     /* a.gender ist seit der Mehrfachauswahl ein Array. Wurde das hier nicht
        mitgezogen, bekam jeder nicht-unisex Duft minus neun Punkte, obwohl der
@@ -2102,6 +2483,10 @@ function score(f,a,anc,ctx){
      blieb die Erfahrungsfrage fuer die Haeuserauswahl folgenlos: gemessen
      bekam ein Sammler denselben Designeranteil wie ein Einsteiger. */
   other += (function(){
+    /* Im Geschenkpfad kann „weiss ich nicht" stehen. Dann wird die Hausart
+       gar nicht gewichtet — weder Designer bevorzugt noch Nische. Es kommt
+       von selbst eine Mischung heraus, ohne dass wir etwas unterstellen. */
+    if(a.exp === 'unbekannt') return 0;
     if(a.exp === 'sammler'){
       if(f.art==='d') return -5;    /* -9 war zu hart: Sammler bekamen 0 % Designer.
                                        Ziel ist selten, nicht ausgeschlossen — sonst
@@ -2137,7 +2522,11 @@ function score(f,a,anc,ctx){
 
 function maxScore(a,anc){
   const W = focusW(a);
-  let m = 22*W.fam + 16*W.mood + 20*W.occ + 10*W.sil + 10 + 9*W.sweet + 6 + 8 + 8 + 6 + 6;
+  /* Spiegelbild zu `score`: Offene Dimensionen zaehlen auch im erreichbaren
+     Maximum nicht mit, sonst saehe jedes ehrlich uebersprungene Profil
+     schlechter aus, als es ist. */
+  let m = 22*W.fam + 16*W.mood + 20*W.occ + 10*W.sil + 10*OW(a,'bold') + 9*W.sweet
+        + 6*OW(a,'lg') + 8*OW(a,'vibe') + 8*OW(a,'eff') + 6 + 6;
   if(a.notes && a.notes.length){
     /* Erreichbares Maximum sinkt mit der Aussagekraft der gewaehlten Noten,
        sonst waeren die Prozentwerte bei Sammelbegriffen dauerhaft gedeckelt. */
@@ -2151,7 +2540,10 @@ function maxScore(a,anc){
   return m;
 }
 
-function rank(a){
+function rank(a0){
+  /* Einziger Eintrittspunkt: Das Geschenkprofil wird hier bereinigt, damit
+     alles dahinter unveraendert mit einem normalen Profil rechnet. */
+  const a = normProfil(a0);
   const anc = anchorProfile(a);
   const ancNames = anc ? anc.names : [];
   const negKeys = a.anchorneg||[];
@@ -2244,7 +2636,7 @@ function diversify(list, limit, maxPerHouse, skip, maxD){
 function reasons(r,a){
   const out = [];
   if(r.famHit.length) out.push(r.famHit.map(k=>FAMLBL[k]).join(' + '));
-  if(r.moodHit.length) out.push(MOODLBL[r.moodHit[0]]);
+  if(r.moodHit.length) out.push(moodLbl(r.moodHit[0]));
   if(r.occHit.length) out.push('für ' + r.occHit.map(k=>LBL[k]).join(' & '));
   const sd = r.f.sil - r.sT;
   if(Math.abs(sd)<=0.6) out.push('Präsenz: ' + LBL[a.sil].toLowerCase());
@@ -2297,12 +2689,55 @@ const listDe = arr => arr.length<2 ? (arr[0]||'') : arr.slice(0,-1).join(', ')+'
 function profileText(a,anc){
   const fam = a.fam.map(k=>FAMLBL[k]);
   const s = [];
-  s.push(`Du riechst am liebsten <strong>${listDe(fam)}</strong>, und die Bilder, die dich ziehen, sind <strong>${listDe(a.mood.map(k=>MOODLBL[k]))}</strong>.`);
-  s.push(`Getragen wird ${listDe(a.occ.map(k=>LBL[k].toLowerCase()))}, ${a.season.includes('ganzjahr')?'ganzjährig':'vor allem im '+listDe(a.season.map(k=>LBL[k]))}.`);
-  s.push(`Die Präsenz soll <strong>${LBL[a.sil].toLowerCase()}</strong> sein, die Süße <strong>${LBL[a.sweet].toLowerCase()}</strong>.`);
-  s.push(`Du beschreibst dich als ${listDe(a.vibe.map(k=>LBL[k].toLowerCase()))} und willst, dass der Duft dich <strong>${listDe(a.eff.map(k=>LBL[k].toLowerCase().replace(' wirken','').replace(' ausstrahlen','')))}</strong> lässt.`);
-  if(anc) s.push(`Als Anker ${anc.names.length>1?'dienen':'dient'} <strong>${listDe(anc.names)}</strong> — Düfte in dieser Richtung sind bevorzugt einsortiert, ${anc.names.length>1?'die Anker selbst':'der Anker selbst'} ${anc.names.length>1?'sind':'ist'} aus der Liste genommen.`);
-  s.push(a.nogo.length ? `Ausgeschlossen bleibt ${listDe(a.nogo.map(k=>LBL[k].toLowerCase()))}.` : `Du hast keine No-Gos gesetzt, die Auswahl konnte frei arbeiten.`);
+  const G = istGeschenk();
+  /* Der Steckbrief wird weitergegeben — im Geschenkpfad steht er deshalb
+     in der dritten Person und behauptet nur, was tatsaechlich angegeben
+     wurde. Aus „du beschreibst dich als" wird „beschrieben als": Es ist
+     eine Fremdeinschaetzung, und das soll man lesen koennen. */
+  const bilder = (a.mood||[]).map(k=>moodLbl(k)).filter(Boolean);
+  if(bilder.length){
+    s.push(G
+      ? `Gesucht wird ein Duft in Richtung <strong>${listDe(fam)}</strong>; in Bildern beschrieben: <strong>${listDe(bilder)}</strong>.`
+      : `Du riechst am liebsten <strong>${listDe(fam)}</strong>, und die Bilder, die dich ziehen, sind <strong>${listDe(bilder)}</strong>.`);
+  } else {
+    s.push(G
+      ? `Gesucht wird ein Duft in Richtung <strong>${listDe(fam)}</strong>. Bilder wurden keine gewählt.`
+      : `Du riechst am liebsten <strong>${listDe(fam)}</strong>.`);
+  }
+  /* Die Anlassnamen bleiben in ihrer eigenen Schreibweise. Vorher stand
+     „Getragen wird alltag & büro" — kleingeschrieben, damit es in den Satz
+     passt, was es aber nicht tat. */
+  const saison = a.season.includes('ganzjahr') ? 'ganzjährig' : 'vor allem im '+listDe(a.season.map(k=>LBL[k]));
+  if(a.occ.length) s.push(`Getragen bei ${listDe(a.occ.map(k=>LBL[k]))}, ${saison}.`);
+  else s.push(`Getragen ${saison}; ein bestimmter Anlass ist nicht angegeben.`);
+  /* Offene Angaben duerfen hier nicht als Aussage erscheinen. Sonst stand
+     im Steckbrief „Die Praesenz soll dezent sein" und zwei Saetze spaeter
+     „Praesenz: nicht angegeben" — ein Widerspruch im eigenen Text. Die
+     Ersatzwerte sind Rechengroessen, keine Angaben. */
+  const oSil = OW(a,'sil'), oSw = OW(a,'sweet');
+  if(oSil && oSw) s.push(`Die Präsenz soll <strong>${LBL[a.sil].toLowerCase()}</strong> sein, die Süße <strong>${LBL[a.sweet].toLowerCase()}</strong>.`);
+  else if(oSil) s.push(`Die Präsenz soll <strong>${LBL[a.sil].toLowerCase()}</strong> sein.`);
+  else if(oSw) s.push(`Die Süße soll <strong>${LBL[a.sweet].toLowerCase()}</strong> sein.`);
+  if(a.vibe.length) s.push(G
+    ? `Die Person ist beschrieben als ${listDe(a.vibe.map(k=>LBL[k].toLowerCase()))}${a.eff.length?`, und der Duft soll sie <strong>${listDe(a.eff.map(k=>LBL[k].toLowerCase().replace(' wirken','').replace(' ausstrahlen','')))}</strong> wirken lassen`:''}.`
+    : `Du beschreibst dich als ${listDe(a.vibe.map(k=>LBL[k].toLowerCase()))} und willst, dass der Duft dich <strong>${listDe(a.eff.map(k=>LBL[k].toLowerCase().replace(' wirken','').replace(' ausstrahlen','')))}</strong> lässt.`);
+  if(anc) s.push(G
+    ? `Im Regal ${anc.names.length>1?'stehen':'steht'} <strong>${listDe(anc.names)}</strong> — Düfte in dieser Richtung sind bevorzugt einsortiert, ${anc.names.length>1?'die genannten selbst sind':'der genannte selbst ist'} aus der Liste genommen.`
+    : `Als Anker ${anc.names.length>1?'dienen':'dient'} <strong>${listDe(anc.names)}</strong> — Düfte in dieser Richtung sind bevorzugt einsortiert, ${anc.names.length>1?'die Anker selbst':'der Anker selbst'} ${anc.names.length>1?'sind':'ist'} aus der Liste genommen.`);
+  s.push(a.nogo.length
+    ? `Ausgeschlossen bleibt ${listDe(a.nogo.map(k=>LBL[k].toLowerCase()))}.`
+    : (G ? `Ausschlüsse wurden keine angegeben.` : `Du hast keine No-Gos gesetzt, die Auswahl konnte frei arbeiten.`));
+  /* Offen gelassene Angaben werden benannt statt verschwiegen — wer den
+     Steckbrief in die Parfuemerie mitnimmt, soll wissen, was darin Vermutung
+     und was Angabe ist. */
+  if(G){
+    /* Anlass und Bilder stehen schon in eigenen Saetzen — hier nur, was
+       sonst gar nicht erwaehnt waere. */
+    const offenLbl = {sweet:'Süße', sil:'Präsenz', bold:'Auffälligkeit',
+                      eff:'gewünschte Wirkung', vibe:'Charakter'};
+    const off = Object.keys(a.offen||{}).map(function(k){ return offenLbl[k]; }).filter(Boolean);
+    if(off.length) s.push(`Nicht angegeben, weil unbekannt: ${listDe(off)}. Diese Punkte sind offen und nicht geraten.`);
+  }
   return s.join(' ');
 }
 
@@ -2387,6 +2822,97 @@ function paintChrome(){
 }
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
 
+/* ── Fragenschatz ────────────────────────────────────────────────────────
+   Ein driftendes Punktfeld in den Kennfarben der Fragen, verbunden wo
+   Punkte nah beieinander liegen. Dazu ein Begriff, der ein- und wieder
+   ausblendet. Absichtlich langsam: Es soll nach ruhiger Rechenarbeit
+   aussehen, nicht nach Bildschirmschoner.
+   Laeuft nur, solange das Intro sichtbar ist, und gar nicht, wenn das
+   System reduzierte Bewegung verlangt — dort steht das Feld still, was
+   als Bild ebenfalls funktioniert. */
+let schatzStop = null;
+function starteSchatz(){
+  if(schatzStop){ schatzStop(); schatzStop = null; }
+  const cv = document.getElementById('feld');
+  const wortEl = document.getElementById('schatzwort');
+  if(!cv || !cv.getContext) return;
+  const x = cv.getContext('2d');
+  const farben = Q.filter(function(q){ return q.acc; }).map(function(q){ return q.acc; });
+  const worte = ['Anlass','Jahreszeit','Bilder','Duftfamilien','Süße','Ausschlüsse',
+                 'Präsenz','Haltbarkeit','Typ','Wirkung','Wagemut','Lieblingsnoten',
+                 'Ankerdüfte','Abneigungen','Budget','Duftcode','Erfahrung'];
+  let W = 0, H = 0, dpr = Math.min(2, window.devicePixelRatio || 1);
+  const N = window.innerWidth < 640 ? 34 : 58;
+  const pkt = [];
+  function mass(){
+    const r = cv.getBoundingClientRect();
+    W = Math.max(1, r.width); H = Math.max(1, r.height);
+    cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
+    x.setTransform(dpr,0,0,dpr,0,0);
+  }
+  mass();
+  for(let i=0;i<N;i++){
+    pkt.push({x:Math.random()*W, y:Math.random()*H,
+      vx:(Math.random()-0.5)*0.16, vy:(Math.random()-0.5)*0.16,
+      r:1.1 + Math.random()*2.3, c:farben[i % farben.length],
+      a:0.25 + Math.random()*0.45});
+  }
+  const ruhig = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function zeichne(){
+    x.clearRect(0,0,W,H);
+    /* Erst die Verbindungen, damit die Punkte obenauf liegen */
+    x.lineWidth = 1;
+    for(let i=0;i<pkt.length;i++){
+      for(let j=i+1;j<pkt.length;j++){
+        const dx = pkt[i].x-pkt[j].x, dy = pkt[i].y-pkt[j].y;
+        const d2 = dx*dx + dy*dy;
+        if(d2 < 7000){
+          x.strokeStyle = 'rgba(148,140,127,' + (0.16*(1 - d2/7000)).toFixed(3) + ')';
+          x.beginPath(); x.moveTo(pkt[i].x,pkt[i].y); x.lineTo(pkt[j].x,pkt[j].y); x.stroke();
+        }
+      }
+    }
+    pkt.forEach(function(p){
+      x.globalAlpha = p.a; x.fillStyle = p.c;
+      x.beginPath(); x.arc(p.x,p.y,p.r,0,Math.PI*2); x.fill();
+    });
+    x.globalAlpha = 1;
+  }
+  function schritt(){
+    pkt.forEach(function(p){
+      p.x += p.vx; p.y += p.vy;
+      if(p.x < -4) p.x = W+4; if(p.x > W+4) p.x = -4;
+      if(p.y < -4) p.y = H+4; if(p.y > H+4) p.y = -4;
+    });
+    zeichne();
+  }
+  let raf = 0, an = true;
+  function schleife(){ if(!an) return; schritt(); raf = requestAnimationFrame(schleife); }
+  zeichne();
+  if(!ruhig) schleife();
+
+  /* Begriffe einzeln zeigen — nie zwei gleichzeitig */
+  let wi = Math.floor(Math.random()*worte.length), timer = null;
+  function wortWechsel(){
+    if(!wortEl || !document.body.contains(wortEl)) return;
+    wortEl.textContent = worte[wi % worte.length];
+    wortEl.classList.add('an');
+    timer = setTimeout(function(){
+      wortEl.classList.remove('an');
+      timer = setTimeout(function(){ wi++; wortWechsel(); }, 900);
+    }, 2200);
+  }
+  wortWechsel();
+
+  const beiMass = function(){ mass(); zeichne(); };
+  window.addEventListener('resize', beiMass);
+  schatzStop = function(){
+    an = false; if(raf) cancelAnimationFrame(raf);
+    if(timer) clearTimeout(timer);
+    window.removeEventListener('resize', beiMass);
+  };
+}
+
 function renderIntro(){
   paintChrome();
   const shown = HOUSE_LIST.slice(0,14);
@@ -2394,9 +2920,23 @@ function renderIntro(){
   <div class="fade">
     <p class="eyebrow">${F.length} Düfte · ${HOUSES} Häuser</p>
     <h1 class="lede">Ein paar Fragen, und du weißt,<br><em>wonach</em> du eigentlich suchst.</h1>
-    <p class="sub">Kein Duft-Horoskop. Am Ende steht ein <em style="font-style:normal;color:var(--ink)">Duftprofil zum Mitnehmen</em> — Steckbrief, Radar, Archetyp — mit dem du in jeder Parfümerie und auf Parfumo gezielt weitersuchen kannst. Dazu eine Top&nbsp;10 aus der kuratierten Auswahl als Startpunkt.</p>
-    <div class="dims">
-      ${AQ().map((q,i)=>`<div style="--dc:${q.acc}"><span>${String(i+1).padStart(2,'0')}</span>${esc(q.eyebrow)}</div>`).join('')}
+    <p class="sub">Kein Duft-Horoskop. Am Ende steht ein <em style="font-style:normal;color:var(--ink)">Duftprofil zum Mitnehmen</em>, mit dem du in jeder Parfümerie gezielt weitersuchen kannst — dazu Empfehlungen aus einer kuratierten Auswahl als Startpunkt. Für dich selbst oder für jemanden, dem du etwas schenken willst.</p>
+    <div class="schatz">
+      <canvas id="feld" aria-hidden="true"></canvas>
+      <div class="schatzwort" id="schatzwort"></div>
+      <p class="schatzfuss"><b>${F.length}</b> Düfte · <b>${HOUSES}</b> Häuser · <b>15</b> Merkmale je Duft</p>
+    </div>
+    <div class="wege">
+      <button type="button" class="weg" id="go">
+        <span class="wegtitel">Ich suche etwas <em>für mich</em></span>
+        <span class="wegtext">Sechzehn Fragen zu dem, was du magst und was gar nicht geht. Am Ende ein Duftprofil zum Mitnehmen und fünf Düfte als Startpunkt.</span>
+        <span class="wegmeta">ca. 8 Min. · für Einsteiger kürzer</span>
+      </button>
+      <button type="button" class="weg" id="gogift">
+        <span class="wegtitel">Ich will jemandem eine <em>Freude machen</em></span>
+        <span class="wegtext">Du beschreibst die Person, nicht den Duft. Funktioniert auch, wenn du wenig über sie weißt — überall darfst du „weiß ich nicht" sagen.</span>
+        <span class="wegmeta">ca. 5 Min. · für Geschenke gebaut</span>
+      </button>
     </div>
     ${resumeCard()}
     ${(function(){
@@ -2407,27 +2947,31 @@ function renderIntro(){
         <button type="button" id="fbreset">Wieder zulassen</button>
       </div>`;
     })()}
+    <p class="hausvor">Kuratiert aus diesen Häusern, unter anderem:</p>
     <ul class="houses">
       ${shown.map(h=>`<li>${esc(h)}</li>`).join('')}
       <li class="more">und ${HOUSES-shown.length} weitere</li>
     </ul>
-    <div class="nav navfix">
-      <span class="hintline lang">16 Fragen, davon 4 freiwillig · etwa 8 Minuten, für Einsteiger deutlich kürzer</span>
-      <span class="hintline kurz">16 Fragen · ca. 8 Min.</span>
-      <button class="cta" id="go">Beginnen</button>
-    </div>
   </div>`;
   /* Auch das Intro bekommt auf dem Handy die feste Leiste. Gemessen lag der
      Startknopf sonst 370 Pixel unter der Falz — bei Besuchern, die ueber
      einen geteilten Link kommen, ist das die haeufigste Abbruchstelle. */
-  hatNav(true);
+  /* Die Weiche ersetzt die feste Leiste: Zwei Kacheln lassen sich nicht
+     sinnvoll in eine Fussleiste sperren, und sie stehen ohnehin weit oben. */
+  hatNav(false);
+  starteSchatz();
   const fr = document.getElementById('fbreset');
   if(fr) fr.onclick = ()=>{
     state.fb = {};
     try{ localStorage.removeItem(ABGELEHNT); }catch(e){}
     renderIntro();
   };
-  document.getElementById('go').onclick = ()=>{state.step=0;renderStep();};
+  document.getElementById('go').onclick = ()=>{
+    state.a.modus = 'selbst'; state.step=0; renderStep();
+  };
+  document.getElementById('gogift').onclick = ()=>{
+    state.a.modus = 'geschenk'; state.step=0; renderStep();
+  };
   const rs = document.getElementById('resume');
   if(rs) rs.onclick = ()=>{
     const sv = loadState(); if(!sv) return;
@@ -2436,10 +2980,18 @@ function renderIntro(){
 }
 
 function renderStep(){
+  /* Das Punktfeld laeuft nur auf der Startseite — sonst rechnet es im
+     Hintergrund weiter, waehrend niemand hinsieht. */
+  if(schatzStop){ schatzStop(); schatzStop = null; }
   /* Wird die Erfahrungsfrage nachtraeglich geaendert, wird die Fragenliste
      kuerzer - dann darf der Schrittzeiger nicht ins Leere zeigen. */
   if(state.step >= AQ().length) state.step = AQ().length - 1;
   if(state.step < 0) state.step = 0;
+  /* Keine Vorbelegung bei Anlass und Wirkung im Geschenkpfad. Sie war gut
+     gemeint, aber eine angekreuzte Antwort, die man nicht selbst gegeben
+     hat, wird selten geprueft — sie wird uebernommen. Aus der Beziehung
+     bleibt deshalb nur die Leitplanke: Fuer die Chefin wird kein
+     Verfuehrungsduft empfohlen, egal was angekreuzt ist. */
   /* Familienfrage aus den zuvor gewählten Bildern vorbelegen */
   if(AQ()[state.step].id==='fam' && !state.a.fam){
     state.a.fam = suggestFam(state.a.mood||[]);
@@ -2451,10 +3003,12 @@ function renderStep(){
   if(q.kind==='group'){
     let off=0;
     body = q.groups.map(g=>{
-      const html = `<div class="group"><p class="grouplabel">${esc(g.label)}</p>${g.hinweis?`<p class="note">${g.hinweis}</p>`:''}<div class="opts two">
-        ${g.o.map((o,i)=>optHTML(o,off+i, g.multi ? (state.a[g.key]||[]).indexOf(o[0])>=0 : state.a[g.key]===o[0], g.key)).join('')}
+      const hw = (istGeschenk() && g.ghinweis) ? g.ghinweis : g.hinweis;
+      const go = (istGeschenk() && g.go) ? g.go : g.o;
+      const html = `<div class="group"><p class="grouplabel">${esc(g.label)}</p>${hw?`<p class="note">${hw}</p>`:''}<div class="opts two">
+        ${go.map((o,i)=>optHTML(o,off+i, g.multi ? (state.a[g.key]||[]).indexOf(o[0])>=0 : state.a[g.key]===o[0], g.key)).join('')}
       </div></div>`;
-      off += g.o.length; return html;
+      off += go.length; return html;
     }).join('');
   } else if(q.kind==='info'){
     const beant = AQ().slice(0,state.step).filter(function(qq){
@@ -2462,16 +3016,36 @@ function renderStep(){
       const v = state.a[qq.id];
       return Array.isArray(v) ? v.length>0 : (qq.kind==='group' ? true : !!v);
     }).length;
-    body = '<div class="schnitt">'
-      + '<div class="fertig"><b>' + beant + ' Fragen beantwortet</b> · dein Profil ist bereits auswertbar</div>'
-      + '<h2>Ab hier ist alles freiwillig</h2>'
-      + '<p>Die naechsten Fragen — Lieblingsnoten, Ankerduefte, Abneigungen — sind die schaerfsten im ganzen Fragebogen. Ein bekannter Duft, den du magst, verraet mehr als drei Duftfamilien. Zwei Minuten mehr, ein spuerbar besseres Ergebnis.</p>'
-      + '<p>Wenn du keine Lust mehr hast: Das Ergebnis funktioniert auch ohne, du bekommst dann eine etwas breitere Auswahl.</p>'
-      + '</div>';
+    body = istGeschenk()
+      ? '<div class="schnitt">'
+        + '<div class="fertig"><b>' + beant + ' Fragen beantwortet</b> · das reicht schon für ein Ergebnis</div>'
+        + '<h2>Kennst du die Person gut?</h2>'
+        + '<p>Dann kommen jetzt die Fragen, die am meisten bringen. Die wichtigste zuerst: <b>ein Duft, den sie schon benutzt.</b> Ein Flakon, den du auf dem Regal gesehen hast, ist mehr wert als zehn Vermutungen.</p>'
+        + '<p>Danach noch Duftfamilien, Ausschlüsse und Lieblingsnoten — alles freiwillig, alles überspringbar. Wenn du wenig weißt, geh direkt zum Ergebnis: Dann bekommst du eine breitere Auswahl und ein paar Fragen, die du der Person stellen kannst.</p>'
+        + '</div>'
+      : '<div class="schnitt">'
+        + '<div class="fertig"><b>' + beant + ' Fragen beantwortet</b> · dein Profil ist bereits auswertbar</div>'
+        + '<h2>Ab hier ist alles freiwillig</h2>'
+        + '<p>Die naechsten Fragen — Lieblingsnoten, Ankerduefte, Abneigungen — sind die schaerfsten im ganzen Fragebogen. Ein bekannter Duft, den du magst, verraet mehr als drei Duftfamilien. Zwei Minuten mehr, ein spuerbar besseres Ergebnis.</p>'
+        + '<p>Wenn du keine Lust mehr hast: Das Ergebnis funktioniert auch ohne, du bekommst dann eine etwas breitere Auswahl.</p>'
+        + '</div>';
   } else {
     const sel = state.a[q.id]||[];
+    let opts = qO(q);
+    /* Im Geschenkpfad wird die Ankerliste nach dem Duftcode gefiltert: Wer
+       ein Geschenk fuer eine Frau sucht, soll nicht 13 Herrenduefte
+       durchscrollen, um Miss Dior zu finden. Unisex bleibt immer drin, wie
+       ueberall im Geschenkpfad. Im eigenen Profil wird NICHT gefiltert —
+       dort darf man einen Duft gemocht haben, egal wie er codiert ist. */
+    if(istGeschenk() && (q.id==='anchor' || q.id==='anchorneg')){
+      const g = (state.a.gender||[]).filter(function(x){ return x!=='u'; });
+      if(g.length) opts = opts.filter(function(o){
+        const A = ANCHORS[o[0]];
+        return !A || !A.g || A.g === 'u' || g.indexOf(A.g) >= 0;
+      });
+    }
     body = `<div class="opts${q.cols?' two':''}">
-      ${(q.id==='anchorneg' ? q.o.filter(o=>!(state.a.anchor||[]).includes(o[0])) : q.o)
+      ${(q.id==='anchorneg' ? opts.filter(o=>!(state.a.anchor||[]).includes(o[0])) : opts)
         .map((o,i)=>optHTML(o,i, q.kind==='single' ? state.a[q.id]===o[0] : sel.includes(o[0]), q.id)).join('')}
     </div>`;
   }
@@ -2485,9 +3059,9 @@ function renderStep(){
             return '<i class="' + (i < k.pos ? 'on' : '') + '"></i>'; }).join('') + '</span>'
         + '<span class="kapzahl">' + k.pos + ' von ' + k.von + '</span></div>';
     })()}
-    <p class="eyebrow">${esc(q.eyebrow)}${q.optional?' · freiwillig':''}</p>
-    <h1 class="q">${q.title}</h1>
-    <p class="sub">${esc(q.sub)}</p>
+    <p class="eyebrow">${esc(qT(q,'eyebrow'))}${q.optional?' · freiwillig':''}</p>
+    <h1 class="q">${qT(q,'title')}</h1>
+    <p class="sub">${esc(qT(q,'sub'))}</p>
     ${q.id==='fam' && state.a._famAuto ? `<p class="note">Aus deinen Szenen <b>vorbelegt</b> — ${esc(state.a.fam.map(k=>FAMLBL[k]).join(', '))}. Ändere frei, was nicht stimmt.</p>` : ''}
     ${q.optional ? `<div class="skipbar">
       <span>Diese Frage ist freiwillig.</span>
@@ -2501,7 +3075,7 @@ function renderStep(){
       <button class="ghost" id="back" ${state.step===0?'hidden':''}>← Zurück</button>
       <span id="hint"></span>
       ${q.kind==='info' ? `<button class="ghost" id="direkt">Direkt zum Ergebnis</button>` : ''}
-      <button class="cta" id="next">${state.step===AQ().length-1?'Profil erstellen':(q.kind==='info'?'Weiter, ich habe Zeit':'Weiter')}</button>
+      <button class="cta" id="next">${state.step>=AQ().length-1?'Profil erstellen':(q.kind==='info'?'Weiter, ich habe Zeit':'Weiter')}</button>
     </div>
   </div>`;
   stage.querySelectorAll('.opt').forEach(btn=>{
@@ -2622,7 +3196,12 @@ function syncNext(){
 
 function advance(){
   if(!ready()) return;
-  if(state.step===AQ().length-1){ renderZeremonie(renderResult); }
+  /* Die Fragenliste kann durch die eben gegebene Antwort gewachsen sein —
+     im Geschenkpfad blendet der Ankerduft eine Folgefrage ein. Deshalb wird
+     hier neu gezaehlt und nicht die Laenge von vor dem Klick benutzt.
+     Ohne das wurde „naeher dran oder weiter weg" uebersprungen, weil der
+     Knopf beim Zeichnen noch „Profil erstellen" hiess. */
+  if(state.step >= AQ().length-1){ renderZeremonie(renderResult); }
   else { state.step++; renderStep(); }
 }
 
@@ -2717,7 +3296,7 @@ function renderConflicts(){
 function verdictLine(r,a,all){
   const bits = [];
   if(r.famHit.length) bits.push(listDe(r.famHit.map(k=>FAMLBL[k].toLowerCase())));
-  if(r.moodHit.length) bits.push(MOODLBL[r.moodHit[0]]);
+  if(r.moodHit.length) bits.push(moodLbl(r.moodHit[0]));
   const wT = SWEETV[a.sweet], sT = SILV[a.sil];
   const rare = all.filter(z=>
     r.famHit.every(k=>z.f.fam.includes(k)) &&
@@ -2803,7 +3382,7 @@ function resumeCard(){
   try{ when = new Date(sv.ts||Date.now()).toLocaleDateString('de-DE',{day:'numeric',month:'long'}); }catch(e){}
   const n = Object.keys(sv.fb||{}).length;
   return `<div class="resume">
-    <div><b>Hier liegt schon ein Profil von dir</b><small>${esc(when)}${n?` · ${n} Bewertungen`:''}</small></div>
+    <div><b>Hier liegt schon ein Profil von dir.</b><small>${esc(when)}${n?` · ${n} Bewertungen`:''}</small></div>
     <button type="button" id="resume">Ergebnis öffnen</button>
   </div>`;
 }
@@ -2879,12 +3458,39 @@ function beraterText(a,anc){
   const s = [];
   const occ = a.occ.map(k=>LBL[k]);
   const sea = a.season.includes('ganzjahr') ? 'ganzjährig' : 'vor allem im ' + listDe(a.season.map(k=>LBL[k]));
-  s.push('Gesucht wird ein Duft für ' + listDe(occ) + ', getragen ' + sea + '.');
-  s.push('Die Grundrichtung ist ' + listDe(a.fam.map(k=>FAMLBL[k]))
-    + '; in Bildern beschrieben: ' + listDe(a.mood.map(k=>MOODLBL[k])) + '.');
+  /* Ohne Anlass entstand hier „ein Duft für , getragen ganzjährig" — der
+     leere Aufzaehlungsplatz stand auf dem Duftpass, den Leute in die
+     Parfuemerie mitnehmen. */
+  /* Der Duftcode gehoert in den Beratungstext, nicht nur in den Steckbrief:
+     Es ist die erste Frage, die in der Parfuemerie gestellt wird, und auf
+     dem Pass stand sie bisher nur klein in der Liste. */
+  const codeTxt = (function(){
+    const g = (Array.isArray(a.gender) ? a.gender : [a.gender]).filter(Boolean);
+    const hatM = g.indexOf('m')>=0, hatF = g.indexOf('f')>=0;
+    if(hatM && hatF) return 'Duftcode offen';
+    if(hatM) return 'maskulin codiert oder unisex';
+    if(hatF) return 'feminin codiert oder unisex';
+    return 'unisex';
+  })();
+  s.push((occ.length
+    ? 'Gesucht wird ein Duft für ' + listDe(occ) + ', getragen ' + sea
+    : 'Gesucht wird ein Duft, getragen ' + sea) + ' — ' + codeTxt + '.');
+  if(!occ.length) s.push('Ein bestimmter Anlass ist nicht angegeben.');
+  if(a.mood && a.mood.length){
+    s.push('Die Grundrichtung ist ' + listDe(a.fam.map(k=>FAMLBL[k]))
+      + '; in Bildern beschrieben: ' + listDe(a.mood.map(k=>moodLbl(k))) + '.');
+  } else {
+    s.push('Die Grundrichtung ist ' + listDe(a.fam.map(k=>FAMLBL[k])) + '.');
+  }
   const silTxt = {skin:'soll kaum über die eigene Haut hinausgehen',dezent:'soll auf Armlänge wahrnehmbar bleiben',praesent:'darf im Raum spürbar sein',raumfuellend:'darf den Raum füllen'}[a.sil];
-  const swTxt = {trocken:'völlig ohne Süße',dezent:'mit höchstens einer Ahnung Süße',deutlich:'mit deutlicher, tragender Süße',dekadent:'ausdrücklich sehr süß'}[a.sweet];
-  s.push('Der Duft ' + silTxt + ' und ' + swTxt + '.');
+  const swTxt = {trocken:'völlig ohne Süße sein',dezent:'höchstens eine Ahnung Süße tragen',deutlich:'eine deutliche, tragende Süße haben',dekadent:'ausdrücklich sehr süß sein'}[a.sweet];
+  /* Vorher: „Der Duft soll auf Armlaenge wahrnehmbar bleiben und mit
+     deutlicher Suesse." — zwei Satzteile, die grammatisch nicht
+     zusammenpassten. Jetzt zwei vollstaendige Verben, und offene Angaben
+     fallen ganz heraus. */
+  if(OW(a,'sil') && OW(a,'sweet')) s.push('Der Duft ' + silTxt + ' und ' + swTxt + '.');
+  else if(OW(a,'sil')) s.push('Der Duft ' + silTxt + '.');
+  else if(OW(a,'sweet')) s.push('Der Duft soll ' + swTxt + '.');
   if(a.longevity==='schnell') s.push('Wichtig: Auf dieser Haut hält Duft kaum — bitte Eau de Parfum oder Extrait zeigen, keine Eau de Toilette, und eher harzige oder ambrierte Basen.');
   else if(a.longevity==='ewig') s.push('Auf dieser Haut hält Duft sehr lange — leichtere Konzentrationen genügen, schwere Basen können schnell zu viel werden.');
   if(a.nogo.length) s.push('Nicht zeigen: ' + listDe(a.nogo.map(k=>LBL[k].toLowerCase())) + '. Das sind harte Ausschlüsse, keine Vorlieben.');
@@ -3203,11 +3809,11 @@ function buildPass(name,blurb,a,anc,top,MAX){
   /* ── Seite 1: das Profil ── */
   const s1 = neu(), x1 = s1.x;
   x1.fillStyle = DIM; x1.font = DS(700,19);
-  x1.fillText('D U F T P A S S', M, 70+16+40);
+  x1.fillText(istGeschenk() ? 'D U F T P A S S   ·   G E S C H E N K' : 'D U F T P A S S', M, 70+16+40);
   x1.textAlign='right'; x1.font = DS(400,17); x1.fillText(stamp, W-M, 70+16+40); x1.textAlign='left';
   x1.fillStyle = INK; x1.font = FS(62); putLines(x1, nameL, M, yName, 70);
   x1.fillStyle = MID; x1.font = DS(400,23); putLines(x1, blurbL, M, yBlurb, 34);
-  kopf(x1, 'DEIN PROFIL IM ÜBERBLICK', yLGraf, 'Radar und Duftpyramide');
+  kopf(x1, istGeschenk() ? 'DAS PROFIL IM ÜBERBLICK' : 'DEIN PROFIL IM ÜBERBLICK', yLGraf, 'Radar und Duftpyramide');
   passRadar(x1, RAD_CX, yRadC, RAD_R, radarFromAnswers(a), radarFromFragrance(top[0].f), RAD_LBL);
   drawPyramide(x1, PYX, yRadC, PYBW, PYTW, PYH, kn.lagen);
   x1.fillStyle = DIM; x1.font = DS(400,16); x1.textAlign='center';
@@ -3217,7 +3823,9 @@ function buildPass(name,blurb,a,anc,top,MAX){
   /* Kernnoten: der Satz, mit dem man in die Parfuemerie gehen kann. */
   kopf(x1, 'FÜR DIE BERATUNG', yLKern);
   x1.fillStyle=DIM; x1.font=DS(700,14);
-  x1.fillText('FRAGEN SIE MICH NACH', M, yKN);
+  /* „Fragen Sie mich nach" funktioniert nur, wenn der Traeger selbst mit
+     dem Pass in den Laden geht. Beim Geschenk tut das jemand anders. */
+  x1.fillText(istGeschenk() ? 'DANACH FRAGEN' : 'FRAGEN SIE MICH NACH', M, yKN);
   x1.fillText('DIESE BITTE NICHT', M+HALB+52, yKN);
   x1.fillStyle=INK; x1.font=DS(500,20); putLines(x1, treffL, M, yKN+28, 26);
   x1.fillStyle = kn.meiden.length ? INK : DIM; x1.font=DS(500,20);
@@ -3324,6 +3932,12 @@ async function renderPass(name,blurb,a,anc,top,MAX){
   try{ if(document.fonts && document.fonts.ready) await document.fonts.ready; }catch(e){}
   const v = document.getElementById('passvorn'), h = document.getElementById('passhinten');
   if(!v || !h) return;
+  /* Der Pass ist das Stueck, das weitergereicht wird. Im Geschenkpfad darf
+     darauf kein Archetyp stehen: „Der Asketen-Aesthet" ueber einem Menschen,
+     den jemand anders beschrieben hat, ist im besten Fall komisch. Auf der
+     Ergebnisseite war das schon geregelt, auf der Karte nicht — sie wurde
+     weiterhin mit `archetype()` gebaut. */
+  if(istGeschenk()){ name = gRichtung(a); blurb = gBlurb(a); }
   try{
     const bilder = buildPass(name,blurb,a,anc,top,MAX);
     v.src = bilder.vorn;
@@ -3448,6 +4062,30 @@ function blindSpots(a, top){
     .map(e=>({fam:FAMLBL[e[0]], n:e[1]}));
 }
 
+/* Wie saisonal ist jede Szene? Nicht von Hand gesetzt, sondern aus dem
+   Katalog gerechnet: Anteil der Duefte einer Szene, die zur kalten bzw.
+   warmen Haelfte des Jahres passen. Gemessen reicht die Spanne von
+   „Weihrauch in einer Steinkirche" (12 % sommertauglich) bis „Kalte Gischt"
+   (29 % wintertauglich) — das sind echte Gegensaetze, keine Feinheiten.
+   Wird einmal beim Laden berechnet und bleibt damit automatisch richtig,
+   wenn Duefte dazukommen. */
+const MOODSAISON = (function(){
+  const o = {};
+  F.forEach(function(f){
+    f.mood.forEach(function(m){
+      if(!o[m]) o[m] = {n:0, kalt:0, warm:0};
+      o[m].n++;
+      if(f.seas.indexOf('winter')>=0 || f.seas.indexOf('herbst')>=0 || f.seas.indexOf('ganzjahr')>=0) o[m].kalt++;
+      if(f.seas.indexOf('sommer')>=0 || f.seas.indexOf('fruehling')>=0 || f.seas.indexOf('ganzjahr')>=0) o[m].warm++;
+    });
+  });
+  Object.keys(o).forEach(function(m){
+    o[m].kaltP = Math.round(o[m].kalt / o[m].n * 100);
+    o[m].warmP = Math.round(o[m].warm / o[m].n * 100);
+  });
+  return o;
+})();
+
 /* Spannungen im Profil — die aufschlussreichen, nicht die harten Konflikte */
 function tensions(a){
   const t = [], eff = k=>(a.eff||[]).includes(k), vibe = k=>(a.vibe||[]).includes(k);
@@ -3456,17 +4094,42 @@ function tensions(a){
   if(eff('verfuehrung') && a.sil==='skin')
     t.push(['Verführung auf Tuchfühlung','Verführen bei minimaler Präsenz funktioniert nur über Hautnähe. Das führt zu Moschus, Amber und cremigen Hölzern — und weg von Blütenbomben.']);
   if((a.bold==='eigenwillig'||a.bold==='polarisierend') && a.exp==='einsteiger')
-    t.push(['Ambitioniert für den Anfang','Du willst Eigenwilliges, hast aber wenig Vergleich. Kein Problem — aber kauf in dieser Ecke <b>ausschließlich Abfüllungen</b>. Schwierige Düfte brauchen drei, vier Anläufe, bis sie zünden.']);
+    t.push(['Ambitioniert für den Anfang', istGeschenk()
+      ? 'Du suchst etwas Eigenwilliges für jemanden mit wenig Vergleich. Kein Problem — aber verschenk hier <b>Abfüllungen statt eines Flakons</b>. Schwierige Düfte brauchen drei, vier Anläufe, bis sie zünden, und ein ungeliebter Flakon steht jahrelang herum.'
+      : 'Du willst Eigenwilliges, hast aber wenig Vergleich. Kein Problem — aber kauf in dieser Ecke <b>ausschließlich Abfüllungen</b>. Schwierige Düfte brauchen drei, vier Anläufe, bis sie zünden.']);
   if((a.occ||[]).includes('signature') && a.season.length>=2 && !a.season.includes('ganzjahr'))
     t.push(['Ein Duft, zwei Klimazonen','Du suchst ein Signature, nennst aber Jahreszeiten mit gegensätzlichen Anforderungen. Ehrlich: Das leistet kaum ein Duft. Entweder ein ganzjähriger Kompromiss — oder zwei Flakons.']);
   if(a.longevity==='schnell' && (a.fam.includes('zitrus')||a.fam.includes('aquatisch')))
     t.push(['Kurze Haut, flüchtige Familien','Auf deiner Haut hält nichts, und du magst ausgerechnet die flüchtigsten Familien. Geh gezielt auf <b>Eau de Parfum statt Eau de Toilette</b> und auf Zitrusdüfte mit Amber- oder Moschusbasis.']);
   if(a.exp==='sammler' && a.bold==='crowdpleaser')
     t.push(['Sammler sucht Tragbares','Zweistellige Sammlung, aber Crowd-Pleaser gewünscht. Das ist kein Widerspruch — du suchst gerade keinen Kopfduft, sondern etwas Alltagstaugliches. Die Wildcards unten kannst du überspringen.']);
+  /* Bild und Jahreszeit ziehen in verschiedene Richtungen. Gemeldet aus dem
+     echten Gebrauch: Herbst und Winter gewaehlt, dann „Zitrusgarten an der
+     Amalfikueste". Die Rechnung faengt das ab — der Anteil wintertauglicher
+     Treffer steigt gemessen von 50 auf 90 Prozent —, aber sie sagt es nicht.
+     Genau dafuer ist dieser Kasten da: Es ist kein Fehler, nur eine
+     Entscheidung, die man bewusst treffen sollte. */
+  if(!(a.season||[]).includes('ganzjahr') && (a.mood||[]).length){
+    const kalt = a.season.some(function(s){ return s==='winter'||s==='herbst'; });
+    const warm = a.season.some(function(s){ return s==='sommer'||s==='fruehling'; });
+    const lbl = function(ms){ return listDe(ms.map(function(m){ return moodLbl(m); })); };
+    if(kalt && !warm){
+      const b = a.mood.filter(function(m){ return MOODSAISON[m] && MOODSAISON[m].kaltP < 45; });
+      if(b.length) t.push(['Sommerbild in der kalten Jahreszeit',
+        'Als Jahreszeit steht Herbst oder Winter, als Bild aber <b>' + esc(lbl(b)) + '</b> — davon passt nur ein Bruchteil in die kalte Hälfte des Jahres. Die Auswahl löst das, indem sie die wärmeren Vertreter dieser Richtung nimmt: Zitrus mit Holz- oder Amberbasis statt reiner Cologne. Wenn es wirklich der Sommerduft sein soll, nimm die Jahreszeit dazu.']);
+    }
+    if(warm && !kalt){
+      const b = a.mood.filter(function(m){ return MOODSAISON[m] && MOODSAISON[m].warmP < 40; });
+      if(b.length) t.push(['Winterbild im Sommer',
+        'Als Jahreszeit steht Frühling oder Sommer, als Bild aber <b>' + esc(lbl(b)) + '</b> — das sind überwiegend schwere Düfte für kalte Tage. In der Hitze wirken sie schnell erdrückend. Die Auswahl nimmt die leichteren Vertreter; für die volle Wucht wäre der Winter der richtige Rahmen.']);
+    }
+  }
   if((a.nogo||[]).length>=4)
     t.push(['Viele Ausschlüsse','Vier oder mehr No-Gos schärfen das Ergebnis, verengen es aber stark. Prüf, ob wirklich alle Ausschluss sind — oder ob manche nur „nicht als Hauptnote“ meinen.']);
   if(vibe('minimal') && a.fam.length>=4)
-    t.push(['Minimalist mit breitem Geschmack','Du beschreibst dich als minimalistisch, hast aber vier Duftfamilien gewählt. Vermutlich meinst du <b>klare, lineare Kompositionen</b> — nicht wenige Zutaten. Achte auf geradlinige Düfte statt auf komplexe Pyramiden.']);
+    t.push(['Minimalist mit breitem Geschmack', istGeschenk()
+      ? 'Du beschreibst die Person als minimalistisch, hast aber vier Duftfamilien angegeben. Vermutlich passt zu ihr <b>Klares, Lineares</b> — nicht wenige Zutaten, sondern wenig Gedränge. Achte auf geradlinige Düfte statt auf komplexe Pyramiden.'
+      : 'Du beschreibst dich als minimalistisch, hast aber vier Duftfamilien gewählt. Vermutlich meinst du <b>klare, lineare Kompositionen</b> — nicht wenige Zutaten. Achte auf geradlinige Düfte statt auf komplexe Pyramiden.']);
   if(eff('autoritaet') && a.sweet==='dekadent')
     t.push(['Autorität und Zuckerguss','Autorität ausstrahlen bei dekadenter Süße ist ein schmaler Grat — süße Düfte lesen sich schnell verspielt. Wähle Süße mit dunkler Basis: Tabak, Kaffee, Leder statt Vanille und Karamell pur.']);
   return t.slice(0,3);
@@ -3494,10 +4157,75 @@ function renderZeremonie(danach){
   setTimeout(danach, 1700);
 }
 
+/* ── Geschenkpfad: Ergebnis ──────────────────────────────────────────────
+   Bewusst sparsamer als das eigene Profil. Es gibt keinen Archetyp und
+   keine Charakterdeutung: Wer seine Mutter von aussen beschreibt und
+   danach liest, sie sei „der stille Monolith", findet das im besten Fall
+   komisch. Das Ergebnis beschreibt die Duftrichtung, nicht den Menschen. */
+function gRichtung(a){
+  const f = (a.fam && a.fam.length) ? a.fam : suggestFam(a.mood||[]);
+  const L = f.slice(0,2).map(function(k){ return FAMLBL[k]; }).filter(Boolean);
+  if(!L.length) return 'Eine offene Richtung';
+  return L.join(' und ');
+}
+function gBlurb(a){
+  const s = [];
+  const wer = {partner:'deine Partnerin oder deinen Partner', familie:'jemanden aus der Familie',
+               freund:'eine Freundin oder einen Freund', arbeit:'jemanden aus dem Arbeitsumfeld',
+               andere:'die Person'}[a.beziehung] || 'die Person';
+  s.push('Nach deinen Angaben für ' + wer + ' zeigt die Auswahl in diese Richtung.');
+  const bil = (a.mood||[]).map(function(k){ return moodLbl(k); }).filter(Boolean);
+  if(bil.length) s.push('Die Bilder, die du gewählt hast: ' + listDe(bil) + '.');
+  const off = Object.keys(a.offen||{}).filter(function(k){ return k!=='lg' && k!=='exp'; }).length;
+  if(off >= 3) s.push('Du hast vieles offen gelassen — das ist ehrlicher als zu raten. Die Auswahl ist dadurch breiter, und unten stehen Fragen, mit denen du sie enger bekommst.');
+  return s.join(' ');
+}
+/* Wie belastbar ist dieses Geschenkprofil? Es gibt bewusst keine
+   Untergrenze, unterhalb derer das Tool die Auskunft verweigert — eine
+   Sackgasse widerspricht dem Versprechen „geht auch, wenn du wenig weisst".
+   Stattdessen sagt das Ergebnis offen, worauf es sich stuetzt. Gezaehlt
+   werden die sieben Dimensionen, die ein Aussenstehender geben kann;
+   Ankerduft, Familien, Noten und Ausschluesse zaehlen als Zugabe. */
+function gBasis(a){
+  const dim = ['mood','vibe','occ','sil','bold','sweet','eff'];
+  const da = dim.filter(function(k){ return OW(a,k); });
+  /* Die Bezeichnungen stehen im Text immer hinter „Gerechnet wurde mit" —
+     deshalb Dativ. Sonst entstand „Gerechnet wurde mit die Bilder". */
+  const extra = [];
+  if((a.anchor||[]).length) extra.push('einem Duft aus dem Regal');
+  if((a.notes||[]).length) extra.push('den Lieblingsnoten');
+  if((a.nogo||[]).length) extra.push('den Ausschlüssen');
+  const namen = {mood:'den Bildern', vibe:'der Beschreibung der Person', occ:'dem Anlass',
+                 sil:'der Präsenz', bold:'der Auffälligkeit', sweet:'der Süße',
+                 eff:'der gewünschten Wirkung'};
+  return {von:dim.length, da:da.length, extra:extra,
+          genannt:da.map(function(k){ return namen[k]; }),
+          stufe: (da.length + extra.length*1.5) >= 6 ? 'dicht'
+               : (da.length + extra.length*1.5) >= 3 ? 'mittel' : 'duenn'};
+}
+/* Was man fragen kann, ohne sich zu verraten. Die Fragen richten sich
+   danach, was im Profil noch offen ist — nicht nach einer festen Liste. */
+function gFragen(a){
+  const F2 = [];
+  if(!(a.anchor||[]).length && !a.ankerrichtung)
+    F2.push('Welches Parfum benutzt du gerade eigentlich?');
+  if(a.offen && a.offen.sweet)
+    F2.push('Magst du süße Düfte oder findest du die schnell zu viel?');
+  if(a.offen && a.offen.sil)
+    F2.push('Trägst du lieber etwas Leises oder soll man dich riechen?');
+  if(!(a.nogo||[]).length)
+    F2.push('Gibt es einen Geruch, den du überhaupt nicht ausstehen kannst?');
+  if(a.offen && a.offen.occ)
+    F2.push('Wann benutzt du Parfum — jeden Tag oder nur zu besonderen Anlässen?');
+  F2.push('Warst du schon mal in einer Parfümerie und hast etwas getestet, das dir hängengeblieben ist?');
+  return F2.slice(0,5);
+}
 function renderResult(){
   state.step = AQ().length;
   paintChrome();
-  const a = state.a;
+  /* Im Geschenkpfad wird mit dem bereinigten Profil angezeigt — sonst
+     stuenden „weiss ich nicht"-Marken im Steckbrief und auf dem Duftpass. */
+  const a = normProfil(state.a);
   a.nogo = a.nogo||[]; a.anchor = a.anchor||[]; a.anchorneg = a.anchorneg||[]; a.notes = a.notes||[];
   /* Einsteiger ueberspringen die Familienfrage - dann aus den Bildern ableiten. */
   if(!a.fam || !a.fam.length) a.fam = suggestFam(a.mood||[]);
@@ -3574,13 +4302,13 @@ function renderResult(){
       <b>Ein geteiltes Profil</b>
       <p>Diese Auswertung stammt aus einem Link, nicht aus deinen eigenen Antworten. Unten lässt sich der Fragebogen starten — sechzehn Fragen, etwa acht Minuten.</p>
     </div>` : ''}
-    <p class="verdict-eyebrow">${state.geteilt ? 'Ein Duftprofil' : 'Dein Duftprofil'}</p>
-    <h1 class="archetype">${esc(name)}</h1>
+    <p class="verdict-eyebrow">${istGeschenk() ? 'Ein Duftprofil zum Verschenken' : (state.geteilt ? 'Ein Duftprofil' : 'Dein Duftprofil')}</p>
+    <h1 class="archetype">${esc(istGeschenk() ? gRichtung(a) : name)}</h1>
     <div class="stripwrap">
-      <div class="strip" title="Die Farben deiner Antworten">${AQ().map(q=>`<i style="background:${q.acc}"></i>`).join('')}</div>
-      <p class="stripnote">Das sind die Farben deiner Antworten — eine Signatur, die kein zweites Profil so hat.</p>
+      <div class="strip" title="Die Farben der Antworten">${AQ().map(q=>`<i style="background:${q.acc}"></i>`).join('')}</div>
+      <p class="stripnote">${istGeschenk() ? 'Die Farben deiner Antworten — eine Signatur, die kein zweites Profil so hat.' : 'Das sind die Farben deiner Antworten — eine Signatur, die kein zweites Profil so hat.'}</p>
     </div>
-    <p class="profile-text">${esc(blurb)}</p>
+    <p class="profile-text">${esc(istGeschenk() ? gBlurb(a) : blurb)}</p>
 
     <div class="panel">
       <div>
@@ -3596,19 +4324,56 @@ function renderResult(){
       </div>
     </div>
 
-    <div class="sec-head"><h2>Welche Noten du suchst</h2><hr><span>abgeleitet, nicht abgefragt</span></div>
+    <div class="sec-head"><h2>${istGeschenk() ? 'Welche Noten gesucht sind' : 'Welche Noten du suchst'}</h2><hr><span>abgeleitet, nicht abgefragt</span></div>
     <div class="pyrbox">
       <div class="pyrtext">
-        <h4>Deine Kernnoten</h4>
+        <h4>${istGeschenk() ? 'Die Kernnoten' : 'Deine Kernnoten'}</h4>
         <p class="sag">Frag in der Parfümerie nach <b>${esc(kern.kern.slice(0,3).map(z=>z.n).join(', '))}</b>.</p>
       </div>
       ${pyramideHTML(kern.lagen)}
       <div class="pyrtext">
         ${kern.meiden.length?`<p style="margin-bottom:.35rem">Und was draußen bleiben soll:</p>
         <ul class="notenzeile weg">${kern.meiden.map(z=>`<li>${esc(z)}</li>`).join('')}</ul>`:''}
-        <p>Diese Noten tauchen in deinen Treffern immer wieder auf — sie sind die kürzeste Beschreibung deines Geschmacks. Die Pyramide zeigt, wann du welche riechst: ein Duft ist nach zwei Stunden ein anderer als in der ersten Minute.</p>
+        <p>${istGeschenk()
+          ? 'Diese Noten tauchen in den Treffern immer wieder auf — sie sind die kürzeste Beschreibung der gesuchten Richtung und das, wonach sich in einer Parfümerie am besten fragen lässt. Die Pyramide zeigt, wann man welche riecht: ein Duft ist nach zwei Stunden ein anderer als in der ersten Minute.'
+          : 'Diese Noten tauchen in deinen Treffern immer wieder auf — sie sind die kürzeste Beschreibung deines Geschmacks. Die Pyramide zeigt, wann du welche riechst: ein Duft ist nach zwei Stunden ein anderer als in der ersten Minute.'}</p>
       </div>
     </div>
+
+    ${istGeschenk() ? `
+    <div class="sec-head"><h2>Was du fragen kannst</h2><hr><span>ohne dich zu verraten</span></div>
+    <div class="insights">
+      ${(function(){
+        const fg = gFragen(a);
+        /* Wer alles beantwortet hat, braucht keine Liste mit einem Eintrag.
+           Dann wird daraus eine Bestaetigung statt einer Hausaufgabe. */
+        const vorspann = fg.length >= 3
+          ? 'Je mehr davon du beantwortet bekommst, desto schärfer wird die Auswahl. Ein zweiter Durchlauf dauert drei Minuten.'
+          : 'Du hast schon viel angegeben — viel schärfer wird es kaum. Falls sich die Gelegenheit ergibt, bringt das hier noch etwas:';
+        return `<div class="insight">
+        <h4>${fg.length >= 3 ? 'Fragen für nebenbei' : 'Eine Frage, die noch lohnt'}</h4>
+        <p>${vorspann}</p>
+        <ul class="notenzeile">${fg.map(fr=>`<li>${esc(fr)}</li>`).join('')}</ul>
+      </div>`;
+      })()}
+      ${/* Spannungen gehoeren auch in den Geschenkpfad: Das sind
+            Widersprueche in der EINGABE, nicht Selbsterkenntnis. Wer
+            „Statement" und gleichzeitig „ganz nah" angibt, hat sich
+            widersprochen — und genau das sollte er erfahren, bevor er
+            kauft. Zwei der Texte sind dafuer in der dritten Person
+            formuliert, siehe `tensions()`. */''}
+      ${tens.map(t=>`
+      <div class="insight">
+        <h4>${esc(t[0])}</h4>
+        <p>${t[1]}</p>
+      </div>`).join('')}
+      <div class="insight" style="--ic:var(--teal)">
+        <h4>Der nächste Schritt</h4>
+        <p>Kauf keinen Flakon blind — dafür ist die Liste nicht gedacht. Zwei Wege führen weiter:</p>
+        <p><b>Abfüllungen bestellen.</b> Von den ersten drei Treffern, als kleine Proben. Kostet einen Bruchteil, und die Person sucht sich selbst aus, welcher bleibt — dann verschenkst du die Entscheidung mit, nicht nur die Flasche.</p>
+        <p><b>Oder mit dem Duftpass in eine Parfümerie.</b> Weiter unten steht er als Bild zum Speichern. Er nennt die Richtung, die Kernnoten und die Ausschlüsse — damit muss dort niemand mehr raten, und du auch nicht.</p>
+      </div>
+    </div>` : `
 
     <div class="sec-head"><h2>Was das über dich sagt</h2><hr><span>Deutung, keine Wiederholung</span></div>
     <div class="insights">
@@ -3638,6 +4403,7 @@ function renderResult(){
           sens.length>1 ? ` Am wenigsten Einfluss hat <b>${esc(sens[sens.length-1].label)}</b> mit ${sens[sens.length-1].churn}&thinsp;% — dort kannst du beim Testen großzügig sein.` : ''}</p>
       </div>` : ''}
 
+      ${istGeschenk() ? '' : `
       <div class="insight">
         <h4>Dein blinder Fleck</h4>
         ${blind.length
@@ -3645,7 +4411,7 @@ function renderResult(){
             ? `<p>Bei den Duftfamilien hattest du ${FAMMAX} Plätze — für <b>${esc(blind.map(z=>z.fam).join(' und '))}</b> war keiner mehr frei. Trotzdem führen ${blind[0].n} deiner zehn Treffer ${esc(blind[0].fam)} in der Komposition. Bei begrenzter Auswahl ist das kein Widerspruch, eher ein Hinweis: <b>Das wäre womöglich der nächste Haken gewesen.</b></p>`
             : `<p>Du hast <b>${esc(blind.map(z=>z.fam).join(' und '))}</b> nie angekreuzt — aber ${blind[0].n} deiner zehn Treffer führen ${esc(blind[0].fam)} in der Komposition. Offenbar magst du es, ohne es zu benennen. <b>Nimm es beim nächsten Durchgang bewusst dazu</b> und sieh, was passiert.</p>`)
           : `<p><b>Du hast keinen.</b> Es gibt keine Duftfamilie, die in deinen Treffern auffällig oft vorkommt, ohne dass du sie angekreuzt hättest. Das ist bei etwa jedem sechsten Profil so und heißt: Du kennst deinen Geschmack und kannst ihn auch benennen. Die Lücke, die dieser Kasten sonst zeigt, gibt es bei dir nicht.</p>`}
-      </div>
+      </div>`}
 
       ${tens.map(t=>`
       <div class="insight">
@@ -3654,12 +4420,14 @@ function renderResult(){
       </div>`).join('')}
 
       <div class="insight" style="--ic:var(--teal)">
-        <h4>Dein nächster Schritt</h4>
-        <p>${sens.length
-          ? `Bestell Abfüllungen der ersten drei Treffer und variiere beim Testen bewusst <b>${esc(sens[0].label)}</b> — dort entscheidet sich dein Profil. ${esc(expTip)}`
-          : esc(expTip)}</p>
+        <h4>${istGeschenk() ? 'Der nächste Schritt' : 'Dein nächster Schritt'}</h4>
+        <p>${istGeschenk()
+          ? `Kauf keinen Flakon blind. <b>Bestell Abfüllungen der ersten drei Treffer</b> — das kostet einen Bruchteil, und die Person sucht sich selbst aus, welcher bleibt. Wer verschenkt, verschenkt dann die Entscheidung mit, nicht nur die Flasche. Den Steckbrief unten kannst du dazulegen oder mit in die Parfümerie nehmen.`
+          : (sens.length
+            ? `Bestell Abfüllungen der ersten drei Treffer und variiere beim Testen bewusst <b>${esc(sens[0].label)}</b> — dort entscheidet sich dein Profil. ${esc(expTip)}`
+            : esc(expTip))}</p>
       </div>
-    </div>
+    </div>`}
 
     <details class="fold">
       <summary>Steckbrief <span>— alle ${AQ().length} Antworten im Klartext</span></summary>
@@ -3671,7 +4439,34 @@ function renderResult(){
     </details>
 
     <div class="sec-head"><h2>Was dazu passt</h2><hr><span>${fbCount?`neu gerechnet mit ${fbCount} Bewertungen`:`fünf Vorschläge aus ${F.length} Düften`}</span></div>
-    <p class="caveat short">Fünf Vorschläge, <b>keine Rangliste</b>. Die Prozentwerte liegen dicht beieinander — welcher davon deiner ist, entscheidet die Haut, nicht die Zahl. Tippen öffnet die Begründung. Gerechnet gegen ${F.length} kuratierte Düfte aus ${HOUSES} Häusern; der Markt ist fünfstellig.</p>
+    <p class="caveat short">Fünf Vorschläge, <b>keine Rangliste</b>. Die Prozentwerte liegen dicht beieinander — welcher davon passt, entscheidet die Haut, nicht die Zahl. Tippen öffnet die Begründung. Gerechnet gegen ${F.length} kuratierte Düfte aus ${HOUSES} Häusern; der Markt ist fünfstellig.</p>
+    ${(function(){
+      /* Keine Untergrenze, sondern eine ehrliche Ansage. Wer wenig weiss,
+         bekommt trotzdem eine Liste — aber er soll wissen, worauf sie
+         steht. Der Ton ist bewusst nicht tadelnd: Dass man ueber einen
+         anderen Menschen wenig weiss, ist kein Versaeumnis. */
+      if(!istGeschenk()) return '';
+      const b = gBasis(a);
+      if(b.stufe === 'dicht') return '';
+      const offen = b.von - b.da;
+      /* Zuerst das, was bekannt ist — dann die Luecke. Umgekehrt entstand
+         der Widerspruch „7 von 7 offen gelassen" ueber einer Auswahl, die
+         sich auf Ankerduft und Lieblingsnoten stuetzte, also auf die
+         staerksten Angaben ueberhaupt. */
+      const alles = b.genannt.concat(b.extra);
+      const basis = alles.length
+        ? 'Gerechnet wurde mit ' + listDe(alles) + '.'
+        : 'Es gibt fast keine Angaben, mit denen sich rechnen ließe.';
+      const luecke = offen === b.von
+        ? 'Alle sieben Fragen zur Person hast du offen gelassen.'
+        : offen + ' von ' + b.von + ' Fragen zur Person hast du offen gelassen.';
+      return `<div class="preisnote">
+        <b>${alles.length ? 'Worauf diese Auswahl steht' : 'Eine sehr breite Auswahl'}</b>
+        <p>${esc(basis)} ${esc(luecke)} Das ist ehrlicher als zu raten — es macht die Auswahl nur weiter. ${b.stufe==='duenn'
+          ? 'Nimm sie als Startpunkt, nicht als Treffer. Schon eine einzige beantwortete Frage von oben verengt die Liste spürbar.'
+          : 'Mit ein bis zwei weiteren Angaben wird sie deutlich schärfer.'}</p>
+      </div>`;
+    })()}
     ${ueberBudgetZahl ? `<div class="preisnote">
       <b>Deine Angaben lassen wenig übrig</b>
       <p>Mit dieser Kombination aus Ausschlüssen, Duftcode und Preisrahmen bleiben zu wenige Düfte für eine sinnvolle Liste. Damit überhaupt etwas dasteht, ${ueberBudgetZahl === 1 ? 'liegt ein Treffer' : 'liegen '+ueberBudgetZahl+' Treffer'} über deinem Preisrahmen — in der aufgeklappten Begründung steht bei ${ueberBudgetZahl === 1 ? 'ihm' : 'ihnen'} „über Budget". Deine Ausschlüsse bleiben unangetastet.</p>
@@ -3744,7 +4539,7 @@ function renderResult(){
         <figure><img id="passvorn" alt="Duftpass Vorderseite: ${esc(name)}"><figcaption>Vorderseite · Profil</figcaption></figure>
         <figure><img id="passhinten" alt="Duftpass Rückseite: ${esc(name)}"><figcaption>Rückseite · Beratung</figcaption></figure>
       </div>
-      <p>Beide Seiten zusammen enthalten alle ${frageZahl()} Antworten, Archetyp, Kennwerte und Empfehlungen — zum Vorzeigen in der Parfümerie. Rechtsklick oder langes Antippen speichert es. Einen Download startet die Seite bewusst nicht selbst, der wird in eingebetteten Ansichten blockiert.</p>
+      <p>Beide Seiten zusammen enthalten alle ${frageZahl()} Antworten, ${istGeschenk()?'Kennwerte, Beratungstext':'Archetyp, Kennwerte'} und Empfehlungen — zum Vorzeigen in der Parfümerie${istGeschenk()?' oder zum Dazulegen':''}. Rechtsklick oder langes Antippen speichert es. Einen Download startet die Seite bewusst nicht selbst, der wird in eingebetteten Ansichten blockiert.</p>
       <button class="ghost" id="passcopy">Beide Seiten in die Zwischenablage</button>
     </div>
 
@@ -3847,9 +4642,34 @@ const wardrobeUsed = new Set();
 function dossierRows(a,anc){
   const BUD = {1:'bis 100 €',2:'100 – 200 €',3:'200 – 350 €',4:'offen'};
   const GEN = {u:'Unisex',m:'Maskulin',f:'Feminin'};
+  const G = istGeschenk();
+  /* Offene Angaben stehen als „nicht angegeben", nicht als Gedankenstrich.
+     Ein Gedankenstrich sieht wie „keine" aus; hier ist aber „unbekannt"
+     gemeint, und das ist beim Geschenk der haeufigere Fall. */
+  const of = function(k, wert){ return (G && a.offen && a.offen[k]) ? 'nicht angegeben' : wert; };
+  if(G) return [
+    ['Duftrichtung', a.fam.map(k=>FAMLBL[k]).join(', ')],
+    ['Bilder', of('mood', a.mood.map(k=>moodLbl(k)).join(', ') || '—')],
+    ['Anlässe', of('occ', a.occ.map(k=>LBL[k]).join(', ') || '—')],
+    ['Jahreszeit', a.season.map(k=>LBL[k]).join(', ')],
+    ['Präsenz', of('sil', LBL[a.sil])],
+    ['Süße', of('sweet', LBL[a.sweet])],
+    ['Auffälligkeit', of('bold', LBL[a.bold])],
+    ['Beschrieben als', of('vibe', a.vibe.map(k=>LBL[k]).join(', ') || '—')],
+    ['Soll wirken', of('eff', a.eff.map(k=>LBL[k].replace(' wirken','').replace(' ausstrahlen','')).join(', ') || '—')],
+    ['Ausschlüsse', a.nogo.length ? a.nogo.map(k=>LBL[k]).join(', ') : '—'],
+    ['Im Regal', anc ? anc.names.join(', ') : '—'],
+    ['Duftcode', (Array.isArray(a.gender)?a.gender:[a.gender]).filter(Boolean).map(function(k){return GEN[k]||k}).join(', ') || '—'],
+    ['Budget', BUD[a.budget]],
+    ['Abgelehnt', (a.anchorneg&&a.anchorneg.length) ? a.anchorneg.map(k=>ANCHORS[k].n).join(', ') : '—'],
+    ['Lieblingsnoten', (a.notes&&a.notes.length) ? a.notes.join(', ') : '—'],
+    ['Sammlung', a.exp==='unbekannt' ? 'nicht angegeben' : (LBL[a.exp]||'—')],
+    ['Gesucht für', {partner:'Partnerin oder Partner',familie:'Familie',freund:'Freundin oder Freund',
+                     arbeit:'Arbeitsumfeld',andere:'jemand anderes'}[a.beziehung] || '—']
+  ];
   return [
     ['Duftfamilien', a.fam.map(k=>FAMLBL[k]).join(', ')],
-    ['Szenen', a.mood.map(k=>MOODLBL[k]).join(', ')],
+    ['Szenen', a.mood.map(k=>moodLbl(k)).join(', ')],
     ['Anlässe', a.occ.map(k=>LBL[k]).join(', ')],
     ['Jahreszeit', a.season.map(k=>LBL[k]).join(', ')],
     ['Präsenz', LBL[a.sil]],
@@ -3870,7 +4690,7 @@ function dossierRows(a,anc){
 }
 function dossier(a,anc){
   return dossierRows(a,anc).map(([k,v])=>
-    `<div><dt>${esc(k)}</dt><dd${v==='—'?' class="muted"':''}>${esc(v)}</dd></div>`).join('');
+    `<div><dt>${esc(k)}</dt><dd${(v==='—'||v==='nicht angegeben')?' class="muted"':''}>${esc(v)}</dd></div>`).join('');
 }
 
 function meters(a){
@@ -3896,7 +4716,10 @@ function plainText(name,blurb,a,anc,top,wilds,chart,MAX,terms){
   const strip = s=>s.replace(/<[^>]+>/g,'');
   const pad = s => (s + '                ').slice(0,16);
   return [
-    'DUFTPROFIL — ' + name, '', blurb, '', strip(profileText(a,anc)), '',
+    (istGeschenk() ? 'DUFTPROFIL FÜR EIN GESCHENK — ' : 'DUFTPROFIL — ') + name,
+    '', blurb, '', strip(profileText(a,anc)), '',
+    ...(istGeschenk() ? ['FRAGEN, DIE NOCH LOHNEN',
+        ...gFragen(a).map(function(f2){ return '  · ' + f2; }), ''] : []),
     ...(function(){
       const k = kernNoten(a, chart);
       if(!k.kern.length) return [];
