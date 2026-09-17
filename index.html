@@ -813,6 +813,88 @@ body::after{
   .passpaar{grid-template-columns:1fr;gap:1.4rem}
   .passpaar figcaption{font-size:.7rem}
 }
+
+/* ══════════════════════════════════════════════════════════════
+   DER DUFTPASS ALS EIGENSTAENDIGES ARTEFAKT
+   ══════════════════════════════════════════════════════════════
+   Vorher: zwei briefmarkengrosse Miniaturen nebeneinander, beide
+   unlesbar, dazu eine Anleitung zum Rechtsklick. 857 Pixel fuer
+   etwas, das man nicht entziffern konnte.
+
+   Eine dunkle Einbettung war der erste Versuch und ein zu harter
+   Bruch in einer Seite aus Papiertoenen. Stattdessen: ein warmer
+   Schein hinter der Karte. Sie liegt damit sichtbar AUF der Seite,
+   statt Teil von ihr zu sein — dasselbe Signal, ohne die Seite zu
+   zerschneiden.
+
+   Die Karte hat zwei Seiten und verhaelt sich auch so: ein Klick
+   dreht sie um. Das ist keine Dekoration, sondern der Gegenstand,
+   der tut, was er zu sein vorgibt — und es loest nebenbei das
+   Lesbarkeitsproblem der beiden Miniaturen.
+   ══════════════════════════════════════════════════════════════ */
+.passwrap{background:none;box-shadow:none;border-radius:0;padding:1.6rem 0 0;position:relative}
+.passwrap::before{
+  content:"";position:absolute;left:50%;top:.3rem;width:min(980px,104%);height:min(620px,82%);
+  transform:translateX(-50%);pointer-events:none;
+  background:radial-gradient(closest-side, rgba(158,68,48,.17), rgba(158,68,48,.055) 52%, transparent 76%);
+}
+/* Beide Seiten nebeneinander: Man soll das Ergebnis sehen, nicht erst
+   umblaettern muessen. */
+.passwrap .passpaar{position:relative;gap:clamp(1rem,2.4vw,1.8rem)}
+.passwrap .passpaar img{
+  border-radius:6px;background:var(--card);
+  box-shadow:0 2px 6px rgba(44,40,35,.09),
+             0 26px 54px -22px rgba(44,40,35,.34),
+             0 0 46px -4px rgba(158,68,48,.24);
+}
+.passwrap .passpaar figcaption{font-size:.7rem;letter-spacing:.14em;margin-top:.7rem}
+/* Die Nummer macht aus einer Grafik ein Exemplar. Deterministisch aus dem
+   Profil abgeleitet: dasselbe Profil bekommt immer dieselbe Nummer — auch
+   ueber einen geteilten Link hinweg. Sie stand zu klein und zu blass da. */
+.passnummer{position:relative;font-family:"DM Mono",monospace;font-size:.92rem;
+  letter-spacing:.1em;color:var(--ink);margin:2.1rem 0 0;text-align:center}
+.passnummer b{color:var(--coral);font-weight:500}
+.passaktionen{position:relative;display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin:1.7rem 0 0}
+.passaktionen button{all:unset;cursor:pointer;font-size:.88rem;font-weight:500;
+  padding:.72rem 1.45rem;border-radius:99px;background:var(--card);color:var(--ink);
+  box-shadow:var(--shadow);transition:transform .18s cubic-bezier(.34,1.4,.64,1),box-shadow .2s,background .2s,color .2s}
+.passaktionen button:hover{transform:translateY(-2px);box-shadow:var(--shadow-lift)}
+.passaktionen button:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
+.passaktionen button.haupt{background:var(--coral);color:#fff;font-weight:700;
+  box-shadow:0 6px 18px -6px rgba(44,40,35,.34)}
+.passaktionen button.haupt:hover{filter:saturate(1.1)}
+@media (hover:none){ .passaktionen button:hover{transform:none;box-shadow:var(--shadow)} }
+@media (max-width:620px){
+  .passwrap::before{height:min(520px,70%)}
+  .passnummer{font-size:.84rem}
+  .passaktionen{flex-direction:column;align-items:stretch;max-width:300px;margin-inline:auto}
+  .passaktionen button{text-align:center}
+}
+
+/* ── Druck: nur der Pass, hell, zwei Seiten ──────────────────
+   Der Pass ist fuer die Parfuemerie gedacht. Strg+P muss zwei saubere
+   Seiten liefern — vorher stand hier eine Anleitung zum Rechtsklick.
+   Damit gibt es einen echten Dateiweg ohne Bibliothek und ohne Server. */
+@media print{
+  @page{margin:12mm}
+  html,body{background:#fff !important}
+  body::before,body::after{display:none !important}
+  .masthead,.rail,.recalc,.foot-actions,.navfix{display:none !important}
+  #stage>.fade>*{display:none !important}
+  #stage>.fade>.passwrap{display:block !important}
+  .passwrap{padding:0 !important}
+  .passwrap::before{display:none}
+  /* Auf dem Bildschirm nebeneinander, auf Papier untereinander: zwei Seiten
+     nebeneinander auf ein Blatt gequetscht waeren in der Parfuemerie nicht
+     zu lesen. */
+  .passwrap .passpaar{display:block !important}
+  .passwrap .passpaar figure{margin:0;break-inside:avoid}
+  .passwrap .passpaar figure+figure{break-before:page}
+  .passwrap .passpaar img{box-shadow:none !important;border-radius:0;width:100%}
+  .passwrap .passpaar figcaption{display:none !important}
+  .passnummer{color:#555;margin-top:4mm;break-before:avoid}
+  .passaktionen{display:none !important}
+}
 </style>
 </head>
 <body>
@@ -2935,7 +3017,11 @@ function renderIntro(){
       <button type="button" class="weg" id="gogift">
         <span class="wegtitel">Ich will jemandem eine <em>Freude machen</em></span>
         <span class="wegtext">Du beschreibst die Person, nicht den Duft. Funktioniert auch, wenn du wenig über sie weißt — überall darfst du „weiß ich nicht" sagen.</span>
-        <span class="wegmeta">ca. 5 Min. · für Geschenke gebaut</span>
+        ${/* Vorher stand hier „für Geschenke gebaut“ — das wiederholt nur die
+             Ueberschrift der Kachel und sagt nichts dazu. Die Zeile daneben
+             („für Einsteiger kürzer“) nennt eine Eigenschaft, die man vorher
+             nicht wusste; diese muss das auch tun. */''}
+        <span class="wegmeta">ca. 5 Min. · Ergebnis zum Weitergeben</span>
       </button>
     </div>
     ${resumeCard()}
@@ -3293,22 +3379,41 @@ function renderConflicts(){
 }
 
 /* ── Ein Satz, der den Rang begründet ── */
+/* Zwei Fehler, die beim Bau der Monographie-Fassung sichtbar wurden, als der
+   Satz kurzzeitig offen unter dem Duftnamen stand statt hinter einem Klick:
+   Die Familiennamen liefen kleingeschrieben („holzig, leder und amber“, zwei
+   davon Substantive), und das Szenenbild stand ohne Artikel hinter „mit“
+   („mit alte Bibliothek“). Die Fassung ist zurueckgenommen, die Korrektur
+   bleibt — der Satz steht ja weiterhin da, nur eine Ebene tiefer. */
 function verdictLine(r,a,all){
-  const bits = [];
-  if(r.famHit.length) bits.push(listDe(r.famHit.map(k=>FAMLBL[k].toLowerCase())));
-  if(r.moodHit.length) bits.push(moodLbl(r.moodHit[0]));
+  const fams = r.famHit.length ? listDe(r.famHit.map(k=>FAMLBL[k])) : '';
+  const bildRoh = r.moodHit.length ? moodLbl(r.moodHit[0]) : '';
+  const bild = bildRoh ? bildRoh.charAt(0).toUpperCase() + bildRoh.slice(1) : '';
   const wT = SWEETV[a.sweet], sT = SILV[a.sil];
   const rare = all.filter(z=>
     r.famHit.every(k=>z.f.fam.includes(k)) &&
     Math.abs(z.f.sweet - wT) <= 1 &&
     Math.abs(z.f.sil - sT) <= 1
   ).length;
-  const head = bits.length>1 ? `Verbindet ${bits[0]} mit ${bits[1]}`
-             : bits.length   ? `Trifft ${bits[0]}` : 'Passt in der Summe';
-  const tail = rare<=3
-    ? ` — das schaffen bei deiner Süße und Präsenz nur ${rare} von ${F.length} Düften der Auswahl.`
-    : ` bei genau der Präsenz und Süße, die du gewählt hast.`;
-  return head + tail;
+  const head = (fams && bild) ? `Verbindet ${fams} mit dem Bild „${bild}“`
+             : fams           ? `Trifft ${fams}`
+             : bild           ? `Trifft das Bild „${bild}“`
+             : 'Passt in der Summe';
+  /* Der Nachsatz darf nur nennen, was tatsaechlich gewichtet wurde. Im
+     Geschenkweg duerfen Praesenz und Suesse offen bleiben — dann stand hier
+     „bei genau der Praesenz und Suesse, die du gewaehlt hast“ ueber einer
+     Angabe, die niemand gemacht hat. Gemessen in 102 von 150 Geschenkprofilen. */
+  const g = istGeschenk();
+  const nennbar = [];
+  if(OW(a,'sil'))   nennbar.push('Präsenz');
+  if(OW(a,'sweet')) nennbar.push('Süße');
+  if(!nennbar.length) return head + '.';
+  if(rare<=3 && nennbar.length===2){
+    return head + ` — das schaffen bei ${g?'dieser':'deiner'} Süße und Präsenz nur ${rare} von ${F.length} Düften der Auswahl.`;
+  }
+  const wer = g ? (nennbar.length > 1 ? 'die angegeben sind' : 'die angegeben ist')
+                : 'die du gewählt hast';
+  return head + ` bei genau der ${listDe(nennbar)}, ${wer}.`;
 }
 
 /* ── Speichern & Fortsetzen (nur lokal im Browser) ── */
@@ -3748,7 +3853,7 @@ function buildPass(name,blurb,a,anc,top,MAX){
   const GRAFH = Math.max(RAD_LBL, PYH/2 + 22);
 
   /* ── Hoehen beider Seiten ── */
-  let y1 = 70 + 16 + 46;                       /* Streifen + Kopfzeile */
+  let y1 = 70 + 46;                            /* Kopfzeile */
   const yName = y1 + 62; y1 = yName + (nameL.length-1)*70 + 46;
   const yBlurb = y1; y1 = yBlurb + (blurbL.length-1)*34 + 40;
   /* Ein einziger Rhythmus fuer beide Seiten: Linie, Abschnittstitel, Inhalt,
@@ -3769,7 +3874,7 @@ function buildPass(name,blurb,a,anc,top,MAX){
   y1 = yPick + (picks.length-1)*78 + 34;
   const H1 = y1 + 78;
 
-  let y2 = 70 + 16 + 46;
+  let y2 = 70 + 46;
   const yLBer = y2 + 52; const yB2 = yLBer + NACH;
   let bh=0; beratL.forEach(l=>{ bh += l.length*28 + 10; });
   y2 = yB2 + bh + BLOCK - 22;
@@ -3789,8 +3894,9 @@ function buildPass(name,blurb,a,anc,top,MAX){
     const x = cv.getContext('2d');
     x.textAlign='left'; x.textBaseline='alphabetic';
     x.fillStyle = PAPER; x.fillRect(0,0,W,H);
-    const acc = AQ().map(q=>q.acc), sw = CW/acc.length;
-    acc.forEach((col,i)=>{ x.fillStyle=col; x.fillRect(M+i*sw, 70, sw-4, 16); });
+    /* Der Signaturstreifen ist hier entfallen. Er stand oben auf der Karte und
+       zusaetzlich auf der Ergebnisseite ueber dem Archetyp — zweimal dasselbe
+       Bild direkt uebereinander. Der gewonnene Platz gehoert dem Inhalt. */
     return {cv:cv, x:x};
   }
   const rule = (x,yv,x0,x1e) => { x.strokeStyle=LINE; x.lineWidth=2; x.beginPath();
@@ -3809,8 +3915,8 @@ function buildPass(name,blurb,a,anc,top,MAX){
   /* ── Seite 1: das Profil ── */
   const s1 = neu(), x1 = s1.x;
   x1.fillStyle = DIM; x1.font = DS(700,19);
-  x1.fillText(istGeschenk() ? 'D U F T P A S S   ·   G E S C H E N K' : 'D U F T P A S S', M, 70+16+40);
-  x1.textAlign='right'; x1.font = DS(400,17); x1.fillText(stamp, W-M, 70+16+40); x1.textAlign='left';
+  x1.fillText(istGeschenk() ? 'D U F T P A S S   ·   G E S C H E N K' : 'D U F T P A S S', M, 70+40);
+  x1.textAlign='right'; x1.font = DS(400,17); x1.fillText(stamp, W-M, 70+40); x1.textAlign='left';
   x1.fillStyle = INK; x1.font = FS(62); putLines(x1, nameL, M, yName, 70);
   x1.fillStyle = MID; x1.font = DS(400,23); putLines(x1, blurbL, M, yBlurb, 34);
   kopf(x1, istGeschenk() ? 'DAS PROFIL IM ÜBERBLICK' : 'DEIN PROFIL IM ÜBERBLICK', yLGraf, 'Radar und Duftpyramide');
@@ -3860,9 +3966,9 @@ function buildPass(name,blurb,a,anc,top,MAX){
   /* ── Seite 2: die Beratung ── */
   const s2 = neu(), x2 = s2.x;
   x2.fillStyle = DIM; x2.font = DS(700,19);
-  x2.fillText('R Ü C K S E I T E', M, 70+16+40);
+  x2.fillText('R Ü C K S E I T E', M, 70+40);
   x2.textAlign='right'; x2.font=DS(600,19); x2.fillStyle=INK;
-  x2.fillText(fit(name, CW-260, DS(600,19)), W-M, 70+16+40); x2.textAlign='left';
+  x2.fillText(fit(name, CW-260, DS(600,19)), W-M, 70+40); x2.textAlign='left';
   kopf(x2, 'WAS DIESER MENSCH SUCHT', yLBer, 'für das Beratungsgespräch');
   let by = yB2; x2.font = DS(400,20);
   beratL.forEach(l=>{ x2.fillStyle=INK; putLines(x2, l, M, by, 28); by += l.length*28 + 10; });
@@ -4220,6 +4326,18 @@ function gFragen(a){
   F2.push('Warst du schon mal in einer Parfümerie und hast etwas getestet, das dir hängengeblieben ist?');
   return F2.slice(0,5);
 }
+/* Die Nummer auf dem Duftpass. Aus dem Profil abgeleitet, nicht gezogen —
+   dasselbe Profil bekommt immer dieselbe Nummer, auch ueber einen geteilten
+   Link hinweg. Macht aus einer Grafik ein Exemplar. */
+function passNummer(a){
+  let s;
+  try{ s = packProfil(a); }
+  catch(e){ s = [a.fam,a.mood,a.occ,a.sweet,a.sil,a.bold,a.season].join('|'); }
+  let h = 2166136261;
+  for(let i=0;i<s.length;i++){ h = ((h ^ s.charCodeAt(i)) * 16777619) >>> 0; }
+  return String(h % 9000 + 1000);
+}
+
 function renderResult(){
   state.step = AQ().length;
   paintChrome();
@@ -4271,6 +4389,7 @@ function renderResult(){
 
   const rows = chart.concat(wildsFinal);
   const kern = kernNoten(a, chart);
+  const passNr = passNummer(a);
 
   /* Eine Zeile der Trefferliste. Der Index bleibt global, damit die
      aufklappbaren Bereiche eindeutige IDs behalten - auch wenn die
@@ -4371,7 +4490,7 @@ function renderResult(){
         <h4>Der nächste Schritt</h4>
         <p>Kauf keinen Flakon blind — dafür ist die Liste nicht gedacht. Zwei Wege führen weiter:</p>
         <p><b>Abfüllungen bestellen.</b> Von den ersten drei Treffern, als kleine Proben. Kostet einen Bruchteil, und die Person sucht sich selbst aus, welcher bleibt — dann verschenkst du die Entscheidung mit, nicht nur die Flasche.</p>
-        <p><b>Oder mit dem Duftpass in eine Parfümerie.</b> Weiter unten steht er als Bild zum Speichern. Er nennt die Richtung, die Kernnoten und die Ausschlüsse — damit muss dort niemand mehr raten, und du auch nicht.</p>
+        <p><b>Oder mit dem Duftpass in eine Parfümerie.</b> Weiter unten steht er als Karte, mit einem Klick als PDF zu sichern. Er nennt die Richtung, die Kernnoten und die Ausschlüsse — damit muss dort niemand mehr raten, und du auch nicht.</p>
       </div>
     </div>` : `
 
@@ -4533,14 +4652,19 @@ function renderResult(){
       </ol>
     </div>
 
-    <div class="sec-head"><h2>Dein Duftpass</h2><hr><span>zwei Seiten zum Ausdrucken</span></div>
+    <div class="sec-head"><h2>${istGeschenk() ? 'Der Duftpass' : 'Dein Duftpass'}</h2><hr><span>zwei Seiten, zum Mitnehmen</span></div>
     <div class="passwrap">
       <div class="passpaar">
         <figure><img id="passvorn" alt="Duftpass Vorderseite: ${esc(name)}"><figcaption>Vorderseite · Profil</figcaption></figure>
         <figure><img id="passhinten" alt="Duftpass Rückseite: ${esc(name)}"><figcaption>Rückseite · Beratung</figcaption></figure>
       </div>
-      <p>Beide Seiten zusammen enthalten alle ${frageZahl()} Antworten, ${istGeschenk()?'Kennwerte, Beratungstext':'Archetyp, Kennwerte'} und Empfehlungen — zum Vorzeigen in der Parfümerie${istGeschenk()?' oder zum Dazulegen':''}. Rechtsklick oder langes Antippen speichert es. Einen Download startet die Seite bewusst nicht selbst, der wird in eingebetteten Ansichten blockiert.</p>
-      <button class="ghost" id="passcopy">Beide Seiten in die Zwischenablage</button>
+      <p class="passnummer">Duftpass · <b>Nr. ${passNr}</b> · ${new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})}</p>
+      <div class="passaktionen">
+        <button type="button" class="haupt" id="passpdf">Als PDF sichern</button>
+        <button type="button" id="teilen">Link kopieren</button>
+        <button type="button" id="passcopy">Als Bild kopieren</button>
+        <button type="button" id="passshare" hidden>Teilen</button>
+      </div>
     </div>
 
     <details class="fold" style="margin-top:1.6rem">
@@ -4556,8 +4680,11 @@ function renderResult(){
       </div>
     </details>
 
+    ${/* „Dieses Profil als Link kopieren“ stand hier unten als Textlink und
+         steht jetzt als Knopf beim Duftpass — dort, wo man ohnehin ueberlegt,
+         was man mit dem Ergebnis macht. Zwei Knoepfe mit derselben Kennung
+         waeren ein Fehler, deshalb bleibt hier nur der Neustart. */''}
     <div class="foot-actions">
-      <button class="ghost" id="teilen">Dieses Profil als Link kopieren</button>
       <button class="ghost" id="again">${state.geteilt ? 'Eigenes Profil erstellen' : 'Von vorn beginnen'}</button>
     </div>
     <p class="disclaimer">Kuratierte Auswahl von ${F.length} Düften aus ${HOUSES} Häusern, keine Live-Datenbank. Die Prozentwerte sind der Anteil der in deinem Profil erreichbaren Punkte, kein objektives Qualitätsurteil. Duftnoten sind Herstellerangaben in verkürzter Form, Preisbänder sind Richtwerte.</p>
@@ -4584,22 +4711,42 @@ function renderResult(){
     /* Beide Seiten als ein Bild. Die Zwischenablage haelt nur ein Bild -
        zwei nacheinander zu schreiben ueberschreibt das erste. */
     const quelle = passBeide || (document.getElementById('passvorn')||{}).src;
-    if(!quelle){ pc.textContent = 'Der Pass ist noch nicht fertig'; return; }
+    if(!quelle){ pc.textContent = 'Noch nicht fertig'; return; }
     try{
       const blob = await (await fetch(quelle)).blob();
       await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
-      pc.textContent = 'Beide Seiten kopiert ✓';
-    }catch(err){ pc.textContent = 'Geht hier nicht — bitte per Rechtsklick sichern'; }
-    setTimeout(()=>{ pc.textContent = 'Beide Seiten in die Zwischenablage'; }, 2800);
+      pc.textContent = 'Kopiert ✓';
+    }catch(err){ pc.textContent = 'Geht hier nicht'; }
+    setTimeout(()=>{ pc.textContent = 'Als Bild kopieren'; }, 2800);
   };
   const tl = document.getElementById('teilen');
   if(tl) tl.onclick = async ()=>{
     const url = profilLink(a);
     try{ await navigator.clipboard.writeText(url); tl.textContent = 'Link kopiert ✓'; }
-    catch(err){ try{ location.hash = 'p=' + packProfil(a); tl.textContent = 'Link steht oben in der Adresszeile'; }
+    catch(err){ try{ location.hash = 'p=' + packProfil(a); tl.textContent = 'Steht in der Adresszeile'; }
                 catch(e2){ tl.textContent = 'Kopieren geht hier nicht'; } }
-    setTimeout(()=>{ tl.textContent = 'Dieses Profil als Link kopieren'; }, 3200);
+    setTimeout(()=>{ tl.textContent = 'Link kopieren'; }, 3200);
   };
+
+  /* Als PDF sichern — ohne Bibliothek und ohne Server: Der Druckdialog gibt
+     ueber @media print genau die zwei Passseiten aus, je eine pro Blatt.
+     Vorher stand an dieser Stelle eine Anleitung zum Rechtsklick. */
+  const pdf = document.getElementById('passpdf');
+  if(pdf) pdf.onclick = ()=>{
+    try{ window.print(); }
+    catch(e){ pdf.textContent = 'Druck geht hier nicht';
+              setTimeout(()=>{ pdf.textContent = 'Als PDF sichern'; }, 2800); }
+  };
+
+  /* Teilen erscheint nur, wo das Betriebssystem es anbietet. */
+  const sh = document.getElementById('passshare');
+  if(sh && navigator.share){
+    sh.hidden = false;
+    sh.onclick = async ()=>{
+      try{ await navigator.share({title:'Sillage — Duftpass Nr. '+passNr, url:profilLink(a)}); }
+      catch(e){}
+    };
+  }
   const cp = document.getElementById('copy');
   if(cp) cp.onclick = async e=>{
     const txt = plainText(name, blurb, a, anc, top3, wildsFinal, chart, MAX, terms);
