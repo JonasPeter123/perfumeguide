@@ -876,7 +876,7 @@ body::after{
    Seiten liefern — vorher stand hier eine Anleitung zum Rechtsklick.
    Damit gibt es einen echten Dateiweg ohne Bibliothek und ohne Server. */
 @media print{
-  @page{margin:12mm}
+  @page{size:A4 portrait;margin:8mm}
   html,body{background:#fff !important}
   /* Warum das noetig ist: `.fade` traegt eine Einlaufanimation mit `both`,
      deren erster Schritt `opacity:0` ist — beim Drucken kam daher ein leeres
@@ -899,7 +899,10 @@ body::after{
   .passwrap .passpaar{display:block !important}
   .passwrap .passpaar figure{margin:0;break-inside:avoid}
   .passwrap .passpaar figure+figure{break-before:page}
-  .passwrap .passpaar img{box-shadow:none !important;border-radius:0;width:100%}
+  /* Hoehe ebenfalls begrenzen, sonst laeuft jede Seite um 23 mm ueber und
+     zieht eine Leerseite hinter sich her — siehe Kommentar bei passDrucken(). */
+  .passwrap .passpaar img{box-shadow:none !important;border-radius:0;
+    width:auto;height:auto;max-width:100%;max-height:272mm;margin:0 auto}
   .passwrap .passpaar figcaption{display:none !important}
   .passnummer{color:#555;margin-top:4mm;break-before:avoid}
   .passaktionen{display:none !important}
@@ -1067,7 +1070,7 @@ const Q = [
         ['weihrauch','Weihrauch in einer Steinkirche','Kühl, harzig, sakral, hallend.'],
         ['ozean','Kalte Gischt und Wind','Meersalz, Ozon, nasser Stein, nichts Warmes.'],
         ['waesche','Saubere Wäsche und warme Haut','Seife, weißer Moschus, weich und hautnah.'],
-        ['cremig','Kaschmirdecke und Vanille','Milchig, mandelig, wohlig weich — zum Einwickeln.'],
+        ['cremig','Kaschmirdecke und Vanille','Milch, Mandel, Vanille — weich und hell. Kein Honig, kein Rauch.'],
         ['waldboden','Waldboden nach dem Regen','Moos, feuchte Erde, Rinde, Pilze, Schatten.'],
         ['obstgarten','Obstgarten im Spätsommer','Reife Pfirsiche, Birnen, Pflaumen, warmes Gras.'],
         ['nachtblueten','Nachtblüten im Dunkeln','Jasmin und Tuberose, schwer und betörend.'],
@@ -1088,13 +1091,18 @@ const Q = [
     ['weihrauch','Weihrauch in einer Steinkirche','Kühl, harzig, sakral, hallend.'],
     ['ozean','Kalte Gischt und Wind','Meersalz, Ozon, nasser Stein, nichts Warmes.'],
     ['waesche','Saubere Wäsche und warme Haut','Seife, weißer Moschus, weich und hautnah.'],
-    ['cremig','Kaschmirdecke und Vanille','Milchig, mandelig, wohlig weich — zum Einwickeln.'],
+    ['cremig','Kaschmirdecke und Vanille','Milch, Mandel, Vanille — weich und hell. Kein Honig, kein Rauch.'],
     ['waldboden','Waldboden nach dem Regen','Moos, feuchte Erde, Rinde, Pilze, Schatten.'],
     ['obstgarten','Obstgarten im Spätsommer','Reife Pfirsiche, Birnen, Pflaumen, warmes Gras.'],
     ['nachtblueten','Nachtblüten im Dunkeln','Jasmin und Tuberose, schwer und betörend.'],
     ['salzhaut','Salzige Haut nach dem Meer','Sonne, Kokos, Wärme auf der Schulter.'],
     ['basar','Gewürzbasar am Nachmittag','Zimt, Safran, Kardamom, Harz in Säcken.'],
-    ['honig','Honig, Tabak, Karamell','Süß, klebrig-warm, ein bisschen dekadent.'],
+    /* Diese beiden Bilder lagen mit 0,52 zu eng beieinander — 117 Duefte
+       tragen beide. Die Beschreibungen trennen sie jetzt an der Kante, an der
+       sie sich tatsaechlich unterscheiden: hell und milchig gegen dunkel und
+       klebrig. Die Ueberschneidung in den Daten bleibt und braucht Kuratierung
+       von Hand, nicht Text. */
+    ['honig','Honig, Tabak, Karamell','Dunkel, klebrig, harzig-süß. Nicht milchig, nicht weich.'],
     ['iris','Puderige Iris & Wildleder','Kühl, elegant, distanziert, teuer.'],
     ['asphalt','Regen auf heißem Stein','Mineralisch, metallisch, Petrichor.'],
     ['kraeuter','Zerriebene Kräuter im Garten','Bitter-grün, Erde, Sonne, Thymian.']
@@ -1124,7 +1132,11 @@ const Q = [
       sub:'Wichtiger als jede Vorliebe — Ausgeschlossenes fliegt vollständig aus der Auswahl. Nur ankreuzen, wo du dir sicher bist. Nichts anzukreuzen ist eine gültige Antwort.' },
   o:[
     ['suess','Zu süß','Zuckrig, Sirup, Bonbon.'],
-    ['vanille','Vanille','In jeder Form.'],
+    /* „In jeder Form" war ein Versprechen, das die Datenbasis nicht halten
+       kann: Vanille steht in Dutzenden Basen als Fixateur, ohne dass der Duft
+       vanillig riecht. Gemessen: 36 Duefte fuehren Vanille ohne das Merkmal,
+       32 davon auf Platz vier oder fuenf von fuenf. */
+    ['vanille','Vanille','Als tragende Note — nicht als Spur in der Basis.'],
     ['pudrig','Pudrig','Puder, Lippenstift, Kosmetiktasche.'],
     ['rauchig','Rauchig','Lagerfeuer, Birkenteer, Asche.'],
     ['oud','Oud','Der medizinisch-holzige Agarholz-Ton.'],
@@ -1357,7 +1369,10 @@ Q.push(
     ['Iris','Iris','Puderig, kühl, teuer wirkend.'],
     ['Tonka','Tonka','Mandel, Heu, süßliche Wärme.'],
     ['Zimt','Zimt','Scharf-süße Küchenwärme.'],
-    ['Zitrone','Zitrone','Spritzig und hell.'],
+    /* Zitrone und Zitrusnoten sind kein Duplikat, aber das war den
+       Beschreibungen nicht anzusehen: 50 gegen 210 Duefte. Jetzt steht die
+       Schaerfe in der Beschreibung, damit die Wahl bewusst faellt. */
+    ['Zitrone','Zitrone','Nur Zitrone, nichts anderes Zitrisches. Spritzig und hell.'],
     ['Lavendel','Lavendel','Kräuterig-sauber, klassisch maskulin.'],
     ['Eichenmoos','Eichenmoos','Waldboden, das Rückgrat der Chypres.'],
     ['Oud','Oud','Agarholz: medizinisch, dunkel, polarisierend.'],
@@ -1375,12 +1390,24 @@ Q.push(
     ['Kakao','Kakao','Dunkle Schokolade, trocken.'],
     ['Kokos','Kokos','Sonnencreme und Strand.'],
     ['Pfirsich','Pfirsich','Samtig, saftig, sommerlich.'],
-    ['Moschus','Moschus','Warme, saubere Haut. Nah am Körper.'],
+    ['Moschus','Moschus','Sammelbegriff: jede Art Moschus. Warme, saubere Haut, nah am Körper.'],
     ['Weißer Moschus','Weißer Moschus','Frische Wäsche, Seife, weiches Handtuch.'],
-    ['Zitrusnoten','Zitrusnoten','Zitrone bis Mandarine. Spritzig und hell.'],
-    ['Grüne Noten','Grüne Noten','Zerriebenes Blatt, frisch gemähter Rasen.'],
-    ['Kräuter','Kräuter','Salbei, Rosmarin, Minze. Würzig, nie süß.'],
-    ['Harze','Harze','Labdanum und Myrrhe. Dunkel, klebrig-warm.']
+    /* Drei Ergaenzungen vom 17.09.2026, jede mit einem Grund:
+       — Aldehyde und Meeresnoten waren nur als Ausschluss waehlbar, nicht als
+         Vorliebe. Wer sie mag, konnte das nicht sagen.
+       — „Gewuerze" schliesst die groesste verbliebene Luecke: 74 Duefte fuehren
+         Ingwer, Nelke, Muskat, Kuemmel oder Anis, und keine einzige Option
+         erreichte sie. Ein Sammelbegriff neben den Einzelnoten Zimt, Kardamom,
+         Pfeffer und Safran — dieselbe Bauart wie Zitrusnoten neben Zitrone.
+       Bewusst NICHT ergaenzt: Veilchen, Birne, Litschi und die uebrigen 300
+       Noten des Katalogs. Die Liste soll nicht ins Unendliche wachsen. */
+    ['Zitrusnoten','Zitrusnoten','Sammelbegriff: Zitrone, Bergamotte, Limette, Grapefruit, Mandarine. Trifft rund 210 Düfte.'],
+    ['Grüne Noten','Grüne Noten','Sammelbegriff: Blatt, Gras, Galbanum, Feige.'],
+    ['Kräuter','Kräuter','Sammelbegriff: Salbei, Rosmarin, Minze, Lavendel. Würzig, nie süß.'],
+    ['Gewürze','Gewürze','Sammelbegriff: Ingwer, Nelke, Muskat, Kümmel, Anis.'],
+    ['Harze','Harze','Sammelbegriff: Labdanum, Benzoe, Myrrhe. Dunkel, klebrig-warm.'],
+    ['Aldehyde','Aldehydisch','Der seifig-metallische Schimmer über N°5 und Verwandten.'],
+    ['Meeresnoten','Meeresnoten','Meersalz, Algen, Gischt, Ozon.']
   ]}
 );
 
@@ -2126,7 +2153,36 @@ const F = D.filter(function(a){
   const k = a[0] + '|' + a[1];
   if(_gesehen[k]) return false;
   _gesehen[k] = 1; return true;
-}).map(a=>({n:a[0],h:a[1],fam:a[2],mood:a[3].slice(),sil:a[4],sweet:a[5],bold:a[6],seas:a[7],occ:a[8],vibe:a[9],eff:a[10],g:a[11],p:a[12],tags:a[13],notes:a[14]}));
+}).map(a=>({n:a[0],h:a[1],fam:a[2],mood:a[3].slice(),sil:a[4],sweet:a[5],bold:a[6],seas:a[7],occ:a[8],vibe:a[9],eff:a[10],g:a[11],p:a[12],tags:a[13].slice(),notes:a[14]}));
+
+/* ── Ausschluss-Merkmale nachziehen ───────────────────────────
+   Gemessen am 17.09.2026: Bei 22 Dueften stand Rose in der Notenliste, ohne
+   dass das Merkmal „rose" gesetzt war — bei 18 davon sogar unter den ersten
+   drei Noten. Wer „keine Rose" angibt, bekam sie trotzdem.
+
+   Die Regel ist bewusst eng: Nur wenn der Stoff unter den **ersten drei**
+   Noten steht, praegt er den Duft. Die Gegenprobe zeigt, warum: Vanille fehlte
+   bei 36 Dueften, aber bei 32 davon steht sie auf Platz vier oder fuenf von
+   fuenf — als Fixateur in der Basis. Oud Wood ist kein Vanilleduft, nur weil
+   Vanille unten mitlaeuft. Dort war die Datenbank also richtig und die
+   Beschriftung der Frage falsch; die wurde geaendert.
+
+   Wirkung: 28 Duefte bekommen ein Merkmal dazu (Rose 18, Patschuli 5,
+   Vanille 4, Oud 1). Rose steigt damit von 13 auf 16 Prozent des Katalogs.
+   Mechanisch statt von Hand, damit es bei neuen Eintraegen mitwaechst. */
+const TAGNACHZUG = [
+  ['rose',      /\brose\b|rosen/],
+  ['vanille',   /vanille/],
+  ['oud',       /\boud\b|agarholz/],
+  ['honig',     /honig/],
+  ['patchouli', /patschul|patchoul/]
+];
+F.forEach(function(f){
+  const ersten3 = String(f.notes).split(',').slice(0,3).map(function(s){ return s.trim().toLowerCase(); });
+  TAGNACHZUG.forEach(function(p){
+    if(f.tags.indexOf(p[0]) < 0 && ersten3.some(function(s){ return p[1].test(s); })) f.tags.push(p[0]);
+  });
+});
 
 /* ── Hausart ──────────────────────────────────────────────────
    'd' = breit verfuegbares Designer- und Kaufhaushaus
@@ -2317,11 +2373,18 @@ const SPLITLBL = {fam:'Duftfamilien',mood:'Bilder',occ:'Anlass & Saison',sil:'Pr
    simple Textsuche in der Notenliste, deshalb braucht jeder Sammelbegriff
    seine eigene Wortliste. Aus dem Forum: „Zitrusfrüchte statt nur Zitrone",
    und Moschus fehlte in der Auswahl komplett. */
+/* Ergaenzt 17.09.2026: „neroli" fehlte bei Zitrus, „feige" bei Gruen — beide
+   gehoeren eindeutig dorthin und waren ueber keine einzige Option erreichbar.
+   Dazu die Wortlisten der drei neuen Optionen. Gemessen war zuvor: 21 Prozent
+   aller Notennennungen im Katalog liessen sich mit keiner Option treffen. */
 const NOTENSYN = {
-  'Zitrusnoten':   ['zitrone','bergamotte','limette','grapefruit','mandarine','orange','yuzu','zedrat','petitgrain','zitrus'],
-  'Grüne Noten':   ['galbanum','blatt','blätter','gras','grüne','grüner','feigenblatt','tomatenblatt','efeu','stängel'],
-  'Kräuter':       ['salbei','rosmarin','thymian','minze','basilikum','beifuss','estragon','wacholder','lavendel','kräuter'],
+  'Zitrusnoten':   ['zitrone','bergamotte','limette','grapefruit','mandarine','orange','yuzu','zedrat','petitgrain','zitrus','neroli','pomelo','zitronat'],
+  'Grüne Noten':   ['galbanum','blatt','blätter','gras','grüne','grüner','feigenblatt','tomatenblatt','efeu','stängel','feige'],
+  'Kräuter':       ['salbei','rosmarin','thymian','minze','basilikum','beifuss','estragon','wacholder','lavendel','kräuter','artemisia'],
+  'Gewürze':       ['ingwer','nelke','muskat','kümmel','kreuzkümmel','anis','sternanis','koriander','piment','gewürz','fenchel','kumin'],
   'Harze':         ['labdanum','benzoe','myrrhe','opoponax','styrax','harz','elemi'],
+  'Aldehyde':      ['aldehyd'],
+  'Meeresnoten':   ['meeresnote','meersalz','meeresalgen','algen','seetang','ozon','marine','calone','gischt','ambergris'],
   'Weißer Moschus':['weißer moschus','weissem moschus','weiße moschus','weisser moschus'],
   'Moschus':       ['moschus','musk','ambrette']
 };
@@ -4765,8 +4828,18 @@ function renderResult(){
     d.open();
     d.write('<!doctype html><html lang="de"><head><meta charset="utf-8">'
       + '<title>Sillage — Duftpass Nr. ' + passNr + '</title>'
-      + '<style>@page{margin:10mm}html,body{margin:0;padding:0;background:#fff}'
-      + 'img{display:block;width:100%;height:auto}'
+      /* Warum die Hoehe begrenzt wird: Das Passbild ist 1080 x 1707 px, also
+         Verhaeltnis 1,58. Die Druckflaeche einer A4-Seite bei 10 mm Rand ist
+         190 x 277 mm, Verhaeltnis 1,46. Mit `width:100%` waere das Bild 300 mm
+         hoch — 23 mm zu viel. Jede Seite lief ueber und zog eine Leerseite
+         hinter sich her, aus zwei Seiten wurden vier.
+         Deshalb beide Achsen begrenzen und das Bild sein Verhaeltnis behalten
+         lassen; die Masse in Millimeter statt in `vh`, weil `vh` im Seitensatz
+         je nach Browser die Seite mit oder ohne Rand meint. */
+      + '<style>@page{size:A4 portrait;margin:8mm}'
+      + 'html,body{margin:0;padding:0;background:#fff}'
+      + 'img{display:block;margin:0 auto;width:auto;height:auto;'
+      +      'max-width:194mm;max-height:280mm}'
       + 'img+img{page-break-before:always;break-before:page}</style></head><body>'
       + '<img src="' + v.src + '" alt="Duftpass Vorderseite">'
       + (h && h.src && h.src.length > 100 ? '<img src="' + h.src + '" alt="Duftpass Rückseite">' : '')
